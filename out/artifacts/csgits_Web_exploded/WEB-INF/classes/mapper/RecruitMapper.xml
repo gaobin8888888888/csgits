@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sts.csgits.dao.RecruitMapper">
+    <resultMap id="BaseResultMap" type="com.sts.csgits.entity.Recruit">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="manager_id" property="managerId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="BASEFIELD">
+        id, name, description, url, manager_id, status, create_time
+    </sql>
+
+    <insert id="insert" parameterType="com.sts.csgits.entity.Recruit" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into recruit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="managerId != null">
+                manager_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url, jdbcType=VARCHAR},
+            </if>
+            <if test="managerId != null">
+                #{managerId, jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from recruit
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.sts.csgits.entity.Recruit">
+        update recruit
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=INTEGER},
+            </if>
+        </trim>
+        where id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from recruit
+        where id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from recruit order by create_time desc
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from recruit
+        where name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+    </select>
+
+    <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from recruit
+        <where>
+            <if test="mapConditions.managerId != null">
+              and manager_id = #{mapConditions.managerId, jdbcType=INTEGER}
+            </if>
+            <if test="mapConditions.status != null">
+                and status = #{mapConditions.status, jdbcType=INTEGER}
+            </if>
+            <if test="mapConditions.recruitName != null">
+                and name like concat('%', #{mapConditions.recruitName, jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>
