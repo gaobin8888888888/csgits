@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sts.csgits.dao.CreateRecordMapper">
+    <resultMap id="BaseResultMap" type="com.sts.csgits.entity.CreateRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="manager_id" property="managerId" jdbcType="INTEGER" />
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="BASEFIELD">
+        id, name, description, manager_id, start_time, end_time, create_time
+    </sql>
+
+    <insert id="insert" parameterType="com.sts.csgits.entity.CreateRecord" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into create_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="managerId != null">
+                manager_id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="managerId != null">
+                #{managerId, jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime, jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from create_record
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.sts.csgits.entity.CreateRecord">
+        update create_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime, jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime, jdbcType=VARCHAR},
+            </if>
+        </trim>
+        where id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from create_record
+        where id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from create_record order by create_time desc
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from create_record order by create_time desc
+        limit 1
+    </select>
+
+    <select id="selectByCreateRecord" parameterType="com.sts.csgits.entity.CreateRecord" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from create_record
+        <where>
+            <if test="name != null">
+                and name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="description != null">
+                and description = #{description, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime, jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and end_time = #{endTime, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

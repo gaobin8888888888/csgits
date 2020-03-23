@@ -171,4 +171,10 @@ public class AdminController {
         return modelAndView;
     }
 
+    @RequestMapping("/admin/toAddCreateRecordPage")
+    public ModelAndView toAddCreateRecordPage(){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc7");
+        return modelAndView;
+    }
+
 }

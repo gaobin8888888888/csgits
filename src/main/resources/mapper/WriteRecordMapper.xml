@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sts.csgits.dao.WriteRecordMapper">
+    <resultMap id="BaseResultMap" type="com.sts.csgits.entity.WriteRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sole" property="sole" jdbcType="VARCHAR"/>
+        <result column="related" property="related" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="degree" property="degree" jdbcType="INTEGER"/>
+        <result column="place" property="place" jdbcType="VARCHAR"/>
+        <result column="home" property="home" jdbcType="INTEGER"/>
+        <result column="salary" property="salary" jdbcType="DOUBLE"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="BASEFIELD">
+        id, sole, related, type, degree, place, home, salary, comment, create_time
+    </sql>
+
+    <insert id="insert" parameterType="com.sts.csgits.entity.WriteRecord" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into write_record_${createRecordId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sole != null">
+                sole,
+            </if>
+            <if test="related != null">
+                related,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="degree != null">
+                degree,
+            </if>
+            <if test="place != null">
+                place,
+            </if>
+            <if test="home != null">
+                home,
+            </if>
+            <if test="salary != null">
+                salary,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sole != null">
+                #{sole, jdbcType=VARCHAR},
+            </if>
+            <if test="related != null">
+                #{related, jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type, jdbcType=INTEGER},
+            </if>
+            <if test="degree != null">
+                #{degree, jdbcType=INTEGER},
+            </if>
+            <if test="place != null">
+                #{place, jdbcType=VARCHAR},
+            </if>
+            <if test="home != null">
+                #{home, jdbcType=INTEGER},
+            </if>
+            <if test="salary != null">
+                #{salary, jdbcType=DOUBLE},
+            </if>
+            <if test="comment != null">
+                #{comment, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap">-->
+        <!--select-->
+        <!--<include refid="BASEFIELD"/>-->
+        <!--from write_record_${createRecordId}-->
+        <!--where id = #{id, jdbcType=INTEGER}-->
+    <!--</select>-->
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from write_record_${createRecordId}
+        order by create_time desc
+    </select>
+</mapper>

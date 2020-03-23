@@ -154,14 +154,14 @@
 
     <select id="selectOneSchoolStudent" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from student_${schoolId}
         order by manager.create_time desc
     </select>
 
     <select id="selectOneStudentBySole" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from student_${schoolId}
         where sole = #{sole, jdbcType=VARCHAR}
     </select>

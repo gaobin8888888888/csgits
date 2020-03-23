@@ -3,140 +3,53 @@
 <mapper namespace="com.sts.csgits.dao.RedeemMapper">
     <resultMap id="BaseResultMap" type="com.sts.csgits.entity.Redeem">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="no" property="no" jdbcType="VARCHAR"/>
-        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
-        <result column="tel" property="tel" jdbcType="VARCHAR" />
-        <result column="college" property="college" jdbcType="VARCHAR" />
-        <result column="fine" property="fine" jdbcType="BOOLEAN" />
-        <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="confined" property="confined" jdbcType="BOOLEAN" />
+        <result column="sole" property="sole" jdbcType="VARCHAR"/>
+        <result column="good_id" property="goodId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="school_id" property="schoolId" jdbcType="INTEGER" />
-        <association property="school" javaType="com.sts.csgits.entity.School">
-            <id column="id" property="id" jdbcType="INTEGER"/>
-            <result column="name" property="name" jdbcType="VARCHAR"/>
-            <result column="description" property="description" jdbcType="VARCHAR"/>
-            <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
-            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        </association>
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, no, real_name, password, image_path, tel, college, fine, description, confined, create_time, school_id
+        id, sole, good_id, create_time
     </sql>
 
-    <sql id="TOTALFIELD">
-        manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.confined, manager.create_time, manager.school_id, school.id, school.name, school.description, school.image_path, school.create_time
-    </sql>
-
-    <insert id="insert" parameterType="com.sts.csgits.entity.Manager" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.sts.csgits.entity.Redeem" useGeneratedKeys="true"
             keyProperty="id">
-        insert into manager
+        insert into redeem
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="no != null">
-                no,
+            <if test="sole != null">
+                sole,
             </if>
-            <if test="realName != null">
-                real_name,
+            <if test="goodId != null">
+                good_id,
             </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="imagePath != null">
-                image_path,
-            </if>
-            <if test="tel != null">
-                tel,
-            </if>
-            <if test="description != null">
-                description,
-            </if>
-            <if test="fine != null">
-                fine,
-            </if>
-            <if test="confined != null">
-                confined,
-            </if>
-            <if test="schoolId != null">
-                school_id,
-            </if>
-            <if test="college != null">
-                college,
+            <if test="status != null">
+                status,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="no != null">
-                #{no, jdbcType=VARCHAR},
+            <if test="sole != null">
+                #{sole, jdbcType=VARCHAR},
             </if>
-            <if test="realName != null">
-                #{realName, jdbcType=VARCHAR},
+            <if test="goodId != null">
+                #{goodId, jdbcType=INTEGER},
             </if>
-            <if test="password != null">
-                #{password, jdbcType=VARCHAR},
-            </if>
-            <if test="imagePath != null">
-                #{image_path, jdbcType=VARCHAR},
-            </if>
-            <if test="tel != null">
-                #{tel, jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                #{description, jdbcType=VARCHAR},
-            </if>
-            <if test="fine != null">
-                #{fine, jdbcType=BOOLEAN},
-            </if>
-            <if test="confined != null">
-                #{confined, jdbcType=BOOLEAN},
-            </if>
-            <if test="schoolId != null">
-                #{school_id, jdbcType=INTEGER},
-            </if>
-            <if test="college != null">
-                #{college, jdbcType=VARCHAR},
+            <if test="status != null">
+                #{status, jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from manager
+        delete from redeem
         where id = #{id, jdbcType=INTEGER}
     </delete>
 
-    <update id="update" parameterType="com.sts.csgits.entity.School">
-        update manager
+    <update id="update" parameterType="com.sts.csgits.entity.Redeem">
+        update redeem
         <trim prefix="set" suffixOverrides=",">
-            <if test="no != null">
-                no = #{no, jdbcType=VARCHAR},
-            </if>
-            <if test="realName != null">
-                real_name = #{realName, jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                password = #{password, jdbcType=VARCHAR},
-            </if>
-            <if test="imagePath != null">
-                image_path = #{imagePath, jdbcType=VARCHAR},
-            </if>
-            <if test="tel != null">
-                tel = #{tel, jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                description = #{description, jdbcType=VARCHAR},
-            </if>
-            <if test="fine != null">
-                fine = #{fine, jdbcType=BOOLEAN},
-            </if>
-            <if test="confined != null">
-                confined = #{confined, jdbcType=BOOLEAN},
-            </if>
-            <if test="schoolId != null">
-                school_id = #{schoolId, jdbcType=INTEGER},
-            </if>
-            <if test="college != null">
-                college = #{college, jdbcType=VARCHAR},
+            <if test="status != null">
+                status = #{status, jdbcType=INTEGER},
             </if>
         </trim>
         where id = #{id, jdbcType=INTEGER}
@@ -144,61 +57,31 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
-        from manager
-        left join school on manager.school_id = school.id
-        where manager.id = #{id, jdbcType=INTEGER}
+        <include refid="BASEFIELD"/>
+        from redeem
+        where id = #{id, jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
-        from manager
-        <where>
-            <if test="no != null">
-                and no = #{no, jdbcType=VARCHAR},
-            </if>
-            <if test="realName != null">
-                and real_name = #{realName, jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                and password = #{password, jdbcType=VARCHAR},
-            </if>
-            <if test="imagePath != null">
-                and image_path = #{imagePath, jdbcType=VARCHAR},
-            </if>
-            <if test="tel != null">
-                and tel = #{tel, jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                and description = #{description, jdbcType=VARCHAR},
-            </if>
-            <if test="fine != null">
-                and fine = #{fine, jdbcType=BOOLEAN},
-            </if>
-            <if test="confined != null">
-                and confined = #{confined, jdbcType=BOOLEAN},
-            </if>
-            <if test="schoolId != null">
-                and school_id = #{schoolId, jdbcType=INTEGER},
-            </if>
-            <if test="college != null">
-                and college = #{college, jdbcType=VARCHAR},
-            </if>
-        </where>
+        <include refid="BASEFIELD"/>
+        from redeem
         order by create_time desc
     </select>
     
-    <select id="selectByNoAndPassword" parameterType="com.sts.csgits.entity.Manager" resultMap="BaseResultMap">
+    <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
         select
         <include refid="BASEFIELD"/>
-        from manager
+        from redeem
         <where>
-            <if test="no != null">
-                and no = #{no}
+            <if test="status != null">
+                and status = #{status}
             </if>
-            <if test="password != null">
-                and password = #{password}
+            <if test="sole != null">
+                and sole = #{sole}
+            </if>
+            <if test="goodId != null">
+                and good_id = #{goodId}
             </if>
         </where>
     </select>

@@ -13,10 +13,13 @@ public class Redeem {
     private Integer id;
 
     //学生唯一id
-    private String stuId;
+    private String sole;
 
     //物品id
-    private Integer goodsId;
+    private Integer goodId;
+
+    //状态
+    private Integer status;
 
     //创建时间
     private String createTime;

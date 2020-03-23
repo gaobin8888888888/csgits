@@ -75,7 +75,7 @@ public class SchoolController {
             if (insert > 0){
                 //添加该学校的学生表
                 school = schoolService.selectOne();
-                createTableService.createTable(school.getId());
+                createTableService.createStudentTable(school.getId());
 
                 modelAndView = new ModelAndView("redirect:/admin/school/selectAll");
                 modelAndView.addObject("message", "添加成功");
