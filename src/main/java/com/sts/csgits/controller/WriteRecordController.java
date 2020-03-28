@@ -68,7 +68,7 @@ public class WriteRecordController {
 
     @RequestMapping("/selectAll")
     public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc7");
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc6");
         List<WriteRecord> writeRecordList = null;
         try {
             writeRecordList = writeRecordService.selectAll();

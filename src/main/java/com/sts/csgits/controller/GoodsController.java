@@ -3,12 +3,14 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.Goods;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.GoodsService;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,17 +96,16 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/goods/selectAll");
+    public @ResponseBody String delete(@PathVariable("id") Integer id){
         try {
             int delete = goodsService.deleteByPrimaryKey(id);
             if (delete > 0){
-                return modelAndView.addObject("message", "删除成功");
+                return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
             log.info("GoodsController delete物品信息 error {}", e);
         }
-        return modelAndView.addObject("message", "删除失败，请稍后再试");
+        return JSONResult.successInstance("删除失败，请稍后再试");
     }
 
     /**
@@ -140,12 +141,17 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/selectAll")
-    public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc2");
+    public ModelAndView selectAll(String goodsName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc4");
         List<Goods> goodsList = null;
         try {
-            goodsList = goodsService.selectAll();
+            Goods goods = new Goods();
+            if (StringUtils.isNotEmpty(goodsName)){
+                goods.setName(goodsName);
+            }
+            goodsList = goodsService.selectByGoods(goods);
             modelAndView.addObject("goodsList", goodsList);
+            modelAndView.addObject("goodsName", goodsName);
         }catch (Exception e){
             log.info("GoodsController selectAll物品信息 error {}", e);
         }

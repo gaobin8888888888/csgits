@@ -8,24 +8,10 @@
         <result column="notice_type" property="noticeType" jdbcType="INTEGER"/>
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <association property="manager" javaType="com.sts.csgits.entity.Manager">
-            <id column="id" property="id" jdbcType="INTEGER"/>
-            <result column="no" property="no" jdbcType="VARCHAR"/>
-            <result column="real_name" property="realName" jdbcType="VARCHAR"/>
-            <result column="password" property="password" jdbcType="VARCHAR"/>
-            <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
-            <result column="tel" property="tel" jdbcType="VARCHAR" />
-            <result column="college" property="college" jdbcType="VARCHAR" />
-            <result column="fine" property="fine" jdbcType="BOOLEAN" />
-            <result column="description" property="description" jdbcType="VARCHAR"/>
-            <result column="confined" property="confined" jdbcType="BOOLEAN" />
-            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-            <result column="school_id" property="schoolId" jdbcType="INTEGER" />
-        </association>
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, title, notice_type, content, create_time
+        id, title, manager_id, notice_type, content, create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.Notice" useGeneratedKeys="true"
@@ -104,7 +90,7 @@
                 and manager_id = #{managerId, jdbcType=INTEGER}
             </if>
             <if test="title != null">
-                and title = #{title, jdbcType=VARCHAR}
+                and title like CONCAT('%', #{title, jdbcType=VARCHAR}, '%')
             </if>
             <if test="noticeType != null">
                 and notice_type = #{noticeType, jdbcType=INTEGER}

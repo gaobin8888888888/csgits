@@ -29,7 +29,18 @@ public class Const {
     public static final String IMAGE_VIRTUAL_PATH = "/static/images/";
 
     /**
+     * 管理员
+     */
+    public static final String ADMIN_NO = "admin";
+
+    /**
      * 初始化默认密码
      */
     public static final String DEFAULT_PASSWORD = "123456";
+
+    /**
+     * 积分兑换的状态 1:正在处理 2：已完成
+     */
+    public static final int REDEEM_STATUS_DEALING = 1;
+    public static final int REDEEM_STATUS_FINISH = 2;
 }

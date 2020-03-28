@@ -93,6 +93,18 @@
         limit 1
     </select>
 
+    <select id="selectBySchool" parameterType="com.sts.csgits.entity.School" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from school
+        <where>
+            <if test="name != null">
+                and name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
     <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="BASEFIELD"/>

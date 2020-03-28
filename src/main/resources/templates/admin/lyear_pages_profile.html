@@ -45,11 +45,14 @@
             <li class="nav-item nav-item-has-subnav">
               <a href="javascript:void(0)"><i class="mdi mdi-file-outline"></i>信息管理</a>
               <ul class="nav nav-subnav">
-                <li> <a href="/admin/school/selectAll">学校信息管理</a> </li>
-                <li> <a href="/admin/goods/selectAll">积分兑物管理</a> </li>
                 <li> <a href="/admin/notice/selectAll">通知信息管理</a> </li>
-                <li> <a href="/admin/teacher/selectAll">教师信息管理</a> </li>
-                <li> <a href="/admin/recruit/selectAll">企业招聘信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/school/selectAll">学校信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/teacher/selectAll">教师信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/goods/selectAll">积分物品管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/redeem/selectAll">积分兑换管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/createRecord/selectAll">创建填写记录信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} != 'admin'"> <a href="/admin/recruit/selectAll">企业招聘信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} != 'admin'"> <a href="/admin/student/selectAll">学生信息管理</a> </li>
               </ul>
             </li>
           </ul>

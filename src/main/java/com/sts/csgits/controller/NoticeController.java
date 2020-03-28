@@ -1,19 +1,20 @@
 package com.sts.csgits.controller;
 
+import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.Notice;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.NoticeService;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -69,43 +70,35 @@ public class NoticeController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/notice/selectAll");
+    public @ResponseBody
+    String delete(@PathVariable("id") Integer id){
         try {
             int delete = noticeService.deleteByPrimaryKey(id);
             if (delete > 0){
-                return modelAndView.addObject("message", "删除成功");
+                return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
             log.info("NoticeController delete通知 error {}", e);
         }
-        return modelAndView.addObject("message", "删除失败，请稍后再试");
+        return JSONResult.errorInstance("删除失败，请稍后再试");
     }
 
     /**
      * 更新通知
      * @param id
-     * @param title
-     * @param noticeType
      * @param content
      * @return
      */
     @RequestMapping("/update")
-    public ModelAndView update(Integer id, String title, Integer noticeType, String content){
+    public ModelAndView update(Integer id, String content){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/notice/selectAll");
         try {
-            if (StringUtils.isEmpty(title)){
-                modelAndView.addObject("message", "通知标题不能为空");
-                return modelAndView;
-            }
             if (StringUtils.isEmpty(content)){
                 modelAndView.addObject("message", "通知主体内容不能为空");
                 return modelAndView;
             }
             Notice notice = new Notice();
             notice.setId(id);
-            notice.setTitle(title);
-            notice.setNoticeType(noticeType);
             notice.setContent(content);
             int update = noticeService.updateByPrimaryKey(notice);
             if (update > 0){
@@ -122,18 +115,30 @@ public class NoticeController {
      * @return
      */
     @RequestMapping("/selectAll")
-    public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc3");
+    public ModelAndView selectAll(HttpServletRequest request, String noticeName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc1");
         List<Notice> noticeList = null;
         try {
-            noticeList = noticeService.selectAll();
+            Manager manager = (Manager) request.getSession().getAttribute("manager");
+            Notice notice = new Notice();
+            if (StringUtils.isNotEmpty(noticeName)){
+                notice.setTitle(noticeName);
+            }
+            if (manager != null){
+                if (Const.ADMIN_NO.equals(manager.getNo())){
+                    noticeList = noticeService.selectByNotice(notice);
+                }else {
+                    notice.setManagerId(manager.getId());
+                    noticeList = noticeService.selectByNotice(notice);
+                }
+            }
             modelAndView.addObject("noticeList", noticeList);
+            modelAndView.addObject("noticeName", noticeName);
         }catch (Exception e){
             log.info("NoticeController selectAll通知 error {}", e);
         }
         return modelAndView;
     }
-
 
     /**
      * 查询自己发布的通知

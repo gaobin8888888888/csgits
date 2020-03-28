@@ -22,4 +22,11 @@ public interface SchoolService extends BaseService<School, Integer> {
      * @return
      */
     public School selectOne();
+
+    /**
+     * 根据school属性查询
+     * @param school
+     * @return
+     */
+    public List<School> selectBySchool(School school);
 }

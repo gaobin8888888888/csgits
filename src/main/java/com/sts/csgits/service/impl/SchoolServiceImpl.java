@@ -27,4 +27,9 @@ public class SchoolServiceImpl extends BaseServiceImpl<School, Integer> implemen
     public School selectOne(){
         return schoolMapper.selectOne();
     }
+
+    @Override
+    public List<School> selectBySchool(School school){
+        return schoolMapper.selectBySchool(school);
+    }
 }

@@ -27,6 +27,4 @@ public class Notice {
     //创建时间
     private String createTime;
 
-    private Manager manager;
-
 }

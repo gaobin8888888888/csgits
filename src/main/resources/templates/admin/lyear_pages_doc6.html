@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>学生信息页面 - 大学生成长信息跟踪系统</title>
+  <title>创建填写记录信息页面 - 大学生成长信息跟踪系统</title>
   <link rel="icon" href="favicon.ico" type="image/ico">
   <meta name="keywords" content="大学生成长信息跟踪系统">
   <meta name="description" content="大学生成长信息跟踪系统">
@@ -53,12 +53,14 @@
             <li class="nav-item nav-item-has-subnav active open">
               <a href="javascript:void(0)"><i class="mdi mdi-file-outline"></i>信息管理</a>
               <ul class="nav nav-subnav">
-                <li class="active"> <a href="/admin/school/selectAll">学校信息管理</a> </li>
-                <li> <a href="/admin/goods/selectAll">积分兑物管理</a> </li>
                 <li> <a href="/admin/notice/selectAll">通知信息管理</a> </li>
-                <li> <a href="/admin/teacher/selectAll">教师信息管理</a> </li>
-                <li> <a href="/admin/recruit/selectAll">企业招聘信息管理</a> </li>
-                <li> <a href="/admin/student/selectAll">学生信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/school/selectAll">学校信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/teacher/selectAll">教师信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/goods/selectAll">积分物品管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/redeem/selectAll">积分兑换管理</a> </li>
+                <li class="active" th:if="${#session.getAttribute('no')} == 'admin'"> <a href="/admin/createRecord/selectAll">创建填写记录信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} != 'admin'"> <a href="/admin/recruit/selectAll">企业招聘信息管理</a> </li>
+                <li th:if="${#session.getAttribute('no')} != 'admin'"> <a href="/admin/student/selectAll">学生信息管理</a> </li>
               </ul>
             </li>
           </ul>
@@ -80,7 +82,7 @@
               <span class="lyear-toggler-bar"></span>
               <span class="lyear-toggler-bar"></span>
             </div>
-            <span class="navbar-page-title"> 学生信息管理 </span>
+            <span class="navbar-page-title"> 创建填写记录信息管理 </span>
           </div>
           
           <ul class="topbar-right">
@@ -241,13 +243,13 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="/admin/school/selectByName" role="form">
+                <form class="pull-right search-bar" method="get" action="/admin/createRecord/selectAll" role="form">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="schoolName" placeholder="请输入学校名称" th:value="${sname}" />
+                    <input type="text" class="form-control" name="createRecordName" placeholder="请输入名称" th:value="${createRecordName}" />
                   </div>
                 </form>
                 <div class="toolbar-btn-action">
-                  <a class="btn btn-primary m-r-5" href="/admin/toAddSchoolPage"><i class="mdi mdi-plus"></i> 新增</a>
+                  <a class="btn btn-primary m-r-5" href="/admin/toAddCreateRecordPage"><i class="mdi mdi-plus"></i> 新增</a>
                 </div>
               </div>
               <div class="card-body">
@@ -256,48 +258,35 @@
                   <table class="table table-bordered" style="margin:auto;">
                     <thead align="center">
                       <tr align="center">
-                        <th>学校名称</th>
-                        <th>学校描述</th>
-                        <th>学校图片</th>
-                        <th>教师人数</th>
-                        <th>学生总人数</th>
-                        <th>学生在校人数</th>
+                        <th>id</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="school:${schoolList}" align="center" valign="center">
-                        <td><input type="hidden" id="id" name="id" th:value="${school.id}"><span th:text="${school.name}"></span></td>
-                        <td><textarea name="description" id="description" class="form-control" th:text="${school.description}" rows="5"></textarea></td>
-                        <td height="120px" width="120px"><img th:src="${school.imagePath}" style="width:80%;height: 80%;"></td>
-                        <td><span th:text="${school.teacherNum}"></span></td>
-                        <td><span th:text="${school.totalNum}"></span></td>
-                        <td><span th:text="${school.schoolNum}"></span></td>
-                        <td>
-                          <div class="btn-group">
-                            <a class="btn btn-xs btn-default" th:onclick="updateSchool()" title="保存编辑内容" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                            <a class="btn btn-xs btn-default" th:onclick="/admin/school/delete/${school.id}" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
-                          </div>
-                        </td>
+                      <tr th:each="createRecord:${createRecordList}" align="center" valign="center">
+                        <form action="/admin/createRecord/update">
+                          <td><span th:text="${createRecord.id}"></span></td>
+                          <td><input type="hidden" id="id" name="id" th:value="${createRecord.id}"><span th:text="${createRecord.name}"></span></td>
+                          <td><input name="description" id="description" class="form-control" th:value="${createRecord.description}"/></td>
+                          <td><input class="form-control js-datepicker m-b-10" id="startTime" name="startTime" th:value="${createRecord.startTime}" data-date-format="yyyy-mm-dd"/></td>
+                          <td><input class="form-control js-datepicker m-b-10" id="endTime" name="endTime" th:value="${createRecord.endTime}" data-date-format="yyyy-mm-dd"/></td>
+                          <td><span th:text="${createRecord.createTime}"></span></td>
+                          <td>
+                            <div class="btn-group">
+                              <input value="确定修改" type="submit" class="btn btn-xs btn-default" title="保存编辑内容" data-toggle="tooltip" />
+                              <input value="删除" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:deleteCreateRecordById('+${createRecord.id}+')'" title="删除" data-toggle="tooltip" />
+                            </div>
+                          </td>
+                        </form>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <ul class="pagination">
-                  <li class="disabled"><span>«</span></li>
-                  <li class="active"><span>1</span></li>
-                  <li><a href="#1">2</a></li>
-                  <li><a href="#1">3</a></li>
-                  <li><a href="#1">4</a></li>
-                  <li><a href="#1">5</a></li>
-                  <li><a href="#1">6</a></li>
-                  <li><a href="#1">7</a></li>
-                  <li><a href="#1">8</a></li>
-                  <li class="disabled"><span>...</span></li>
-                  <li><a href="#!">14452</a></li>
-                  <li><a href="#!">14453</a></li>
-                  <li><a href="#!">»</a></li>
-                </ul>
        
               </div>
             </div>
@@ -324,6 +313,24 @@ $(function(){
         $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
     });
 });
+
+function deleteCreateRecordById(id) {
+    $.ajax({
+        type: "POST",
+        url: "/admin/createRecord/delete/" + id,
+        success: function (data) {
+            location.reload();
+            alert(data);
+        },
+        error: function (data) {
+            alert("删除失败");
+        }
+    });
+}
 </script>
+<!--日期选择插件-->
+<script src="/static/admin/js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script src="/static/admin/js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/main.min.js"></script>
 </body>
 </html>

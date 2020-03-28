@@ -176,12 +176,13 @@
         select
         <include refid="TOTALFIELD"/>
         from manager
+        left join school on manager.school_id = school.id
         <where>
             <if test="no != null">
                 and no = #{no, jdbcType=VARCHAR}
             </if>
             <if test="realName != null">
-                and real_name = CONCAT('%', #{realName, jdbcType=VARCHAR}, '%')
+                and real_name like CONCAT('%', #{realName, jdbcType=VARCHAR}, '%')
             </if>
             <if test="password != null">
                 and password = #{password, jdbcType=VARCHAR}
@@ -208,7 +209,7 @@
                 and college = #{college, jdbcType=VARCHAR}
             </if>
         </where>
-        order by create_time desc
+        order by manager.create_time desc
     </select>
 
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">

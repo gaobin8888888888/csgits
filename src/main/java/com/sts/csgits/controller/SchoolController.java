@@ -4,12 +4,14 @@ import com.sts.csgits.entity.School;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.CreateTableService;
 import com.sts.csgits.service.SchoolService;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,17 +96,17 @@ public class SchoolController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/school/selectAll");
+    public @ResponseBody
+    String delete(@PathVariable("id") Integer id){
         try {
             int delete = schoolService.deleteByPrimaryKey(id);
             if (delete > 0){
-                return modelAndView.addObject("message", "删除成功");
+                return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
             log.info("SchoolController delete学校信息 error {}", e);
         }
-        return modelAndView.addObject("message", "删除失败，请稍后再试");
+        return JSONResult.errorInstance("删除失败，请稍后再试");
     }
 
     /**
@@ -138,12 +140,17 @@ public class SchoolController {
      * @return
      */
     @RequestMapping("/selectAll")
-    public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc");
+    public ModelAndView selectAll(String schoolName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc2");
         List<School> schoolList = null;
         try {
-            schoolList = schoolService.selectAll();
+            School school = new School();
+            if (StringUtils.isNotEmpty(schoolName)){
+                school.setName(schoolName);
+            }
+            schoolList = schoolService.selectBySchool(school);
             modelAndView.addObject("schoolList", schoolList);
+            modelAndView.addObject("schoolName", schoolName);
         }catch (Exception e){
             log.info("SchoolController selectAll学校信息 error {}", e);
         }

@@ -23,4 +23,11 @@ public interface SchoolMapper extends BaseMapper<School, Integer> {
      */
     public School selectOne();
 
+    /**
+     * 根据school属性查询
+     * @param school
+     * @return
+     */
+    public List<School> selectBySchool(School school);
+
 }

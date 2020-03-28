@@ -1,15 +1,16 @@
 package com.sts.csgits.controller;
 
-import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.Recruit;
 import com.sts.csgits.service.RecruitService;
 import com.sts.csgits.utils.Condition;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,17 +75,16 @@ public class RecruitController {
      * @return
      */
     @RequestMapping("/admin/recruit/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/recruit/selectAll");
+    public @ResponseBody String delete(@PathVariable("id") Integer id){
         try {
             int delete = recruitService.deleteByPrimaryKey(id);
             if (delete > 0){
-                return modelAndView.addObject("message", "删除成功");
+                return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
             log.info("RecruitController delete企业招聘信息 error {}", e);
         }
-        return modelAndView.addObject("message", "删除失败，请稍后再试");
+        return JSONResult.errorInstance("删除失败，请稍后再试");
     }
 
     /**
@@ -94,7 +94,7 @@ public class RecruitController {
      * @return
      */
     @RequestMapping("/admin/recruit/update")
-    public ModelAndView update(Integer id, String recruitName, String description, String url, Integer status){
+    public ModelAndView update(Integer id, String recruitName, String description, String url){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/recruit/selectAll");
         try {
             if (StringUtils.isEmpty(recruitName)){
@@ -106,9 +106,9 @@ public class RecruitController {
 
             Recruit recruit = new Recruit();
             recruit.setUrl(url);
+            recruit.setName(recruitName);
             recruit.setDescription(description);
             recruit.setId(id);
-            recruit.setStatus(status);
             int update = recruitService.updateByPrimaryKey(recruit);
             if (update > 0){
                 return modelAndView.addObject("message", "更新成功");
@@ -119,20 +119,39 @@ public class RecruitController {
         return modelAndView.addObject("message", "更新失败，请稍后再试");
     }
 
+    @RequestMapping("/admin/recruit/updateStatus/{id}")
+    public @ResponseBody String
+    update(@PathVariable("id") Integer id, Integer status){
+        try {
+            Recruit recruit = new Recruit();
+            recruit.setId(id);
+            recruit.setStatus(status);
+            int update = recruitService.updateByPrimaryKey(recruit);
+            if (update > 0){
+                return JSONResult.successInstance("更新成功");
+            }
+        }catch (Exception e){
+            log.info("RecruitController update企业招聘状态信息 error {}", e);
+        }
+        return JSONResult.errorInstance("更新失败，请稍后再试");
+    }
+
     /**
      * 查询管理员添加的所有企业招聘数据
      * @return
      */
     @RequestMapping("/admin/recruit/selectAll")
-    public ModelAndView selectAll(HttpServletRequest request){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc5");
+    public ModelAndView selectAll(HttpServletRequest request, String recruitName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc7");
         List<Recruit> recruitList = null;
         try {
             Condition condition = Condition.newInstance();
             Integer managerId = (Integer) request.getSession().getAttribute("id");
             condition.addCondition("managerId", managerId);
+            condition.addCondition("recruitName", recruitName);
             recruitList = recruitService.selectByCondition(condition);
             modelAndView.addObject("recruitList", recruitList);
+            modelAndView.addObject("recruitName", recruitName);
         }catch (Exception e){
             log.info("RecruitController selectAll企业招聘信息 error {}", e);
         }
@@ -145,7 +164,7 @@ public class RecruitController {
      */
     @RequestMapping("/admin/recruit/selectByName")
     public ModelAndView selectByName(HttpServletRequest request, String recruitName){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc5");
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc7");
         List<Recruit> recruitList = null;
         try {
             Condition condition = Condition.newInstance();
@@ -166,7 +185,7 @@ public class RecruitController {
      */
     @RequestMapping("/student/recruit/selectAll")
     public ModelAndView studentSelectAll(HttpServletRequest request){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc5");
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc7");
         List<Recruit> recruitList = null;
         try {
             Condition condition = Condition.newInstance();

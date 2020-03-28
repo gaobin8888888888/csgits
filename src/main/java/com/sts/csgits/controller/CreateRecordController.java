@@ -3,11 +3,14 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.CreateRecord;
 import com.sts.csgits.service.CreateRecordService;
 import com.sts.csgits.service.CreateTableService;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,16 +73,54 @@ public class CreateRecordController {
     }
 
     @RequestMapping("/selectAll")
-    public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc7");
+    public ModelAndView selectAll(String createRecordName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc6");
         List<CreateRecord> createRecordList = null;
         try {
-            createRecordList = createRecordService.selectAll();
+            CreateRecord createRecord = new CreateRecord();
+            if (StringUtils.isNotEmpty(createRecordName)){
+                createRecord.setName(createRecordName);
+            }
+            createRecordList = createRecordService.selectByCreateRecord(createRecord);
             modelAndView.addObject("createRecordList", createRecordList);
+            modelAndView.addObject("createRecordName", createRecordName);
         }catch (Exception e){
             log.info("CreateRecordController selectAll记录信息 error {}", e);
         }
         return modelAndView;
+    }
+
+    @RequestMapping("/update")
+    public ModelAndView update(Integer id, String description, String startTime, String endTime){
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/createRecord/selectAll");
+        try {
+            CreateRecord createRecord = new CreateRecord();
+            createRecord.setDescription(description);
+            createRecord.setStartTime(startTime);
+            createRecord.setEndTime(endTime);
+            createRecord.setId(id);
+            int update = createRecordService.updateByPrimaryKey(createRecord);
+            if (update > 0){
+                return modelAndView.addObject("message", "更新成功");
+            }
+        }catch (Exception e){
+            log.info("CreateRecordController update error {}", e);
+        }
+        return modelAndView.addObject("message", "更新失败，请稍后再试");
+    }
+
+    @RequestMapping("/delete/{id}")
+    public @ResponseBody String
+    update(@PathVariable("id") Integer id){
+        try {
+            int update = createRecordService.deleteByPrimaryKey(id);
+            if (update > 0){
+                return JSONResult.successInstance("更新成功");
+            }
+        }catch (Exception e){
+            log.info("CreateRecordController update error {}", e);
+        }
+        return JSONResult.errorInstance("更新失败，请稍后再试");
     }
 
 }

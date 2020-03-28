@@ -135,45 +135,45 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping("/admin/toAddSchoolPage")
-    public ModelAndView toAddSchoolPage(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc");
-        return modelAndView;
-    }
-
-    @RequestMapping("/admin/toAddGoodsPage")
-    public ModelAndView toAddGoodsPage(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc2");
-        return modelAndView;
-    }
-
     @RequestMapping("/admin/toAddNoticePage")
     public ModelAndView toAddNoticePage(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc3");
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc1");
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/toAddSchoolPage")
+    public ModelAndView toAddSchoolPage(){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc2");
         return modelAndView;
     }
 
     @RequestMapping("/admin/toAddTeacherPage")
     public ModelAndView toAddTeacherPage(){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc3");
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/toAddGoodsPage")
+    public ModelAndView toAddGoodsPage(){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc4");
-        return modelAndView;
-    }
-
-    @RequestMapping("/admin/toAddRecruitPage")
-    public ModelAndView toAddRecruitPage(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc5");
-        return modelAndView;
-    }
-
-    @RequestMapping("/admin/toAddStudentPage")
-    public ModelAndView toAddStudentPage(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc6");
         return modelAndView;
     }
 
     @RequestMapping("/admin/toAddCreateRecordPage")
     public ModelAndView toAddCreateRecordPage(){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc6");
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/toAddRecruitPage")
+    public ModelAndView toAddRecruitPage(){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc7");
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/toAddStudentPage")
+    public ModelAndView toAddStudentPage(){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc8");
         return modelAndView;
     }
 

@@ -3,6 +3,7 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.Manager;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -95,17 +97,17 @@ public class TeacherController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/teacher/selectAll");
+    public @ResponseBody String
+    delete(@PathVariable("id") Integer id){
         try {
             int delete = managerService.deleteByPrimaryKey(id);
             if (delete > 0){
-                return modelAndView.addObject("message", "删除成功");
+                return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
             log.info("TeacherController delete教师信息 error {}", e);
         }
-        return modelAndView.addObject("message", "删除失败，请稍后再试");
+        return JSONResult.errorInstance("删除失败，请稍后再试");
     }
 
     /**
@@ -134,18 +136,54 @@ public class TeacherController {
         return modelAndView.addObject("message", "更新失败，请稍后再试");
     }
 
+    @RequestMapping("/updateFine/{id}")
+    public @ResponseBody String updateFine(@PathVariable("id") Integer id, Boolean fine){
+        try {
+            Manager manager = new Manager();
+            manager.setFine(fine);
+            manager.setId(id);
+            int update = managerService.updateByPrimaryKey(manager);
+            if (update > 0){
+                return JSONResult.successInstance("修改是否优秀教师成功");
+            }
+        }catch (Exception e){
+            log.info("TeacherController updateFine error {}", e);
+        }
+        return JSONResult.errorInstance("修改是否优秀教师失败，请稍后再试");
+    }
+
+    @RequestMapping("/updateConfined/{id}")
+    public @ResponseBody String updateConfined(@PathVariable("id") Integer id, Boolean confined){
+        try {
+            Manager manager = new Manager();
+            manager.setConfined(confined);
+            manager.setId(id);
+            int update = managerService.updateByPrimaryKey(manager);
+            if (update > 0){
+                return JSONResult.successInstance("修改是否限制成功");
+            }
+        }catch (Exception e){
+            log.info("TeacherController updateConfined error {}", e);
+        }
+        return JSONResult.errorInstance("修改是否限制失败，请稍后再试");
+    }
+
     /**
      * 查询所有数据
      * @return
      */
     @RequestMapping("/selectAll")
-    public ModelAndView selectAll(){
-        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc4");
+    public ModelAndView selectAll(String teacherName){
+        ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_doc3");
         List<Manager> managerList = null;
         try {
-            managerList = managerService.selectAll();
-            managerList.remove(managerList.size() - 1);
+            Manager manager = new Manager();
+            if (StringUtils.isNotEmpty(teacherName)){
+                manager.setRealName(teacherName);
+            }
+            managerList = managerService.selectByManager(manager);
             modelAndView.addObject("teacherList", managerList);
+            modelAndView.addObject("teacherName", teacherName);
         }catch (Exception e){
             log.info("TeacherController selectAll教师信息 error {}", e);
         }
