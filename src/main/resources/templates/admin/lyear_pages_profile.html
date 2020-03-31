@@ -259,7 +259,23 @@
                     <input type="tel" class="form-control" name="tel" id="tel" aria-describedby="emailHelp" placeholder="请输入正确的联系方式" th:value="${manager.tel}">
                     <small id="emailHelp" class="form-text text-muted">请保证您填写的联系方式是正确的。</small>
                   </div>
-                  <button type="button" class="btn btn-primary">保存</button>
+                  <div class="form-group" th:if="${#session.getAttribute('no')} != 'admin'">
+                    <label>所在学校</label>
+                    <input type="text" class="form-control" value="lightyear" disabled="disabled" th:value="${manager.schoolId}" />
+                  </div>
+                  <div class="form-group" th:if="${#session.getAttribute('no')} != 'admin'">
+                    <label for="college">所在学院</label>
+                    <input type="text" class="form-control" value="lightyear" id="college" name="college" disabled="disabled" th:value="${manager.college}" />
+                  </div>
+                  <div class="form-group" th:if="${#session.getAttribute('no')} != 'admin'">
+                    <label for="fine">是否优秀教师</label>
+                    <input type="text" class="form-control" value="lightyear" id="fine" name="fine" disabled="disabled" th:value="${manager.fine}" />
+                  </div>
+                  <div class="form-group" th:if="${#session.getAttribute('no')} != 'admin'">
+                    <label for="description">描述</label>
+                    <textarea class="form-control" value="lightyear" id="description" name="description" th:text="${manager.description}" rows="5"/>
+                  </div>
+                  <input type="submit" value="保存" class="btn btn-primary" />
                 </form>
        
               </div>

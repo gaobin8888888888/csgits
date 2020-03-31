@@ -32,7 +32,7 @@
        
       <!-- logo -->
       <div id="logo" class="sidebar-header">
-        <a href="/admin/toAdminIndex"><img src="/static/admin/images/logo-sidebar.png" title="LightYear" alt="LightYear" /></a>
+        <a href="index.html"><img src="/static/admin/images/logo-sidebar.png" title="LightYear" alt="LightYear" /></a>
       </div>
       <div class="lyear-layout-sidebar-scroll">
 
@@ -71,7 +71,7 @@
               <span class="lyear-toggler-bar"></span>
               <span class="lyear-toggler-bar"></span>
             </div>
-            <span class="navbar-page-title"> 学生信息管理 </span>
+            <span class="navbar-page-title"> 新增学生信息 </span>
           </div>
           
           <ul class="topbar-right">
@@ -231,76 +231,32 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="/admin/student/selectAll" role="form">
-                  <div class="input-group">
-                    <input type="text" class="form-control" name="schoolName" placeholder="请输入学生名字" th:value="${studentName}" />
+              <div class="card-body">
+                
+                <form action="/admin/student/add" method="post" class="row" enctype="multipart/form-data">
+                  <div class="form-group col-md-12">
+                    <label for="no">学号</label>
+                    <input type="text" class="form-control" id="no" name="no" value="" placeholder="请输入学号" />
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="realName">真实姓名</label>
+                    <input type="text" class="form-control" id="realName" name="realName" value="" placeholder="请输入学生真实姓名" />
+                  </div>
+                  <input type="hidden" name="schoolId" th:value="${#session.getAttribute('schoolId')}">
+                  <div class="form-group col-md-12">
+                    <label for="college">所属学院</label>
+                    <input type="text" class="form-control" id="college" name="college" value="" placeholder="请输入学生所属学院" />
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="classNo">所在班级</label>
+                    <input type="text" class="form-control" id="classNo" name="classNo" value="" placeholder="请输入学生所在班级" />
+                  </div>
+                  <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                    <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                   </div>
                 </form>
-                <div class="toolbar-btn-action">
-                  <a class="btn btn-primary m-r-5" href="/admin/toAddStudentPage"><i class="mdi mdi-plus"></i> 新增</a>
-                  <a class="btn btn-primary m-r-5" href="/admin/toAddSchoolPage"><i class="mdi mdi-plus"></i> 成绩</a>
-                </div>
-              </div>
-              <div class="card-body">
-
-                <div class="table-responsive" style="text-align:center">
-                  <table class="table table-bordered" style="margin:auto;">
-                    <thead align="center">
-                      <tr align="center">
-                        <th>学生id</th>
-                        <th>学号</th>
-                        <th>姓名</th>
-                        <th>学生头像</th>
-                        <th>所属年级</th>
-                        <th>所在学校</th>
-                        <th>所在学院</th>
-                        <th>所在班级</th>
-                        <th>是否优秀校友</th>
-                        <th>是否已毕业</th>
-                        <th>联系方式</th>
-                        <th>邮箱</th>
-                        <th>描述</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="student:${studentList}" align="center" valign="center">
-                        <form action="/admin/student/update">
-                          <td><input type="hidden" id="id" name="id" th:value="${student.id}"><span th:text="${student.id}"></span></td>
-                          <td><span th:text="${student.no}"></span></td>
-                          <td><span th:text="${student.realName}"></span></td>
-                          <td height="80px" width="80px"><img th:src="${student.imagePath}" style="width:80%;height: 80%;"></td>
-                          <td><input class="form-control" name="grade" id="grade" th:value="${student.grade}" /></td>
-                          <td><span th:text="${student.schoolId}"></span></td>
-                          <td><span th:text="${student.college}"></span></td>
-                          <td><input name="classNo" class="form-control" th:value="${student.classNo}" /></td>
-                          <td>
-                            <span th:if="${student.fine} == false">否</span>
-                            <span th:if="${student.fine} == true">是</span>
-                          </td>
-                          <td>
-                            <span th:if="${student.graduate == false}">未毕业</span>
-                            <span th:if="${student.graduate == true}">已毕业</span>
-                          </td>
-                          <td><span th:text="${student.tel}"></span></td>
-                          <td><span th:text="${student.email}"></span></td>
-                          <td><span th:text="${student.description}"></span></td>
-                          <td>
-                            <div class="btn-group">
-                              <input type="submit" value="确定修改" class="btn btn-xs btn-default" title="保存编辑内容" data-toggle="tooltip" />
-                              <input type="button" value="删除" class="btn btn-xs btn-default" th:onclick="'javascript:deleteStudentById('+${student.id}+')'" title="删除" data-toggle="tooltip" />
-                              <input type="button" th:if="${student.fine} == false" value="设置优秀学生" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${student.id}+', true)'" title="设置优秀学生" data-toggle="tooltip" />
-                              <input type="button" th:if="${student.fine} == true" value="取消优秀学生" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${student.id}+', false)'" title="取消优秀学生" data-toggle="tooltip" />
-                              <input type="button" th:if="${student.graduate} == false" value="设置毕业生" class="btn btn-xs btn-default" th:onclick="'javascript:updateGraduate('+${student.id}+', true)'" title="设置毕业生" data-toggle="tooltip" />
-                              <input type="button" th:if="${student.graduate} == true" value="取消毕业生" class="btn btn-xs btn-default" th:onclick="'javascript:updateGraduate('+${student.id}+', false)'" title="取消毕业生" data-toggle="tooltip" />
-                            </div>
-                          </td>
-                        </form>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+       
               </div>
             </div>
           </div>
@@ -317,59 +273,8 @@
 <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/perfect-scrollbar.min.js"></script>
+<!--标签插件-->
+<script src="/static/admin/js/jquery-tags-input/jquery.tagsinput.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/main.min.js"></script>
-<script type="text/javascript">
-$(function(){
-    $('.search-bar .dropdown-menu a').click(function() {
-        var field = $(this).data('field') || '';
-        $('#search-field').val(field);
-        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
-    });
-});
-
-function deleteStudentById(id) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/delete/" + id,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("删除失败");
-        }
-    });
-}
-
-function updateFine(id, fine) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/updateFine?id=" + id + "&fine="+fine,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("更新失败");
-        }
-    });
-}
-
-function updateGraduate(id, graduate) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/updateGraduate?id=" + id + "&graduate="+graduate,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("更新失败");
-        }
-    });
-}
-
-
-</script>
 </body>
 </html>

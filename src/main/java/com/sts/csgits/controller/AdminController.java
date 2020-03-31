@@ -53,7 +53,7 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/updateMsg")
-    public ModelAndView updateMsg(HttpServletRequest request, Integer id, String realName, String tel, MultipartFile image){
+    public ModelAndView updateMsg(HttpServletRequest request, Integer id, String realName, String tel, MultipartFile image, String description){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/selectMsg/" + id);
         try {
             if (StringUtils.isEmpty(realName)){
@@ -65,6 +65,7 @@ public class AdminController {
             Manager manager = (Manager) request.getSession().getAttribute("manager");
             manager.setRealName(realName);
             manager.setTel(tel);
+            manager.setDescription(description);
             if (image != null){
                 String filenameExt = (image.getOriginalFilename().toString()).substring(image.getOriginalFilename().toString().lastIndexOf(".") + 1);
 

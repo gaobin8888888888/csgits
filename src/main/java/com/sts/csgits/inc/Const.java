@@ -39,6 +39,11 @@ public class Const {
     public static final String DEFAULT_PASSWORD = "123456";
 
     /**
+     *
+     */
+    public static final String DEFAULT_IMAGE_PATH = "/static/images/202003150020299393.jpg";
+
+    /**
      * 积分兑换的状态 1:正在处理 2：已完成
      */
     public static final int REDEEM_STATUS_DEALING = 1;

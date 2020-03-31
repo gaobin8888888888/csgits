@@ -17,11 +17,13 @@
         <result column="grade" property="grade" jdbcType="INTEGER"/>
         <result column="achievement" property="achievement" jdbcType="VARCHAR"/>
         <result column="graduate" property="graduate" jdbcType="BOOLEAN"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, sole, no, real_name, password, image_path, school_id, college, class_no, fine, description, credits, grade, achievement, graduate, create_time
+        id, sole, no, real_name, password, image_path, school_id, college, class_no, fine, description, credits, grade, achievement, graduate, tel, email, create_time
     </sql>
 
     <select id="isExistsTable" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -63,6 +65,12 @@
             <if test="grade != null">
                 grade,
             </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="sole != null">
@@ -91,6 +99,12 @@
             </if>
             <if test="grade != null">
                 #{grade, jdbcType=INTEGER},
+            </if>
+            <if test="tel != null">
+                #{tel, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email, jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -164,6 +178,17 @@
         <include refid="BASEFIELD"/>
         from student_${schoolId}
         where sole = #{sole, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByStudent" parameterType="com.sts.csgits.entity.Student" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from student_${schoolId}
+        <where>
+            <if test="realName != null">
+                and real_name like concat('%', #{realName, jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
     </select>
 
 </mapper>

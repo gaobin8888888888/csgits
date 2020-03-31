@@ -86,6 +86,7 @@ public class LoginController {
                 request.getSession().setAttribute("no", manager.getNo());
                 request.getSession().setAttribute("imagePath", manager.getImagePath());
                 request.getSession().setAttribute("realName", manager.getRealName());
+                request.getSession().setAttribute("schoolId", manager.getSchoolId());
                 request.getSession().setAttribute("manager", manager);
                 modelAndView = new ModelAndView("redirect:/admin/toAdminIndex");
                 return modelAndView;

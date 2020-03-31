@@ -53,6 +53,10 @@ public class Student {
     //是否毕业
     private Boolean graduate;
 
+    private String tel;
+
+    private String email;
+
     private String createTime;
 
 }
