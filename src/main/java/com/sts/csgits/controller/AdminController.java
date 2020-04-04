@@ -1,8 +1,10 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
+import com.sts.csgits.service.StudentService;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.List;
 
 /**
  * 管理员页面控制层
@@ -27,6 +30,8 @@ public class AdminController {
 
     @Autowired
     private ManagerService managerService;
+    @Autowired
+    private StudentService studentService;
 
     @RequestMapping("/admin/toAdminIndex")
     public String toIndex(){
@@ -177,5 +182,36 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc8");
         return modelAndView;
     }
+
+    @RequestMapping("/admin/toAddManagerAchievementPage")
+    public ModelAndView toAddManagerAchievementPage(HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView("/admin/addManagerAchievementPage");
+        String id = request.getParameter("id");
+        if (StringUtils.isNotEmpty(id)){
+            Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
+            Student student = new Student();
+            student.setId(Integer.parseInt(id));
+            student.setSchoolId(schoolId);
+            List<Student> students = studentService.selectByStudent(student);
+            modelAndView.addObject("student", students.get(0));
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/toUpdateManagerAchievementPage")
+    public ModelAndView toUpdateManagerAchievementPage(HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView("/admin/updateManagerAchievementPage");
+        String id = request.getParameter("id");
+        if (StringUtils.isNotEmpty(id)){
+            Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
+            Student student = new Student();
+            student.setId(Integer.parseInt(id));
+            student.setSchoolId(schoolId);
+            List<Student> students = studentService.selectByStudent(student);
+            modelAndView.addObject("student", students.get(0));
+        }
+        return modelAndView;
+    }
+
 
 }

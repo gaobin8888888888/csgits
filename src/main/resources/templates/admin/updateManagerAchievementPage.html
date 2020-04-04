@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>学生信息页面 - 大学生成长信息跟踪系统</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="大学生成长信息跟踪系统">
+    <meta name="description" content="大学生成长信息跟踪系统">
+    <meta name="author" content="yinqi">
+    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/admin/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min.css" rel="stylesheet">
+    <link href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" rel="stylesheet">
+    <script src="/static/jquery/js/jquery-1.9.1.min.js" th:src="@{/static/jquery/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body onload="reloadData()">
+<br><br>
+    <form>
+        <table class="table table-bordered" style="margin:auto;">
+            <input type="hidden" id="id" name="id" th:value="${student.id}">
+            <input type="hidden" id="schoolId" name="schoolId" th:value="${student.schoolId}">
+            <div class="form-group col-md-12">
+                <label for="no">学号</label>
+                <input type="text" class="form-control" id="no" name="no" readonly="readonly" th:value="${student.no}" placeholder="请输入学号" />
+            </div>
+            <div class="form-group col-md-12">
+                <label for="realName">真实姓名</label>
+                <input type="text" class="form-control" id="realName" name="realName" readonly="readonly" th:value="${student.realName}" placeholder="请输入学生真实姓名" />
+            </div>
+            <div class="form-group col-md-12">
+                <label>成绩管理</label>
+            </div>
+            <table class="table table-bordered" style="margin:auto;position:relative;min-height:1px;padding-right:15px;padding-left:15px;">
+                <thead>
+                <tr align="center">
+                    <th align="center" width="40%" style="padding-left: 20px; text-align:left;">科目</th>
+                    <th align="center" width="40%">成绩</th>
+                    <th align="center" width="20%">操作</th>
+                </tr>
+                </thead>
+                <tbody id="achievementBody">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br><br><br><br>
+            <div class="form-group col-md-12">
+                <label>添加成绩</label>
+                <table class="table table-bordered" style="margin:auto;">
+                    <tr>
+                        <td  width="40%">
+                            <select id="paramKey" class="form-control" name="contentType" style="width: 160px">
+                                <option value=""></option>
+                                <option value="大学英语1">大学英语1</option>
+                                <option value="大学英语2">大学英语2</option>
+                                <option value="大学英语3">大学英语3</option>
+                                <option value="大学英语4">大学英语4</option>
+                                <option value="高等数学">高等数学</option>
+                                <option value="C语言">C语言</option>
+                                <option value="JAVA">JAVA</option>
+                                <option value="Strust2">Strust2</option>
+                                <option value="Spring">Spring</option>
+                                <option value="线性代数">线性代数</option>
+                            </select>
+                        </td>
+                        <td width="40%">
+                            <input id="paramValue" class="form-control" type="text" style="width: 100px">
+                        </td>
+                        <td width="20%" onclick="addM()"><span style="color: #0000FF">添加成绩</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group col-md-12">
+                <button type="button" onclick="addAchievement()" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+        </table>
+    </form>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+    function reloadData() {
+        var param = [[${student.achievement}]];
+        var params = JSON.parse(param);
+        var targetList = [];
+        for (var key in params){
+            targetList.push({key:key,value:params[key]})
+        }
+        window.targetLists = targetList;
+        var str = '';
+        for (var i = 0; i < targetList.length; i++){
+            str += '<tr>';
+            str += '<td  style="padding-left: 20px; text-align:left;">' + targetList[i].key + '</td>';
+            str += '<td>' + targetList[i].value + '</td>';
+            str += '<td onclick="deleteM(\'+ i +\')"><span style="color: #ac2925">'+'删除'+'</span>'+ '</td>';
+            str += '</tr>';
+        }
+        $("#achievementBody").html(str);
+    }
+
+    function deleteM(i) {
+        var targetList = window.targetLists;
+        targetList.splice(i,1);
+        var str = '';
+        for (var i = 0; i < targetList.length; i++){
+            str += '<tr>';
+            str += '<td style="padding-left: 20px; text-align:left;">' + targetList[i].key + '</td>';
+            str += '<td>' + targetList[i].value + '</td>';
+            str += '<td onclick="deleteM(\'+ i +\')"><span style="color: #ac2925">'+'删除'+'</span>'+ '</td>';
+            str += '</tr>';
+        }
+        $("#achievementBody").html(str);
+    }
+
+    function addM() {
+        var key = document.getElementById("paramKey").value;
+        var value = document.getElementById("paramValue").value;
+        if (key == '' || value == ''){
+            alert("参数不能为空");
+            return;
+        }
+        document.getElementById("paramKey").value = '';
+        document.getElementById("paramValue").value = '';
+        var targetList = window.targetLists;
+        targetList.push({key:key,value:value});
+        var str = '';
+        for (var i = 0; i < targetList.length; i++){
+            str += '<tr>';
+            str += '<td style="padding-left: 20px; text-align:left;">' + targetList[i].key + '</td>';
+            str += '<td>' + targetList[i].value + '</td>';
+            str += '<td onclick="deleteM(\'+ i +\')"><span style="color: #ac2925">'+'删除'+'</span>'+ '</td>';
+            str += '</tr>';
+        }
+        $("#achievementBody").html(str);
+    }
+
+</script>
+<script type="text/javascript">
+
+    function addAchievement() {
+        var id = document.getElementById("id").value;
+        var schoolId = document.getElementById("schoolId").value;
+        var targetList = window.targetLists;
+        targetList = JSON.stringify(targetList);
+        $.ajax({
+            type: "POST",
+            url: "/admin/student/updateAchievement",
+            data:{
+                id : id,
+                schoolId : schoolId,
+                params : targetList
+            },
+            traditional: true,
+            success: function (data) {
+                location.reload();
+                alert(data);
+            },
+            error: function (data) {
+                alert("添加失败");
+            }
+        });
+    }
+</script>
+</html>

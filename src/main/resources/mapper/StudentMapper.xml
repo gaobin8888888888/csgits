@@ -185,6 +185,9 @@
         <include refid="BASEFIELD"/>
         from student_${schoolId}
         <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
             <if test="realName != null">
                 and real_name like concat('%', #{realName, jdbcType=VARCHAR}, '%')
             </if>

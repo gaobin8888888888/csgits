@@ -1,5 +1,8 @@
 package com.sts.csgits.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.StudentService;
@@ -158,6 +161,33 @@ public class StudentController {
             log.info("StudentController delete error{}", e);
         }
         return JSONResult.errorInstance("删除失败");
+    }
+
+    @RequestMapping("/admin/student/updateAchievement")
+    @ResponseBody
+    public String updateAchievement(Integer id, Integer schoolId, String params, HttpServletRequest request){
+        try {
+            Student student = new Student();
+            student.setSchoolId(schoolId);
+            student.setId(id);
+            JSONObject newParam = null;
+            if (StringUtils.isNotEmpty(params)){
+                JSONArray jsonArray = JSON.parseArray(params);
+                newParam = new JSONObject();
+                for (int i = 0; i < jsonArray.size(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    newParam.put(jsonObject.getString("key"), jsonObject.getString("value"));
+                }
+            }
+            student.setAchievement(newParam.toJSONString());
+            int update = studentService.updateByPrimaryKey(student);
+            if (update > 0){
+                return JSONResult.successInstance("更新成功");
+            }
+        }catch (Exception e){
+            log.info("StudentController updateAchievement error{}", e);
+        }
+        return JSONResult.errorInstance("更新失败");
     }
 
 }

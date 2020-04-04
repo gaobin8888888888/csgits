@@ -23,6 +23,79 @@
     function toUpdatePwdPage() {
         window.location.href="/admin/updatePasswordPage";
     }
+
+
+    function deleteStudentById(id) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/student/delete/" + id,
+            success: function (data) {
+                location.reload();
+                alert(data);
+            },
+            error: function (data) {
+                alert("删除失败");
+            }
+        });
+    }
+
+    function updateFine(id, fine) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/student/updateFine?id=" + id + "&fine="+fine,
+            success: function (data) {
+                location.reload();
+                alert(data);
+            },
+            error: function (data) {
+                alert("更新失败");
+            }
+        });
+    }
+
+    function updateGraduate(id, graduate) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/student/updateGraduate?id=" + id + "&graduate="+graduate,
+            success: function (data) {
+                location.reload();
+                alert(data);
+            },
+            error: function (data) {
+                alert("更新失败");
+            }
+        });
+    }
+
+    function addOrUpdateAchievement(id, result) {
+        if (result == 1){
+            var title = "成绩管理";
+            var url = "/admin/toAddManagerAchievementPage?id="+id;
+            var width = 580;
+            var height = 600;
+            showLayer(title, url, width, height);
+        } else if (result == 2) {
+            var title = "成绩管理";
+            var url = "/admin/toUpdateManagerAchievementPage?id="+id;
+            var width = 580;
+            var height = 600;
+            showLayer(title, url, width, height);
+        }
+    }
+
+    function showLayer(title, url, width, height, res) {
+        console.log();
+        var index = layer.open({
+            type : 2,
+            title : title,
+            area : [ width + 'px', height + 'px' ],
+            content : url
+        });
+        if (!width || !height) {
+            layer.full(index);
+        }
+
+    }
 </script>
 <body>
 <div class="lyear-layout-web">
@@ -239,7 +312,6 @@
                 </form>
                 <div class="toolbar-btn-action">
                   <a class="btn btn-primary m-r-5" href="/admin/toAddStudentPage"><i class="mdi mdi-plus"></i> 新增</a>
-                  <a class="btn btn-primary m-r-5" href="/admin/toAddSchoolPage"><i class="mdi mdi-plus"></i> 成绩</a>
                 </div>
               </div>
               <div class="card-body">
@@ -288,12 +360,15 @@
                           <td><span th:text="${student.description}"></span></td>
                           <td>
                             <div class="btn-group">
-                              <input type="submit" value="确定修改" class="btn btn-xs btn-default" title="保存编辑内容" data-toggle="tooltip" />
+                              <input type="submit" value="修改" class="btn btn-xs btn-default" title="保存编辑内容" data-toggle="tooltip" />
                               <input type="button" value="删除" class="btn btn-xs btn-default" th:onclick="'javascript:deleteStudentById('+${student.id}+')'" title="删除" data-toggle="tooltip" />
                               <input type="button" th:if="${student.fine} == false" value="设置优秀学生" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${student.id}+', true)'" title="设置优秀学生" data-toggle="tooltip" />
                               <input type="button" th:if="${student.fine} == true" value="取消优秀学生" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${student.id}+', false)'" title="取消优秀学生" data-toggle="tooltip" />
                               <input type="button" th:if="${student.graduate} == false" value="设置毕业生" class="btn btn-xs btn-default" th:onclick="'javascript:updateGraduate('+${student.id}+', true)'" title="设置毕业生" data-toggle="tooltip" />
                               <input type="button" th:if="${student.graduate} == true" value="取消毕业生" class="btn btn-xs btn-default" th:onclick="'javascript:updateGraduate('+${student.id}+', false)'" title="取消毕业生" data-toggle="tooltip" />
+                              <!--<input type="button" th:if="${student.achievement} == null" value="添加成绩" class="btn btn-xs btn-default" onclick="showLayer('成绩管理', '/admin/toAddManagerAchievementPage', 580, 600, 1)" title="成绩管理" data-toggle="tooltip"/>-->
+                              <input type="button" th:if="${student.achievement} == null" value="添加成绩" class="btn btn-xs btn-default" th:onclick="'javascript:addOrUpdateAchievement('+${student.id}+', 1)'" title="成绩管理" data-toggle="tooltip"/>
+                              <input type="button" th:if="${student.achievement} != null" value="修改成绩" class="btn btn-xs btn-default" th:onclick="'javascript:addOrUpdateAchievement('+${student.id}+', 2)'" title="成绩管理" data-toggle="tooltip"/>
                             </div>
                           </td>
                         </form>
@@ -318,6 +393,7 @@
 <script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/main.min.js"></script>
+<script type="text/javascript" src="/static/layui/layui.all.js"></script>
 <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -326,49 +402,6 @@ $(function(){
         $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
     });
 });
-
-function deleteStudentById(id) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/delete/" + id,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("删除失败");
-        }
-    });
-}
-
-function updateFine(id, fine) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/updateFine?id=" + id + "&fine="+fine,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("更新失败");
-        }
-    });
-}
-
-function updateGraduate(id, graduate) {
-    $.ajax({
-        type: "POST",
-        url: "/admin/student/updateGraduate?id=" + id + "&graduate="+graduate,
-        success: function (data) {
-            location.reload();
-            alert(data);
-        },
-        error: function (data) {
-            alert("更新失败");
-        }
-    });
-}
-
 
 </script>
 </body>
