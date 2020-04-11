@@ -1,6 +1,7 @@
 package com.sts.csgits.dao;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.utils.Condition;
 
 import java.util.List;
 
@@ -22,4 +23,11 @@ public interface ManagerMapper extends BaseMapper<Manager, Integer> {
      * @return
      */
     List<Manager> selectByManager(Manager manager);
+
+    /**
+     * 根据条件查询条数
+     * @param condition
+     * @return
+     */
+    Integer selectNumByCondition(Condition condition);
 }

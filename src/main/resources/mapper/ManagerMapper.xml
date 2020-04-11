@@ -212,6 +212,41 @@
         order by manager.create_time desc
     </select>
 
+    <select id="selectNumByCondition" parameterType="com.sts.csgits.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        from manager
+        <where>
+            <if test="mapConditions.no != null">
+                and no = #{mapConditions.no, jdbcType=VARCHAR}
+            </if>
+            <if test="mapConditions.realName != null">
+                and real_name = #{mapConditions.realName, jdbcType=VARCHAR}
+            </if>
+            <if test="mapConditions.password != null">
+                and password = #{mapConditions.password, jdbcType=VARCHAR}
+            </if>
+            <if test="mapConditions.tel != null">
+                and tel = #{mapConditions.tel, jdbcType=VARCHAR}
+            </if>
+            <if test="mapConditions.description != null">
+                and description = #{mapConditions.description, jdbcType=VARCHAR}
+            </if>
+            <if test="mapConditions.fine != null">
+                and fine = #{mapConditions.fine, jdbcType=BOOLEAN}
+            </if>
+            <if test="mapConditions.confined != null">
+                and confined = #{mapConditions.confined, jdbcType=BOOLEAN}
+            </if>
+            <if test="mapConditions.schoolId != null">
+                and school_id = #{mapConditions.schoolId, jdbcType=INTEGER}
+            </if>
+            <if test="mapConditions.college != null">
+                and college = #{mapConditions.college, jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
         select
         <include refid="TOTALFIELD"/>

@@ -48,4 +48,9 @@ public class Const {
      */
     public static final int REDEEM_STATUS_DEALING = 1;
     public static final int REDEEM_STATUS_FINISH = 2;
+
+    /**
+     * 登录时的身份
+     */
+    public static final String LOGIN_STATUS_TEACHER = "1";
 }

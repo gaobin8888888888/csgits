@@ -191,6 +191,18 @@
             <if test="realName != null">
                 and real_name like concat('%', #{realName, jdbcType=VARCHAR}, '%')
             </if>
+            <if test="fine != null">
+                and fine = #{fine, jdbcType=BOOLEAN}
+            </if>
+        </where>
+    </select>
+
+    <select id="countNum" parameterType="com.sts.csgits.entity.Student" resultType="java.lang.Integer">
+        select count(*) from student_${schoolId}
+        <where>
+            <if test="graduate != null">
+                and graduate = #{graduate, jdbcType=BOOLEAN}
+            </if>
         </where>
     </select>
 

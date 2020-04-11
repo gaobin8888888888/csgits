@@ -50,4 +50,11 @@ public interface StudentMapper extends BaseMapper<Student, Integer> {
      * @return
      */
     List<Student> selectByStudent(Student student);
+
+    /**
+     * 根据条件查询数量
+     * @param student
+     * @return
+     */
+    Integer countNum(Student student);
 }

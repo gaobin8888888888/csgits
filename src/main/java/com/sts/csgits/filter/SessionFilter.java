@@ -40,7 +40,7 @@ public class SessionFilter extends OncePerRequestFilter {
 		String no = (String) request.getSession().getAttribute("no");
 
 		if(StringUtils.isEmpty(no)){
-			response.sendRedirect("/admin/loginPage");
+			response.sendRedirect("/user/loginPage");
 			return;
 		}
 

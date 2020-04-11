@@ -24,13 +24,13 @@ public class School {
     private String imagePath;
 
     //学校教师人数
-    private Integer teacherNum;
+    private Integer teacherNum = 0;
 
     //学校总人数
-    private Integer totalNum;
+    private Integer totalNum = 0;
 
     //学校在校总人数
-    private Integer schoolNum;
+    private Integer schoolNum = 0;
 
     // 记录创建时间
     private String createTime;

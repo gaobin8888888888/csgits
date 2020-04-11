@@ -1,6 +1,7 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.utils.ImageCodeUtil;
 import com.sts.csgits.utils.MD5EncoderUtil;
@@ -30,7 +31,7 @@ public class LoginController {
      * 管理员跳转到登录页面
      * @return
      */
-    @RequestMapping("/admin/loginPage")
+    @RequestMapping("/user/loginPage")
     public String toAdminLogin(){
         return "/admin/lyear_pages_login";
     }
@@ -52,8 +53,8 @@ public class LoginController {
      * @param imageCode
      * @return
      */
-    @RequestMapping("/admin/login")
-    public ModelAndView login(String username, String password, String imageCode, HttpServletRequest request){
+    @RequestMapping("/user/login")
+    public ModelAndView login(String username, String password, String status, String imageCode, HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_login");
         if (StringUtils.isEmpty(username)){
             modelAndView.addObject("message", "用户名不可为空");
@@ -75,20 +76,32 @@ public class LoginController {
             modelAndView.addObject("message", "验证码不正确");
             return modelAndView;
         }
-        Manager manager = null;
+
         try {
-            manager = new Manager();
-            manager.setNo(username);
-            manager.setPassword(MD5EncoderUtil.encode(password));
-            manager = managerService.selectByNoAndPassword(manager);
-            if (manager != null){
-                request.getSession().setAttribute("id", manager.getId());
-                request.getSession().setAttribute("no", manager.getNo());
-                request.getSession().setAttribute("imagePath", manager.getImagePath());
-                request.getSession().setAttribute("realName", manager.getRealName());
-                request.getSession().setAttribute("schoolId", manager.getSchoolId());
-                request.getSession().setAttribute("manager", manager);
-                modelAndView = new ModelAndView("redirect:/admin/toAdminIndex");
+            //管理员登录
+            if (Const.LOGIN_STATUS_TEACHER.equals(status)){
+                Manager manager = null;
+                manager = new Manager();
+                manager.setNo(username);
+                manager.setPassword(MD5EncoderUtil.encode(password));
+                manager = managerService.selectByNoAndPassword(manager);
+                if (manager != null){
+                    request.getSession().setAttribute("id", manager.getId());
+                    request.getSession().setAttribute("no", manager.getNo());
+                    request.getSession().setAttribute("imagePath", manager.getImagePath());
+                    request.getSession().setAttribute("realName", manager.getRealName());
+                    request.getSession().setAttribute("schoolId", manager.getSchoolId());
+                    request.getSession().setAttribute("manager", manager);
+                    modelAndView = new ModelAndView("redirect:/admin/toAdminIndex");
+                    return modelAndView;
+                }
+            }else {
+                modelAndView = new ModelAndView("redirect:/student/toIndex");
+                request.getSession().setAttribute("id", 1);
+                request.getSession().setAttribute("no", "1614010830");
+                request.getSession().setAttribute("imagePath", "/static/images/202003150020299393.jpg");
+                request.getSession().setAttribute("realName", "高斌");
+                request.getSession().setAttribute("schoolId", 6);
                 return modelAndView;
             }
         }catch (Exception e){
@@ -107,6 +120,7 @@ public class LoginController {
         request.getSession().setAttribute("imagePath", null);
         request.getSession().setAttribute("realName", null);
         request.getSession().setAttribute("manager", null);
+        request.getSession().setAttribute("schoolId", null);
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/loginPage");
         return modelAndView;
     }
