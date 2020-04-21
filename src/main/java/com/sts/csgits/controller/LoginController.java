@@ -113,14 +113,14 @@ public class LoginController {
     }
 
 
-    @RequestMapping("/admin/logout")
+    @RequestMapping("/user/logout")
     public ModelAndView logout(HttpServletRequest request){
-        request.getSession().setAttribute("id", null);
-        request.getSession().setAttribute("no", null);
-        request.getSession().setAttribute("imagePath", null);
-        request.getSession().setAttribute("realName", null);
-        request.getSession().setAttribute("manager", null);
-        request.getSession().setAttribute("schoolId", null);
+        request.getSession().removeAttribute("id");
+        request.getSession().removeAttribute("no");
+        request.getSession().removeAttribute("imagePath");
+        request.getSession().removeAttribute("realName");
+        request.getSession().removeAttribute("manager");
+        request.getSession().removeAttribute("schoolId");
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/loginPage");
         return modelAndView;
     }

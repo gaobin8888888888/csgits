@@ -31,6 +31,7 @@
 				<li><a href="#recruitShow">企业招聘</a></li>
 				<li><a href="#goodShow">物品兑换</a></li>
 				<li><a href="#about">关于我们</a></li>
+				<li><a onclick="" data-toggle="modal" data-target="#toAddRecord">添加统计信息</a> </li>
 			</ul>
 		</div>
 		<div class="topbar">
@@ -46,7 +47,7 @@
 						<li> <a onclick="toUpdatePwdPage()"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
 						<li> <a onclick="toUpdatePwdPage()"><i class="mdi mdi-lock-outline"></i> 兑换记录</a> </li>
 						<li class="divider"></li>
-						<li> <a href="/admin/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
+						<li> <a href="/user/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
 					</ul>
 				</li>
 			</ul>
@@ -68,7 +69,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="box2" id="noticeShow">
+		<div class="box21" id="noticeShow">
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
@@ -99,17 +100,23 @@
 				</div>
 				<div class="content">
 					<div class="doc" th:each="teacher:${teacherList}">
-						<div><img th:src="${teacher.imagePath}" width="80px" height="120px" alt=""></div>
-						<div class="detail"><p th:text="${teacher.realName}"></p></div>
+						<div><img th:src="${teacher.imagePath}" alt=""></div>
+						<div class="detail"><b><p th:text="${teacher.realName}+'---'+${teacher.college}" style="font-size: 16px" /></b></div>
+						<div class="detail2" th:if="${teacher.description} != null">
+							<p style="font-size: 15px" th:text="'个人描述：'+${teacher.description}"></p>
+						</div>
+						<div class="detail2" th:if="${teacher.description} == null">
+							<p style="font-size: 15px">暂无描述</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="box3" id="studentShow">
+		<div class="box2" id="studentShow">
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>医疗资讯</span><br>
+						<span>优秀学生</span><br>
 						<span style="font-size: 12px; color: white; font-weight: 100;">NEWS</span>
 					</div>
 					<div class="more">
@@ -117,12 +124,76 @@
 					</div>
 				</div>
 				<div class="content">
-					<div class="container">
-						<div class="timeline-item" th:each="student:${studentList}" th:attr="date-is=${news.getNewsTime()}">
-							<a style="color: #000000" th:href="@{'/user/cus/toNews?newsId='+${news.getNewsId()}}">
-								<h1 th:src="${student.imagePath}">新闻标题</h1>
-							</a>
-							<p th:text="${student.realName}"></p>
+					<div class="doc" th:each="student:${studentList}">
+						<div><img th:src="${student.imagePath}" alt=""></div>
+						<div class="detail"><b><p th:text="${student.realName}+'---'+${student.college}" style="font-size: 16px" /></b></div>
+						<div class="detail2" th:if="${student.description} != null">
+							<p style="font-size: 15px" th:text="'个人描述：'+${teacher.description}"></p>
+						</div>
+						<div class="detail2" th:if="${student.description} == null">
+							<p style="font-size: 15px">暂无描述</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="box21" id="recruitShow">
+			<div class="content-box">
+				<div class="title-box">
+					<div class="title-name">
+						<span>最新招聘</span><br>
+					</div>
+					<div class="more" th:if="${recruitList} != null">
+						<a onclick="" data-toggle="modal" data-target="#toMoreRecruit">查看更多——></a>
+					</div>
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped" border="0">
+						<tr>
+							<th width="20%">公司名称</th>
+							<th width="40%">公司描述</th>
+							<th width="25%">招聘官网</th>
+							<th width="15%">状态</th>
+						</tr>
+						<div th:each="recruit:${recruitList}">
+							<tr>
+								<td><span th:text="${recruit.name}"></span></td>
+								<td><span th:text="${recruit.description}"></span> </td>
+								<td><span th:text="${recruit.url}"></span> </td>
+								<td>
+									<span th:if="${recruit.status} eq '0'">正在招聘</span>
+									<span th:if="${recruit.status} eq '1'">已结束</span>
+								</td>
+							</tr>   
+						</div>			             
+					</table>                
+				</div>
+			</div>
+		</div>
+		<div class="box2" id="goodShow">
+			<div class="content-box">
+				<div class="title-box">
+					<div class="title-name">
+						<span>物品兑换</span><br>
+					</div>
+					<div class="more">
+						<a href="/user/cus/toNewsList">查看更多——></a>
+					</div>
+				</div>
+				<div class="content">
+					<div class="doc" th:each="goods:${goodsList}">
+						<div><img th:src="${goods.imagePath}" alt=""></div>
+						<div class="detail"><b><p th:text="${goods.name}" style="font-size: 16px" /></b>
+						</div>
+						<div class="detail2">
+							<p style="font-size: 15px" th:text="'所需积分：'+${goods.credits}+'   剩余件数：'+${goods.num}"></p>
+						</div>
+						<div class="detail2" th:if="${goods.description} != null">
+							<p style="font-size: 15px" th:text="${goods.description}"></p>
+						</div>
+						<div class="detail2" th:if="${goods.description} == null">
+							<p style="font-size: 15px">暂无描述</p>
 						</div>
 					</div>
 				</div>
@@ -140,13 +211,10 @@
 				<div class="content">
 					<div class="detail">
 						<p>
-							<span>私人牙医</span>牙科诊所自创建伊始就非常注重就诊环境的舒适，致力于在轻松愉快的氛围为您提供优质人性的服务。宽敞明亮又极具现代化气息的候诊大堂、传统古典式家具的装修风格、舒缓的背景音乐 能让您得到全身心的放松。专为儿童设立的娱乐天地，VIP候诊专区，独立咨询室，以及专享停车位，充分体现了京典口腔的细节服务和人文关怀。十间宽敞独立的诊间为您营造幽雅、私密的诊疗环境，会所式的管理为您提供温馨友好的关怀，京典口腔每一位员工共同努力为您打造舒适、贴心的精致化医疗服务。
+							<span>大学生成长信息跟踪系统</span>牙科诊所自创建伊始就非常注重就诊环境的舒适，致力于在轻松愉快的氛围为您提供优质人性的服务。宽敞明亮又极具现代化气息的候诊大堂、传统古典式家具的装修风格、舒缓的背景音乐 能让您得到全身心的放松。专为儿童设立的娱乐天地，VIP候诊专区，独立咨询室，以及专享停车位，充分体现了京典口腔的细节服务和人文关怀。十间宽敞独立的诊间为您营造幽雅、私密的诊疗环境，会所式的管理为您提供温馨友好的关怀，京典口腔每一位员工共同努力为您打造舒适、贴心的精致化医疗服务。
 							一路走来，始终如一。提供高品质的牙科保健服务，为您打造健康的口腔，塑造阳光般灿烂的笑容，成就您辉煌的事业人生，是京典口腔一直以来的追求和理想。世间本没有完美，但我们要始终追求完美。秉持这一服务理念，我们用心接待每一位客人……
 							期待您的到来！
 						</p>
-					</div>
-					<div class="photo">
-						<img src="/img/back1.webp" >
 					</div>
 				</div>
 			</div>
@@ -228,7 +296,7 @@
 		  <div class="modal-dialog" >
 		    <div class="modal-content">
 		        <div class="modal-header">
-		            <h3 id="">更多通知</h3>
+		            <h3 id="">更多教师信息</h3>
 		        </div>
 		        <div class="modal-body">
 		<table style="margin-top: -110px" class="table table-bordered table-striped" border="0">
@@ -238,25 +306,137 @@
 				<th>通知内容</th>
 				<th>时间</th>
 			</tr>
-			            <div th:each="notice:${noticeAllList}">
-			<tr>
-				<td><span th:text="${notice.title}"></span></td>
-				<td>
-					<span th:if="${notice.noticeType} eq '1'">系统升级</span>
-					<span th:if="${notice.noticeType} eq '2'">学校通知</span>
-					<span th:if="${notice.noticeType} eq '3'">统计数据</span>
-				</td>
-				<td><span  th:text="${notice.content}"></span></td>
-				<td><span th:text="${notice.createTime}"></span></td>
-				            </tr>    
-		</div>               
-			       </table>                
+			<div th:each="notice:${noticeAllList}">
+				<tr>
+					<td><span th:text="${notice.title}"></span></td>
+					<td>
+						<span th:if="${notice.noticeType} eq '1'">系统升级</span>
+						<span th:if="${notice.noticeType} eq '2'">学校通知</span>
+						<span th:if="${notice.noticeType} eq '3'">统计数据</span>
+					</td>
+					<td><span  th:text="${notice.content}"></span></td>
+					<td><span th:text="${notice.createTime}"></span></td>
+				</tr>    
+		</div>			             
+			</table>                
 		        </div>
 		        <div class="modal-footer">                        
 		            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		        </div>
 		      </div>
 		    </div>
+	</div>
+
+	<div class="modal fade" id="toMoreRecruit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" >
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <h3>更多招聘信息</h3>
+		        </div>
+		        <div class="modal-body">
+					<table class="table table-striped" border="0">
+						<tr>
+							<th width="20%">公司名称</th>
+							<th width="40%">公司描述</th>
+							<th width="25%">招聘官网</th>
+							<th width="15%">状态</th>
+						</tr>
+						<div th:each="recruit:${recruitList}">
+							<tr>
+								<td><span th:text="${recruit.name}"></span></td>
+								<td><span th:text="${recruit.description}"></span> </td>
+								<td><span th:text="${recruit.url}"></span> </td>
+								<td>
+									<span th:if="${recruit.status} eq '0'">正在招聘</span>
+									<span th:if="${recruit.status} eq '1'">已结束</span>
+								</td>
+							</tr>   
+						</div>			             
+					</table>                
+		        </div>
+		        <div class="modal-footer">                        
+		            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+		        </div>
+		   </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="toAddRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" >
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <h3>请填写记录</h3>
+		        </div>
+		        <div class="card-body1">
+
+		<form action="#!" method="post" class="row">
+			<div class="form-group col-md-12">
+				<label for="related">是否从事与大学专业相关的工作或者学习</label>
+				<div class="form-controls">
+					<select name="related" class="form-control" id="related">
+						<option value="0">是</option>
+						<option value="1">否</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="degree">当前最高学历</label>
+				<div class="form-controls">
+					<select name="degree" class="form-control" id="degree">
+						<option value="0">大学本科</option>
+						<option value="1">研究生</option>
+						<option value="2">博士</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="type">当前状态</label>
+				<div class="form-controls">
+					<select name="type" class="form-control" id="type">
+						<option value="0">工作</option>
+						<option value="1">学习</option>
+						<option value="2">其他</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="place">所在地区</label>
+				<input type="text" class="form-control" id="place" name="place" value="" placeholder="请输入所处位置" />
+			</div>
+			<div class="form-group col-md-12">
+				<label for="home">是否在本省份</label>
+				<div class="form-controls">
+					<select name="home" class="form-control" id="home">
+						<option value="0">是</option>
+						<option value="1">否</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="salary">月薪范围</label>
+				<div class="form-controls">
+					<select name="salary" class="form-control" id="salary">
+						<option value="0">5000以下</option>
+						<option value="1">5000~8000</option>
+						<option value="2">8000~12000</option>
+						<option value="3">12000~20000</option>
+						<option value="3">20000以上</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="comment">备注</label>
+				<textarea class="form-control" id="comment" name="comment" rows="5" value="" placeholder="备注"></textarea>
+			</div>
+			<div class="form-group col-md-12" style="align-content: center;">
+				<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
+				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+			</div>
+		</form>
+
+	</div>
+		   </div>
+	</div>
 	</div>
 	<script src="/static/layui/layui.all.js"></script>
 	<script th:inline="javascript">

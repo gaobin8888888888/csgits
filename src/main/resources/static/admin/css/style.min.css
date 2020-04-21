@@ -2767,6 +2767,9 @@ dd, dt {
 .card-body {
     padding: 0px 0px;
 }
+.card-body1 {
+    padding: 20px 20px;
+}
 .card-header .h4,
 .card-header h4 {
     font-size: 16px;

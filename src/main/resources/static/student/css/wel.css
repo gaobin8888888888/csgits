@@ -106,6 +106,185 @@ body {
 	/* background-color: #0000FF; */
 }
 
+.cus-body .box21 {
+	/* background-color: #009688; */
+	height: 450px;
+}
+.box21 .content-box{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	background-color: white;
+}
+.box21 .content-box .title-box{
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 20px;
+	margin-bottom: -10px;
+}
+.box21 .content-box .title-box .title-name{
+	float: left;
+	width: 96px;
+	height: 50px;
+	/* background-color: #00FFFF; */
+}
+.box21 .content-box .title-box .more{
+	float: right;
+	margin: 2%;
+	width: 95px;
+	height: 25px;
+	border: 1px solid #c1c1c1;
+}
+.box21 .content-box .title-box .more a{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: #afafaf;
+	display: block;
+	margin: 3px 0 0 3px;
+}
+.box21 .content-box .title-box .title-name span{
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+}
+.box21 .content-box .content{
+	float: left;
+	width: 100%;
+	position:relative;padding:15px;
+}
+.box21 .content-box .content .doc{
+	float: left;
+	width: 19%;
+	height: 100%;
+	margin: 0 6px 0 6px;
+	position: relative;
+}
+.box21 .content-box .content .doc div{
+	overflow: hidden;
+	width: 100%;
+	height: 300px;
+}
+.box21 .content-box .content .doc img{
+	float: left;
+	width: 100%;
+}
+.box21 .content-box .content .doc .detail{
+	text-align: center;
+	line-height: 58px;
+	width: 100%;
+	height: 58px;
+	float: left;
+	/* 让div中文字居中 */
+	overflow: hidden;
+	position: relative;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+
+	font-family: 微软雅黑;
+	font-size: 18px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+	background-color: #eeeeee;
+}
+
+
+
+
+.cus-body .box22 {
+	/* background-color: #009688; */
+	height: 450px;
+}
+.box22 .content-box{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	background-color: white;
+}
+.box22 .content-box .title-box{
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.box22 .content-box .title-box .title-name{
+	float: left;
+	width: 96px;
+	height: 50px;
+	/* background-color: #00FFFF; */
+}
+.box22 .content-box .title-box .more{
+	float: right;
+	margin: 2%;
+	width: 95px;
+	height: 25px;
+	border: 1px solid #c1c1c1;
+}
+.box22 .content-box .title-box .more a{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: #afafaf;
+	display: block;
+	margin: 3px 0 0 3px;
+}
+.box22 .content-box .title-box .title-name span{
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+}
+.box22 .content-box .content{
+	float: left;
+	width: 100%;
+	overflow: hidden;
+}
+.box22 .content-box .content .doc{
+	float: left;
+	width: 19%;
+	height: 100%;
+	margin: 0 6px 0 6px;
+	position: relative;
+}
+.box22 .content-box .content .doc div{
+	overflow: hidden;
+	width: 100%;
+	height: 300px;
+}
+.box22 .content-box .content .doc img{
+	float: left;
+	width: 100%;
+}
+.box22 .content-box .content .doc .detail{
+	text-align: center;
+	line-height: 58px;
+	width: 100%;
+	height: 58px;
+	float: left;
+	/* 让div中文字居中 */
+	overflow: hidden;
+	position: relative;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+
+	font-family: 微软雅黑;
+	font-size: 18px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+	background-color: #eeeeee;
+}
+
 /* 板块二 */
 .cus-body .box2 {
 	/* background-color: #009688; */
@@ -122,7 +301,7 @@ body {
 	height: 12%;
 	float: left;
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: -10px;
 }
 .box2 .content-box .title-box .title-name{
 	float: left;
@@ -154,31 +333,52 @@ body {
 	color: #191919;
 }
 .box2 .content-box .content{
-	float: left;
-	width: 100%;
+	float: none;
+	width: 80%;
 	overflow: hidden;
 }
 .box2 .content-box .content .doc{
 	float: left;
-	width: 19%;
+	width: 22%;
 	height: 100%;
-	margin: 0 6px 0 6px;
-	position: relative;
+	margin: 0 30px 0 6px;
+	position: center;
 }
 .box2 .content-box .content .doc div{
 	overflow: hidden;
 	width: 100%;
-	height: 300px;
+	height: 200px;
 }
 .box2 .content-box .content .doc img{
 	float: left;
 	width: 100%;
+	height: 240px;
 }
 .box2 .content-box .content .doc .detail{
 	text-align: center;
+	line-height: 38px;
+	width: 100%;
+	height: 28px;
+	float: left;
+	/* 让div中文字居中 */
+	overflow: hidden;
+	position: relative;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+
+	font-family: 微软雅黑;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+	background-color: #eeeeee;
+}
+.box2 .content-box .content .doc .detail2{
+	text-align: center;
 	line-height: 58px;
 	width: 100%;
-	height: 58px;
+	height: 48px;
 	float: left;
 	/* 让div中文字居中 */
 	overflow: hidden;
