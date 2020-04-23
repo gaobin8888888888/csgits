@@ -53,4 +53,67 @@ public class Const {
      * 登录时的身份
      */
     public static final String LOGIN_STATUS_TEACHER = "1";
+
+/*******************************redis存储的key********************************************************************************/
+    /**
+     * 记录使用系统总人数
+     */
+    public static final String PEOPLE_NUM_TOTAL = "people.num.total";
+
+    /**
+     * 记录各个学校的总人数
+     */
+    public static final String PEOPLE_SCHOOL_NUM_TOTAL = "people.school.%s.num.total";
+
+    /**
+     * 记录使用系统新增人数
+     */
+    public static final String PEOPLE_NUM_NEW_ADD = "people.num.new.add";
+
+    /**
+     * 记录各个学校的新增人数
+     */
+    public static final String PEOPLE_SCHOOL_NUM_NEW_ADD = "people.school.%s.num.new.add";
+
+    /**
+     * 记录填写记录总人数
+     */
+    public static final String WRITE_RECORD_NUM_TOTAL = "write.record.num.total";
+
+    /**
+     * 记录填写记录中各个学校的总人数
+     */
+    public static final String WRITE_RECORD_SCHOOL_NUM_TOTAL = "write.record.school.%s.num.total";
+
+    /**
+     * 记录填写记录新增人数
+     */
+    public static final String WRITE_RECORD_NUM_NEW_ADD = "write.record.num.new.add";
+
+    /**
+     * 记录填写记录中各个学校的新增人数
+     */
+    public static final String WRITE_RECORD_SCHOOL_NUM_NEW_ADD = "write.record.school.%s.num.new.add";
+
+    /**
+     * 存储学生信息的key
+     */
+    public static final String STUDENT_SOLE = "student.sole.%s";
+
+    /************广播前缀***************************************************************************************/
+    /**
+     * 通用广播Channel前缀
+     */
+    public static final String REDIS_CHANNEL = "csgits-channel-sync-";
+
+    public static final String REDIS_CHANNEL_SCHOOL = REDIS_CHANNEL + "school";
+
+    public static final String REDIS_CHANNEL_ADD_STUDENT = REDIS_CHANNEL + "add-student";
+
+    public static final String REDIS_CHANNEL_DEL_STUDENT = REDIS_CHANNEL + "del-student";
+
+    public static final String REDIS_CHANNEL_UPDATE_STUDENT = REDIS_CHANNEL + "update-student";
+
+
+
 }

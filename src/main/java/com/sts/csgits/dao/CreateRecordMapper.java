@@ -1,6 +1,7 @@
 package com.sts.csgits.dao;
 
 import com.sts.csgits.entity.CreateRecord;
+import com.sts.csgits.utils.Condition;
 
 import java.util.List;
 
@@ -22,5 +23,12 @@ public interface CreateRecordMapper extends BaseMapper<CreateRecord, Integer> {
      * @return
      */
     public CreateRecord selectOne();
+
+    /**
+     * 根据条件查询
+     * @param condition
+     * @return
+     */
+    public CreateRecord selectByCondition(Condition condition);
 
 }

@@ -1,17 +1,22 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.*;
+import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.*;
 import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.JSONResult;
+import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +41,9 @@ public class UserController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private CreateRecordService createRecordService;
 
     @RequestMapping("/student/toIndex")
     public ModelAndView toStudentIndex(HttpServletRequest request){
@@ -87,6 +95,14 @@ public class UserController {
                 goodsList = goodsList.subList(0, 5);
             }
             modelAndView.addObject("goodsList", goodsList);
+
+            condition = Condition.newInstance();
+            condition.addCondition("nowTime", new Date());
+            CreateRecord createRecord = createRecordService.selectByCondition(condition);
+            modelAndView.addObject("createRecord", createRecord);
+
+            student = (Student) request.getSession().getAttribute("student");
+            modelAndView.addObject("student", student);
         }catch (Exception e){
             log.error("UserController toStudentIndex error {}", e);
         }
@@ -110,5 +126,38 @@ public class UserController {
     public ModelAndView test(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/student/test");
         return modelAndView;
+    }
+
+    @RequestMapping("/student/updateStudentMsg")
+    public @ResponseBody String updateStudentMsg(HttpServletRequest request, MultipartFile image, String tel, String email, String description){
+        Student student = (Student) request.getSession().getAttribute("student");
+        try {
+            if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(email)){
+                return JSONResult.errorInstance("联系方式与邮箱不可为空，请重试");
+            }
+            student.setTel(tel);
+            student.setEmail(email);
+            student.setDescription(description);
+
+            if (image != null){
+                //获取文件后缀
+                String filenameExt = (image.getOriginalFilename().toString()).substring(image.getOriginalFilename().toString().lastIndexOf(".") + 1);
+                if (!Const.IMAGE_KINDS.contains(filenameExt)){
+                    return JSONResult.errorInstance("图片格式有误，请重试");
+                }
+                String imageName= StringUtils.generateUniqueId() + "." + filenameExt;
+                File file = new File(imageName);
+                image.transferTo(file);
+                student.setImagePath(Const.IMAGE_VIRTUAL_PATH + imageName);
+            }
+
+            int update = studentService.updateByPrimaryKey(student);
+            if (update > 0){
+                return JSONResult.successInstance("更新成功");
+            }
+        }catch (Exception e){
+            log.error("updateStudentMsg error {}", e);
+        }
+        return JSONResult.errorInstance("更新失败，请重试");
     }
 }

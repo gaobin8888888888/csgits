@@ -3,6 +3,7 @@ package com.sts.csgits.service.impl;
 import com.sts.csgits.dao.CreateRecordMapper;
 import com.sts.csgits.entity.CreateRecord;
 import com.sts.csgits.service.CreateRecordService;
+import com.sts.csgits.utils.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,10 @@ public class CreateRecordServiceImpl extends BaseServiceImpl<CreateRecord, Integ
     @Override
     public CreateRecord selectOne() {
         return createRecordMapper.selectOne();
+    }
+
+    @Override
+    public CreateRecord selectByCondition(Condition condition){
+        return createRecordMapper.selectByCondition(condition);
     }
 }

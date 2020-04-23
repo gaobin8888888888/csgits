@@ -1,8 +1,6 @@
 package com.sts.csgits.task;
 
-import com.sts.csgits.entity.Student;
 import com.sts.csgits.service.SchoolService;
-import com.sts.csgits.service.StudentService;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,8 +15,6 @@ import org.springframework.stereotype.Component;
 public class CountDataTask {
 
     @Autowired
-    private StudentService studentService;
-    @Autowired
     private SchoolService schoolService;
 
     /**
@@ -28,5 +24,14 @@ public class CountDataTask {
     @SchedulerLock(name = "CountDataTask.countSchoolData", lockAtLeastFor = 10 * 60 * 1000)
     public void countSchoolData(){
         schoolService.updateSchoolNumMsg();
+    }
+
+    /**
+     * 每天00:00:00清零当天统计的信息
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    @SchedulerLock(name = "CountDataTask.resetData", lockAtLeastFor = 10 * 60 * 1000)
+    public void resetData(){
+        schoolService.resetData();
     }
 }

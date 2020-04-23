@@ -34,4 +34,9 @@ public interface SchoolService extends BaseService<School, Integer> {
      * 添加学校中的信息
      */
     public void updateSchoolNumMsg();
+
+    /**
+     * 清除信息
+     */
+    public void resetData();
 }

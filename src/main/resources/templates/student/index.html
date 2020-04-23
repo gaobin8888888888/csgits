@@ -22,36 +22,36 @@
 		</div>
 		<header class="lyear-layout-header">
 			<nav class="navbar navbar-default">
-		<div class="head-nav">
-			<ul class="aha">
-				<li><a href="/student/toIndex">首页</a></li>
-				<li><a href="#noticeShow">最新通知</a></li>
-				<li><a href="#teacherShow">优秀教师</a></li>
-				<li><a href="#studentShow">优秀学生</a></li>
-				<li><a href="#recruitShow">企业招聘</a></li>
-				<li><a href="#goodShow">物品兑换</a></li>
-				<li><a href="#about">关于我们</a></li>
-				<li><a onclick="" data-toggle="modal" data-target="#toAddRecord">添加统计信息</a> </li>
-			</ul>
-		</div>
-		<div class="topbar">
-			<ul class="topbar-right">
-				<li class="dropdown dropdown-profile">
-					<a href="javascript:void(0)" data-toggle="dropdown">
-						<img class="img-avatar img-avatar-48 m-r-10" th:src="${#session.getAttribute('imagePath')}" th:alt="${#session.getAttribute('realName')}" />
-						<span> <span th:text="${#session.getAttribute('no')}"/>:<span th:text="${#session.getAttribute('realName')}"/><span class="caret"></span></span>
-					</a>
-					<input type="hidden" id="managerId" th:value="${#session.getAttribute('id')}">
-					<ul class="dropdown-menu dropdown-menu-right">
-						<li> <a onclick="selectMsg()"><i class="mdi mdi-account"></i> 个人信息</a> </li>
-						<li> <a onclick="toUpdatePwdPage()"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
-						<li> <a onclick="toUpdatePwdPage()"><i class="mdi mdi-lock-outline"></i> 兑换记录</a> </li>
-						<li class="divider"></li>
-						<li> <a href="/user/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
+				<div class="head-nav">
+					<ul class="aha">
+						<li><a href="/student/toIndex">首页</a></li>
+						<li><a href="#noticeShow">最新通知</a></li>
+						<li><a href="#teacherShow">优秀教师</a></li>
+						<li><a href="#studentShow">优秀学生</a></li>
+						<li><a href="#recruitShow">企业招聘</a></li>
+						<li><a href="#goodShow">物品兑换</a></li>
+						<li><a href="#about">关于我们</a></li>
+						<li th:if="${createRecord} != null"><a onclick="" data-toggle="modal" data-target="#toAddRecord">添加统计信息</a> </li>
 					</ul>
-				</li>
-			</ul>
-		</div>
+				</div>
+				<div class="topbar">
+					<ul class="topbar-right">
+						<li class="dropdown dropdown-profile">
+							<a href="javascript:void(0)" data-toggle="dropdown">
+								<img class="img-avatar img-avatar-48 m-r-10" th:src="${#session.getAttribute('imagePath')}" th:alt="${#session.getAttribute('realName')}" />
+								<span> <span th:text="${#session.getAttribute('no')}"/>:<span th:text="${#session.getAttribute('realName')}"/><span class="caret"></span></span>
+							</a>
+							<input type="hidden" id="managerId" th:value="${#session.getAttribute('id')}">
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li> <a onclick="" data-toggle="modal" data-target="#toShowStudentMsg"><i class="mdi mdi-account"></i>个人信息</a> </li>
+								<li> <a onclick=""><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
+								<li> <a onclick=""><i class="mdi mdi-lock-outline"></i> 兑换记录</a> </li>
+								<li class="divider"></li>
+								<li> <a href="/user/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</nav>
 		</header>
 	</div>
@@ -128,7 +128,7 @@
 						<div><img th:src="${student.imagePath}" alt=""></div>
 						<div class="detail"><b><p th:text="${student.realName}+'---'+${student.college}" style="font-size: 16px" /></b></div>
 						<div class="detail2" th:if="${student.description} != null">
-							<p style="font-size: 15px" th:text="'个人描述：'+${teacher.description}"></p>
+							<p style="font-size: 15px" th:text="'个人描述：'+${student.description}"></p>
 						</div>
 						<div class="detail2" th:if="${student.description} == null">
 							<p style="font-size: 15px">暂无描述</p>
@@ -219,44 +219,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="box4" id="contact">
-			<div class="content-box">
-				<div class="title-box">
-					<div class="title-name">
-						<span>联系我们</span><br>
-						<span style="font-size: 12px; color: #333333; font-weight: 100;">Content Us</span>
-					</div>
-					<!-- <div class="more">
-						<a href="#">查看更多——></a>
-					</div> -->
-				</div>
-				<div class="content">
-					<div class="mess">
-						<div class="tit">
-							<span>私人牙医-牙科诊所</span>
-						</div>
-						<p>
-							地址：苏州市金鸡湖大道00号<br>
-							邮编：200000<br>
-							电话：400-8000-8000<br>
-							手机：133-0000-0000<br>
-							邮箱：info@email.com
-						</p>
-					</div>
-					<div class="forms">
-						<form action="" method="post">
-							<input type="text" placeholder="姓名*">
-							<input type="text" placeholder="电话*"><br>
-							<input type="text" placeholder="地址*">
-							<input type="text" placeholder="邮箱*"><br>
-							<textarea rows="" cols="" placeholder="详情*"></textarea><br>
-							<button type="button">发送</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<br><br><br><br><br><br><br><br><br><br>
 	</div>
+
+
 	<div class="modal fade" id="toMoreNotice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" >
 		    <div class="modal-content">
@@ -289,7 +255,7 @@
 		            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		        </div>
 		      </div>
-		    </div>
+		  </div>
 	</div>
 
 	<div class="modal fade" id="toMoreTeacher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -299,32 +265,32 @@
 		            <h3 id="">更多教师信息</h3>
 		        </div>
 		        <div class="modal-body">
-		<table style="margin-top: -110px" class="table table-bordered table-striped" border="0">
-			<tr>
-				<th>通知主题</th>
-				<th>通知类型</th>
-				<th>通知内容</th>
-				<th>时间</th>
-			</tr>
-			<div th:each="notice:${noticeAllList}">
-				<tr>
-					<td><span th:text="${notice.title}"></span></td>
-					<td>
-						<span th:if="${notice.noticeType} eq '1'">系统升级</span>
-						<span th:if="${notice.noticeType} eq '2'">学校通知</span>
-						<span th:if="${notice.noticeType} eq '3'">统计数据</span>
-					</td>
-					<td><span  th:text="${notice.content}"></span></td>
-					<td><span th:text="${notice.createTime}"></span></td>
-				</tr>    
-		</div>			             
-			</table>                
+					<table style="margin-top: -110px" class="table table-bordered table-striped" border="0">
+						<tr>
+							<th>通知主题</th>
+							<th>通知类型</th>
+							<th>通知内容</th>
+							<th>时间</th>
+						</tr>
+						<div th:each="notice:${noticeAllList}">
+							<tr>
+								<td><span th:text="${notice.title}"></span></td>
+								<td>
+									<span th:if="${notice.noticeType} eq '1'">系统升级</span>
+									<span th:if="${notice.noticeType} eq '2'">学校通知</span>
+									<span th:if="${notice.noticeType} eq '3'">统计数据</span>
+								</td>
+								<td><span  th:text="${notice.content}"></span></td>
+								<td><span th:text="${notice.createTime}"></span></td>
+							</tr>    
+						</div>			             
+					</table>                
 		        </div>
 		        <div class="modal-footer">                        
 		            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		        </div>
-		      </div>
 		    </div>
+		</div>
 	</div>
 
 	<div class="modal fade" id="toMoreRecruit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -362,81 +328,137 @@
 	</div>
 
 	<div class="modal fade" id="toAddRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" >
+		<div class="modal-dialog" >
 		    <div class="modal-content">
 		        <div class="modal-header">
 		            <h3>请填写记录</h3>
 		        </div>
 		        <div class="card-body1">
-
-		<form action="#!" method="post" class="row">
-			<div class="form-group col-md-12">
-				<label for="related">是否从事与大学专业相关的工作或者学习</label>
-				<div class="form-controls">
-					<select name="related" class="form-control" id="related">
-						<option value="0">是</option>
-						<option value="1">否</option>
-					</select>
+					<form action="#!" method="post" class="row">
+						<div class="form-group col-md-12">
+							<label for="related">是否从事与大学专业相关的工作或者学习</label>
+							<div class="form-controls">
+								<select name="related" class="form-control" id="related">
+									<option value="0">是</option>
+									<option value="1">否</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="degree">当前最高学历</label>
+							<div class="form-controls">
+								<select name="degree" class="form-control" id="degree">
+									<option value="0">大学本科</option>
+									<option value="1">研究生</option>
+									<option value="2">博士</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="type">当前状态</label>
+							<div class="form-controls">
+								<select name="type" class="form-control" id="type">
+									<option value="0">工作</option>
+									<option value="1">学习</option>
+									<option value="2">其他</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="place">所在地区</label>
+							<input type="text" class="form-control" id="place" name="place" value="" placeholder="请输入所处位置" />
+						</div>
+						<div class="form-group col-md-12">
+							<label for="home">是否在本省份</label>
+							<div class="form-controls">
+								<select name="home" class="form-control" id="home">
+									<option value="0">是</option>
+									<option value="1">否</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="salary">月薪范围</label>
+							<div class="form-controls">
+								<select name="salary" class="form-control" id="salary">
+									<option value="0">5000以下</option>
+									<option value="1">5000~8000</option>
+									<option value="2">8000~12000</option>
+									<option value="3">12000~20000</option>
+									<option value="3">20000以上</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="comment">备注</label>
+							<textarea class="form-control" id="comment" name="comment" rows="5" value="" placeholder="备注"></textarea>
+						</div>
+						<div class="form-group col-md-12" style="align-content: center;">
+							<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+						</div>
+					</form>
 				</div>
-			</div>
-			<div class="form-group col-md-12">
-				<label for="degree">当前最高学历</label>
-				<div class="form-controls">
-					<select name="degree" class="form-control" id="degree">
-						<option value="0">大学本科</option>
-						<option value="1">研究生</option>
-						<option value="2">博士</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-md-12">
-				<label for="type">当前状态</label>
-				<div class="form-controls">
-					<select name="type" class="form-control" id="type">
-						<option value="0">工作</option>
-						<option value="1">学习</option>
-						<option value="2">其他</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-md-12">
-				<label for="place">所在地区</label>
-				<input type="text" class="form-control" id="place" name="place" value="" placeholder="请输入所处位置" />
-			</div>
-			<div class="form-group col-md-12">
-				<label for="home">是否在本省份</label>
-				<div class="form-controls">
-					<select name="home" class="form-control" id="home">
-						<option value="0">是</option>
-						<option value="1">否</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-md-12">
-				<label for="salary">月薪范围</label>
-				<div class="form-controls">
-					<select name="salary" class="form-control" id="salary">
-						<option value="0">5000以下</option>
-						<option value="1">5000~8000</option>
-						<option value="2">8000~12000</option>
-						<option value="3">12000~20000</option>
-						<option value="3">20000以上</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-md-12">
-				<label for="comment">备注</label>
-				<textarea class="form-control" id="comment" name="comment" rows="5" value="" placeholder="备注"></textarea>
-			</div>
-			<div class="form-group col-md-12" style="align-content: center;">
-				<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
-				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
-			</div>
-		</form>
-
-	</div>
 		   </div>
+		</div>
 	</div>
+
+
+
+	<div class="modal fade" id="toShowStudentMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog" >
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <h3>个人信息</h3>
+		        </div>
+		        <div class="card-body1">
+					<form action="#!" method="post" class="row">
+						<div class="form-group col-md-12">
+							<label>姓名</label>
+							<input type="text" class="form-control" name="name" disabled="disabled" th:value="${student.realName}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>学号</label>
+							<input type="text" class="form-control" name="no" disabled="disabled" th:value="${student.no}" />
+						</div>
+						<br><br><br><br>
+						<div class="edit-avatar form-group col-md-12">
+							<img th:src="${#session.getAttribute('imagePath')}" alt="..." class="img-avatar">
+							<div class="avatar-divider"></div>
+							<div class="edit-avatar-content">
+								<input class="btn btn-default" type="file" id="image" name="image" style="display:'none';" />
+								<p class="m-0">选择一张你喜欢的图片，上传图片大小不能超过2M。</p>
+							</div>
+						</div>
+						<br><br><br><br>
+						<div class="form-group col-md-12">
+							<label>所在学院</label>
+							<input type="text" class="form-control" name="college" disabled="disabled" th:value="${student.college}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>班级</label>
+							<input type="text" class="form-control" name="classNo" disabled="disabled" th:value="${student.classNo}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>联系方式</label>
+							<input type="text" class="form-control" name="tel" th:value="${student.tel}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>邮箱</label>
+							<input type="email" class="form-control" name="email" th:value="${student.email}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>个人描述</label>
+							<textarea class="form-control" name="description" rows="5" th:text="${student.description}" placeholder="个人描述"></textarea>
+						</div>
+						<div class="form-group col-md-12" style="align-content: center;">
+							<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+						</div>
+					</form>
+				</div>
+		   </div>
+		</div>
 	</div>
 	<script src="/static/layui/layui.all.js"></script>
 	<script th:inline="javascript">

@@ -59,7 +59,7 @@ public class StudentController {
             student.setClassNo(classNo);
             student.setPassword(MD5EncoderUtil.encode(Const.DEFAULT_PASSWORD));
             student.setGrade(Integer.parseInt(no.substring(0, 2)));
-            student.setSole(MD5EncoderUtil.encode(no + realName + StringUtils.generateUniqueId()));
+            student.setSole(MD5EncoderUtil.encode(no + realName));
             student.setImagePath(Const.DEFAULT_IMAGE_PATH);
             int insert = studentService.insert(student);
             if (insert > 0){

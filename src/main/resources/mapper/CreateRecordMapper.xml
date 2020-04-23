@@ -117,4 +117,18 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from create_record
+        <where>
+            <if test="mapConditions.nowTime != null">
+                and #{mapConditions.nowTime} between to_timestamp(start_time, 'yyyy-mm-dd hh24:mi:ss') and
+                to_timestamp(end_time, 'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+        limit 1
+    </select>
+
 </mapper>

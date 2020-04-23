@@ -1,7 +1,9 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.utils.ImageCodeUtil;
 import com.sts.csgits.utils.MD5EncoderUtil;
@@ -26,6 +28,8 @@ public class LoginController {
 
     @Autowired
     private ManagerService managerService;
+    @Autowired
+    private LocalCache localCache;
 
     /**
      * 管理员跳转到登录页面
@@ -96,18 +100,22 @@ public class LoginController {
                     return modelAndView;
                 }
             }else {
-                modelAndView = new ModelAndView("redirect:/student/toIndex");
-                request.getSession().setAttribute("id", 1);
-                request.getSession().setAttribute("no", "1614010830");
-                request.getSession().setAttribute("imagePath", "/static/images/202003150020299393.jpg");
-                request.getSession().setAttribute("realName", "高斌");
-                request.getSession().setAttribute("schoolId", 6);
-                return modelAndView;
+                String sole = MD5EncoderUtil.encode(username);
+                Student student = localCache.getStudentBySole(sole);
+                if (student != null && MD5EncoderUtil.encode(password).equals(student.getPassword())){
+                    modelAndView = new ModelAndView("redirect:/student/toIndex");
+                    request.getSession().setAttribute("id", student.getId());
+                    request.getSession().setAttribute("no", student.getNo());
+                    request.getSession().setAttribute("imagePath", student.getImagePath());
+                    request.getSession().setAttribute("realName", student.getRealName());
+                    request.getSession().setAttribute("schoolId", student.getSchoolId());
+                    request.getSession().setAttribute("student", student);
+                    return modelAndView;
+                }
             }
         }catch (Exception e){
             log.info("LoginController login error {}", e);
         }
-
         modelAndView.addObject("message", "用户名或者密码错误，请重试");
         return modelAndView;
     }
@@ -121,6 +129,7 @@ public class LoginController {
         request.getSession().removeAttribute("realName");
         request.getSession().removeAttribute("manager");
         request.getSession().removeAttribute("schoolId");
+        request.getSession().removeAttribute("student");
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/loginPage");
         return modelAndView;
     }

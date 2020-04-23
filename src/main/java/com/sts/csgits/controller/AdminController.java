@@ -34,8 +34,9 @@ public class AdminController {
     private StudentService studentService;
 
     @RequestMapping("/admin/toAdminIndex")
-    public String toIndex(){
-        return "/admin/index";
+    public ModelAndView toIndex(){
+        ModelAndView modelAndView = new ModelAndView("/admin/index");
+        return modelAndView;
     }
 
     /**
