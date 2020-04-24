@@ -5,6 +5,7 @@ import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.*;
 import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.JSONResult;
+import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +160,29 @@ public class UserController {
             log.error("updateStudentMsg error {}", e);
         }
         return JSONResult.errorInstance("更新失败，请重试");
+    }
+
+    @RequestMapping("/student/updateStudentPasswordMsg")
+    public @ResponseBody String updateStudentPasswordMsg(HttpServletRequest request, String oldpwd, String newpwd, String confirmpwd){
+        try {
+            if (StringUtils.isEmpty(oldpwd) || StringUtils.isEmpty(newpwd) || StringUtils.isEmpty(confirmpwd)){
+                return JSONResult.errorInstance("不可为空，请重试");
+            }
+            Student student = (Student) request.getSession().getAttribute("student");
+            if (!MD5EncoderUtil.encode(oldpwd).equals(student.getPassword())){
+                return JSONResult.errorInstance("老密码有误，请重试");
+            }
+            if (!newpwd.equals(confirmpwd)){
+                return JSONResult.errorInstance("两次新密码需要一致，请重试");
+            }
+            student.setPassword(MD5EncoderUtil.encode(newpwd));
+            int update = studentService.updateByPrimaryKey(student);
+            if (update > 0){
+                return JSONResult.successInstance("密码更新成功");
+            }
+        }catch (Exception e){
+            log.error("updateStudentPasswordMsg error {}", e);
+        }
+        return JSONResult.errorInstance("密码更新失败，请重试");
     }
 }

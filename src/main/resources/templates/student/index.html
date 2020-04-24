@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/student/css/wel.css"/>
 	<link href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" rel="stylesheet">
 	<script src="/static/jquery/js/jquery-1.9.1.min.js" th:src="@{/static/jquery/js/jquery-1.9.1.min.js}"></script>
+	<script src="/static/jquery/js/jquery-form.js" th:src="@{/static/jquery/js/jquery-form.js}"></script>
 </head>
 <script type="text/javascript">
 </script>
@@ -44,8 +45,8 @@
 							<input type="hidden" id="managerId" th:value="${#session.getAttribute('id')}">
 							<ul class="dropdown-menu dropdown-menu-right">
 								<li> <a onclick="" data-toggle="modal" data-target="#toShowStudentMsg"><i class="mdi mdi-account"></i>个人信息</a> </li>
-								<li> <a onclick=""><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
-								<li> <a onclick=""><i class="mdi mdi-lock-outline"></i> 兑换记录</a> </li>
+								<li> <a onclick="" data-toggle="modal" data-target="#toUpdatePassword"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
+								<li> <a onclick="" data-toggle="modal" data-target="#toSelectRedeem"><i class="mdi mdi-lock-outline"></i> 兑换记录</a> </li>
 								<li class="divider"></li>
 								<li> <a href="/user/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
 							</ul>
@@ -403,6 +404,19 @@
 		</div>
 	</div>
 
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#form1").ajaxForm(function(data){
+                var d = JSON.parse(data);
+                layer.alert(d.message);
+                if (d.status == '0'){
+                    setTimeout(setTimeout(function(){
+                        location.reload();
+                    },1000));
+				}
+            });
+        });
+	</script>
 
 
 	<div class="modal fade" id="toShowStudentMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -412,7 +426,7 @@
 		            <h3>个人信息</h3>
 		        </div>
 		        <div class="card-body1">
-					<form action="#!" method="post" class="row">
+					<form id="form1" action="/student/updateStudentMsg" method="post" class="row">
 						<div class="form-group col-md-12">
 							<label>姓名</label>
 							<input type="text" class="form-control" name="name" disabled="disabled" th:value="${student.realName}" />
@@ -450,6 +464,50 @@
 						<div class="form-group col-md-12">
 							<label>个人描述</label>
 							<textarea class="form-control" name="description" rows="5" th:text="${student.description}" placeholder="个人描述"></textarea>
+						</div>
+						<div class="form-group col-md-12" style="align-content: center;">
+							<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+						</div>
+					</form>
+				</div>
+		   </div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#form2").ajaxForm(function(data){
+                var d = JSON.parse(data);
+                layer.alert(d.message);
+                if (d.status == '0'){
+                    setTimeout(setTimeout(function(){
+                        location.reload();
+                    },1000));
+                }
+            });
+        });
+	</script>
+
+	<div class="modal fade" id="toUpdatePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog" >
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <h3>修改密码</h3>
+		        </div>
+		        <div class="card-body1">
+					<form id="form2" action="/student/updateStudentPasswordMsg" method="post" class="row">
+						<div class="form-group col-md-12">
+							<label>老密码</label>
+							<input type="password" class="form-control" name="oldpwd" placeholder="输入账号的原登录密码" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>新密码</label>
+							<input type="password" class="form-control" name="newpwd" placeholder="输入账号的新登录密码" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>确认新密码</label>
+							<input type="password" class="form-control" name="confirmpwd" placeholder="请确认新的密码"/>
 						</div>
 						<div class="form-group col-md-12" style="align-content: center;">
 							<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
