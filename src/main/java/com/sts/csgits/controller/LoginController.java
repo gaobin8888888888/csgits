@@ -130,7 +130,7 @@ public class LoginController {
         request.getSession().removeAttribute("manager");
         request.getSession().removeAttribute("schoolId");
         request.getSession().removeAttribute("student");
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/loginPage");
+        ModelAndView modelAndView = new ModelAndView("redirect:/user/loginPage");
         return modelAndView;
     }
 

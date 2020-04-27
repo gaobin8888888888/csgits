@@ -74,15 +74,16 @@
         <include refid="BASEFIELD"/>
         from redeem
         <where>
-            <if test="status != null">
-                and status = #{status}
+            <if test="mapConditions.status != null">
+                and status = #{mapConditions.status}
             </if>
-            <if test="sole != null">
-                and sole = #{sole}
+            <if test="mapConditions.sole != null">
+                and sole = #{mapConditions.sole}
             </if>
-            <if test="goodId != null">
-                and good_id = #{goodId}
+            <if test="mapConditions.goodId != null">
+                and good_id = #{mapConditions.goodId}
             </if>
         </where>
+        order by create_time desc
     </select>
 </mapper>

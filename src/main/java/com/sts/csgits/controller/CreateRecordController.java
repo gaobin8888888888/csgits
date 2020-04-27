@@ -3,6 +3,7 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.CreateRecord;
 import com.sts.csgits.service.CreateRecordService;
 import com.sts.csgits.service.CreateTableService;
+import com.sts.csgits.utils.DateUtil;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +51,16 @@ public class CreateRecordController {
             Integer managerId = (Integer) request.getSession().getAttribute("id");
             if (StringUtils.isEmpty(createRecordName)){
                 modelAndView.addObject("message", "创建标题不能为空");
+                return modelAndView;
+            }
+
+            Date startDate = DateUtil.parse(startTime);
+            Date endDate = DateUtil.parse(endTime);
+            startTime = DateUtil.format(startDate, DateUtil.FMT_DATE_YYYY_MM_DD_00_00_00);
+            endTime = DateUtil.format(endDate, DateUtil.FMT_DATE_YYYY_MM_DD_23_59_59);
+            int diff = DateUtil.diffSecondFromString(startTime, endTime);
+            if (diff <= 0){
+                modelAndView.addObject("message", "结束时间要大于开始时间，请重新添加");
                 return modelAndView;
             }
 

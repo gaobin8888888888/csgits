@@ -3,10 +3,7 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.*;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.*;
-import com.sts.csgits.utils.Condition;
-import com.sts.csgits.utils.JSONResult;
-import com.sts.csgits.utils.MD5EncoderUtil;
-import com.sts.csgits.utils.StringUtils;
+import com.sts.csgits.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +42,9 @@ public class UserController {
 
     @Autowired
     private CreateRecordService createRecordService;
+
+    @Autowired
+    private RedeemService redeemService;
 
     @RequestMapping("/student/toIndex")
     public ModelAndView toStudentIndex(HttpServletRequest request){
@@ -98,12 +98,17 @@ public class UserController {
             modelAndView.addObject("goodsList", goodsList);
 
             condition = Condition.newInstance();
-            condition.addCondition("nowTime", new Date());
+            condition.addCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
             CreateRecord createRecord = createRecordService.selectByCondition(condition);
             modelAndView.addObject("createRecord", createRecord);
 
             student = (Student) request.getSession().getAttribute("student");
             modelAndView.addObject("student", student);
+
+            condition = Condition.newInstance();
+            condition.addCondition("sole", student.getSole());
+            List<Redeem> redeemList = redeemService.selectByCondition(condition);
+            modelAndView.addObject("redeemList", redeemList);
         }catch (Exception e){
             log.error("UserController toStudentIndex error {}", e);
         }
@@ -184,5 +189,15 @@ public class UserController {
             log.error("updateStudentPasswordMsg error {}", e);
         }
         return JSONResult.errorInstance("密码更新失败，请重试");
+    }
+
+    public static void main(String[] args) {
+        Condition condition = Condition.newInstance();
+        condition.addCondition("app", "222");
+        System.out.println(condition.getConditions());
+
+        condition = Condition.newInstance();
+        condition.addCondition("aaaa", "222");
+        System.out.println(condition.getConditions());
     }
 }

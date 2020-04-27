@@ -2765,7 +2765,7 @@ dd, dt {
 	vertical-align: middle;
 }
 .card-body {
-    padding: 0px 0px;
+    padding: 20px 40px;
 }
 .card-body1 {
     padding: 20px 20px;
@@ -2794,7 +2794,7 @@ dd, dt {
     color: #ffffff;
 }
 .card-toolbar {
-    padding: 24px 24px 0px 24px;
+    padding: 24px 24px 24px 40px;
     position: relative;
 }
 .card-toolbar .search-bar {

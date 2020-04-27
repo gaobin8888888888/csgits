@@ -124,10 +124,13 @@
         from create_record
         <where>
             <if test="mapConditions.nowTime != null">
-                and #{mapConditions.nowTime} between to_timestamp(start_time, 'yyyy-mm-dd hh24:mi:ss') and
-                to_timestamp(end_time, 'yyyy-mm-dd hh24:mi:ss')
+                and start_time &lt;= ${mapConditions.nowTime}
+            </if>
+            <if test="mapConditions.nowTime != null">
+                and end_time &gt; ${mapConditions.nowTime}
             </if>
         </where>
+        order by create_time desc
         limit 1
     </select>
 
