@@ -74,14 +74,14 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>最新通知</span><br>
+						<span>&最新通知&</span><br>
 					</div>
 					<div class="more" th:if="${noticeList} != null">
 						<a onclick="" data-toggle="modal" data-target="#toMoreNotice">查看更多——></a>
 					</div>
 				</div>
 				<div class="content">
-					<div class="card-body" th:each="notice:${noticeList}">
+					<div style="padding: 0px 0px;" th:each="notice:${noticeList}">
 						<div class="alert alert-success" role="alert">
 							[<span th:text="${notice.title}"></span>] [[<span th:text="${notice.content}"></span>]] --------<span th:text="${notice.createTime}"></span>
 						</div>
@@ -93,7 +93,7 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>优秀教师</span><br>
+						<span>*优秀教师*</span><br>
 					</div>
 					<div class="more">
 						<a data-toggle="modal" data-target="#toMoreTeacher">查看更多——></a>
@@ -117,7 +117,7 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>优秀学生</span><br>
+						<span>%优秀学生%</span><br>
 						<span style="font-size: 12px; color: white; font-weight: 100;">NEWS</span>
 					</div>
 					<div class="more">
@@ -143,7 +143,7 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>最新招聘</span><br>
+						<span>$最新招聘$</span><br>
 					</div>
 					<div class="more" th:if="${recruitList} != null">
 						<a onclick="" data-toggle="modal" data-target="#toMoreRecruit">查看更多——></a>
@@ -176,7 +176,7 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>物品兑换</span><br>
+						<span>#物品兑换#</span><br>
 					</div>
 					<div class="more">
 						<a href="/user/cus/toNewsList">查看更多——></a>
@@ -205,7 +205,7 @@
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
-						<span>关于我们</span><br>
+						<span>@关于我们@</span><br>
 						<span style="font-size: 12px; color: #333333; font-weight: 100;">ABOUT</span>
 					</div>
 				</div>
