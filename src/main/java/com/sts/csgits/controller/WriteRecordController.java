@@ -1,7 +1,9 @@
 package com.sts.csgits.controller;
 
+import com.sts.csgits.entity.Student;
 import com.sts.csgits.entity.WriteRecord;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.service.StudentService;
 import com.sts.csgits.service.WriteRecordService;
 import com.sts.csgits.utils.PickUtil;
 import com.sts.csgits.utils.StringUtils;
@@ -29,6 +31,9 @@ public class WriteRecordController {
 
     @Autowired
     private PickUtil pickUtil;
+
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 添加记录
@@ -64,6 +69,10 @@ public class WriteRecordController {
             if (insert > 0){
                 Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
                 pickUtil.addWriteRecordNum(schoolId, Const.ADD_NUM);
+
+                Student student = (Student) request.getSession().getAttribute("student");
+                student.setCredits(student.getCredits() + Const.ADD_CREDITS_WRITE_RECORD);
+                studentService.updateByPrimaryKey(student);
 
                 modelAndView = new ModelAndView("redirect:/admin/writeRecord/selectAll");
                 modelAndView.addObject("message", "添加成功");

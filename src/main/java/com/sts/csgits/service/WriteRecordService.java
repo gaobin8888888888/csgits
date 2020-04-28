@@ -11,6 +11,13 @@ import java.util.List;
 public interface WriteRecordService extends BaseService<WriteRecord, Integer> {
 
     /**
+     * 查询填写记录中一条
+     * @param createRecordId
+     * @return
+     */
+    public WriteRecord selectOneWriteRecordBySole(Integer createRecordId, String sole);
+
+    /**
      * 查询所有
      * @param writeRecordId
      * @return

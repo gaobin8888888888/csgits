@@ -54,6 +54,11 @@ public class Const {
      */
     public static final String LOGIN_STATUS_TEACHER = "1";
 
+    /**
+     * 填写一次记录，积分加两分
+     */
+    public static final int ADD_CREDITS_WRITE_RECORD = 2;
+
 /*******************************redis存储的key********************************************************************************/
 
     /**

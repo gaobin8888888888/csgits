@@ -12,6 +12,13 @@ import java.util.List;
 public interface WriteRecordMapper extends BaseMapper<WriteRecord, Integer> {
 
     /**
+     * 查询填写记录中一条
+     * @param createRecordId
+     * @return
+     */
+    public WriteRecord selectOneWriteRecordBySole(@Param("createRecordId") Integer createRecordId, @Param("sole") String sole);
+
+    /**
      * 查询一个填写记录中所有的记录
      * @param createRecordId
      * @return

@@ -75,12 +75,13 @@
         </trim>
     </insert>
 
-    <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap">-->
-        <!--select-->
-        <!--<include refid="BASEFIELD"/>-->
-        <!--from write_record_${createRecordId}-->
-        <!--where id = #{id, jdbcType=INTEGER}-->
-    <!--</select>-->
+    <select id="selectOneWriteRecordBySole" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from write_record_${createRecordId}
+        where sole = #{sole, jdbcType=INTEGER}
+        limit 1
+    </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select

@@ -18,6 +18,10 @@ public class WriteRecordServiceImpl extends BaseServiceImpl<WriteRecord, Integer
     @Autowired
     private WriteRecordMapper writeRecordMapper;
 
+    @Override
+    public WriteRecord selectOneWriteRecordBySole(Integer createRecordId, String sole){
+        return writeRecordMapper.selectOneWriteRecordBySole(createRecordId, sole);
+    }
 
     @Override
     public List<WriteRecord> selectAll(Integer writeRecordId) {

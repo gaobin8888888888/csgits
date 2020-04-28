@@ -46,6 +46,9 @@ public class UserController {
     @Autowired
     private RedeemService redeemService;
 
+    @Autowired
+    private WriteRecordService writeRecordService;
+
     @RequestMapping("/student/toIndex")
     public ModelAndView toStudentIndex(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/student/index");
@@ -100,7 +103,12 @@ public class UserController {
             condition = Condition.newInstance();
             condition.addCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
             CreateRecord createRecord = createRecordService.selectByCondition(condition);
-            modelAndView.addObject("createRecord", createRecord);
+            if (createRecord != null){
+                WriteRecord writeRecord = writeRecordService.selectOneWriteRecordBySole(createRecord.getId(), student.getSole());
+                if (writeRecord == null){
+                    modelAndView.addObject("createRecord", createRecord);
+                }
+            }
 
             student = (Student) request.getSession().getAttribute("student");
             modelAndView.addObject("student", student);
