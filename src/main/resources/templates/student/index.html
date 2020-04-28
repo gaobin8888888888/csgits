@@ -184,18 +184,20 @@
 				</div>
 				<div class="content">
 					<div class="doc" th:each="goods:${goodsList}">
-						<div><img th:src="${goods.imagePath}" alt=""></div>
-						<div class="detail"><b><p th:text="${goods.name}" style="font-size: 16px" /></b>
-						</div>
-						<div class="detail2">
-							<p style="font-size: 15px" th:text="'所需积分：'+${goods.credits}+'   剩余件数：'+${goods.num}"></p>
-						</div>
-						<div class="detail2" th:if="${goods.description} != null">
-							<p style="font-size: 15px" th:text="${goods.description}"></p>
-						</div>
-						<div class="detail2" th:if="${goods.description} == null">
-							<p style="font-size: 15px">暂无描述</p>
-						</div>
+						<a href="" data-toggle="modal" data-target="#toRedeemPage" th:onclick="'javascript:setValue('+${goods.id}+')'">
+							<div><img th:src="${goods.imagePath}" alt=""></div>
+							<div class="detail"><b><p th:text="${goods.name}" style="font-size: 16px" /></b>
+							</div>
+							<div class="detail2">
+								<p style="font-size: 15px" th:text="'所需积分：'+${goods.credits}+'   剩余件数：'+${goods.num}"></p>
+							</div>
+							<div class="detail2" th:if="${goods.description} != null">
+								<p style="font-size: 15px" th:text="${goods.description}"></p>
+							</div>
+							<div class="detail2" th:if="${goods.description} == null">
+								<p style="font-size: 15px">暂无描述</p>
+							</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -517,6 +519,46 @@
 				</div>
 		   </div>
 		</div>
+	</div>
+
+
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#form3").ajaxForm(function(data){
+                var d = JSON.parse(data);
+                layer.alert(d.message);
+                setTimeout(setTimeout(function(){
+                    location.reload();
+                    window.location.href="/student/toIndex";
+                },3000));
+            });
+        });
+
+        $('#toRedeemPage').modal("hide");
+        function setValue(id) {
+            console.log(id);
+			$("#toRedeemId").val(id);
+        }
+	</script>
+
+
+	<div class="modal fade" id="toRedeemPage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog" style="width: 400px;margin: 300px auto">
+		    <div class="modal-content" style="width: 400px;">
+		        <div class="card-body1">
+					<form id="form3" action="/student/redeem/add" method="post" class="row">
+						<div class="form-group col-md-12">
+							<label>您确定要进行兑换吗？一旦兑换将不予退还</label>
+						</div>
+						<input type="hidden" id="toRedeemId" name="toRedeemId" value="">
+						<div class="form-group col-md-12" style="align-content: center;">
+							<button type="submit" class="btn btn-primary ajax-post" style="align-content: center" target-form="add-form">确 定</button>
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+						</div>
+					</form>
+	</div>
+		   </div>
+	</div>
 	</div>
 	<script src="/static/layui/layui.all.js"></script>
 	<script th:inline="javascript">

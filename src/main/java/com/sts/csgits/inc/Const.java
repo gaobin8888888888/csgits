@@ -39,7 +39,7 @@ public class Const {
     public static final String DEFAULT_PASSWORD = "123456";
 
     /**
-     *
+     * 默认图片
      */
     public static final String DEFAULT_IMAGE_PATH = "/static/images/202003150020299393.jpg";
 
