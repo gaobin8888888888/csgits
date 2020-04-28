@@ -51,18 +51,18 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void incr(String key){
+    public void incr(String key, long num){
         try {
-            redisTemplate.opsForValue().increment(key, 1);
+            redisTemplate.opsForValue().increment(key, num);
         } catch (Exception e) {
             log.error("RedisServiceImpl incr error {}", e);
         }
     }
 
     @Override
-    public void decr(String key){
+    public void decr(String key, long num){
         try {
-            redisTemplate.opsForValue().decrement(key, 1);
+            redisTemplate.opsForValue().decrement(key, num);
         } catch (Exception e) {
             log.error("RedisServiceImpl decr error {}", e);
         }

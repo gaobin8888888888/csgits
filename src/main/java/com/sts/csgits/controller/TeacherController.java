@@ -3,8 +3,10 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.Manager;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
+import com.sts.csgits.service.RedisService;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
+import com.sts.csgits.utils.PickUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class TeacherController {
 
     @Autowired
     private ManagerService managerService;
+
+    @Autowired
+    private PickUtil pickUtil;
 
     @RequestMapping("/add")
     public ModelAndView add(String teacherNo, String teacherName, MultipartFile image, String tel, Integer schoolId, String college){
@@ -80,6 +85,8 @@ public class TeacherController {
             manager.setImagePath(Const.IMAGE_VIRTUAL_PATH + imageName);
             int insert = managerService.insert(manager);
             if (insert > 0){
+                pickUtil.addOrDescPeopleNum(schoolId, Const.ADD_NUM);
+
                 modelAndView = new ModelAndView("redirect:/admin/teacher/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;
@@ -100,9 +107,14 @@ public class TeacherController {
     public @ResponseBody String
     delete(@PathVariable("id") Integer id){
         try {
-            int delete = managerService.deleteByPrimaryKey(id);
-            if (delete > 0){
-                return JSONResult.successInstance("删除成功");
+            Manager manager = managerService.selectByPrimaryKey(id);
+            if (manager != null){
+                int delete = managerService.deleteByPrimaryKey(id);
+                if (delete > 0){
+                    pickUtil.addOrDescPeopleNum(manager.getSchoolId(), Const.DESC_NUM);
+
+                    return JSONResult.successInstance("删除成功");
+                }
             }
         }catch (Exception e){
             log.info("TeacherController delete教师信息 error {}", e);

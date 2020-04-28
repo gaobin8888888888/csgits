@@ -1,13 +1,17 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.WriteRecord;
+import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.WriteRecordService;
+import com.sts.csgits.utils.PickUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,6 +27,9 @@ public class WriteRecordController {
     @Autowired
     private WriteRecordService writeRecordService;
 
+    @Autowired
+    private PickUtil pickUtil;
+
     /**
      * 添加记录
      * @param sole
@@ -36,7 +43,7 @@ public class WriteRecordController {
      * @return
      */
     @RequestMapping("/add")
-    public ModelAndView add(String sole, Integer related, Integer type, Integer degree, String place, Integer home, Double salary, String comment){
+    public ModelAndView add(HttpServletRequest request, String sole, Integer related, Integer type, Integer degree, String place, Integer home, Double salary, String comment){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/toAddCreateRecordPage");
         try {
             if (related == null || type == null || degree == null || StringUtils.isEmpty(place) || home == null || salary == null){
@@ -55,6 +62,9 @@ public class WriteRecordController {
             writeRecord.setComment(comment);
             int insert = writeRecordService.insert(writeRecord);
             if (insert > 0){
+                Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
+                pickUtil.addWriteRecordNum(schoolId, Const.ADD_NUM);
+
                 modelAndView = new ModelAndView("redirect:/admin/writeRecord/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;

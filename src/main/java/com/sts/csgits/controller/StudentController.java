@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.service.RedisService;
 import com.sts.csgits.service.StudentService;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
+import com.sts.csgits.utils.PickUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private PickUtil pickUtil;
 
     @RequestMapping("/admin/student/add")
     public ModelAndView add(String no, String realName, Integer schoolId, String college, String classNo){
@@ -63,6 +68,8 @@ public class StudentController {
             student.setImagePath(Const.DEFAULT_IMAGE_PATH);
             int insert = studentService.insert(student);
             if (insert > 0){
+                pickUtil.addOrDescPeopleNum(schoolId, Const.ADD_NUM);
+
                 modelAndView = new ModelAndView("redirect:/admin/student/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;
@@ -155,6 +162,8 @@ public class StudentController {
             Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
             int update = studentService.delete(schoolId, id);
             if (update > 0){
+                pickUtil.addOrDescPeopleNum(schoolId, Const.DESC_NUM);
+
                 return JSONResult.successInstance("删除学生信息成功");
             }
         }catch (Exception e){

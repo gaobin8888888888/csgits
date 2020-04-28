@@ -13,16 +13,16 @@ public interface RedisService {
     public void del(String key);
 
     /**
-     * 每次加1
+     * 每次加num
      * @param key
      */
-    public void incr(String key);
+    public void incr(String key, long num);
 
     /**
-     * 减1
+     * 减num
      * @param key
      */
-    public void decr(String key);
+    public void decr(String key, long num);
 
     /**
      * 发布消息到Channel并同步

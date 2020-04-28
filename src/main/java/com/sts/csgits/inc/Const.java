@@ -55,6 +55,15 @@ public class Const {
     public static final String LOGIN_STATUS_TEACHER = "1";
 
 /*******************************redis存储的key********************************************************************************/
+
+    /**
+     * 每次增加的数量
+     */
+    public static final long ADD_NUM = 1L;
+    /**
+     * 每次减少的数量
+     */
+    public static final long DESC_NUM = -1L;
     /**
      * 记录使用系统总人数
      */
