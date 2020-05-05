@@ -48,16 +48,17 @@ public class WriteRecordController {
      * @return
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, String sole, Integer related, Integer type, Integer degree, String place, Integer home, Double salary, String comment){
+    public ModelAndView add(HttpServletRequest request, Integer related, Integer type, Integer degree, String place, Integer home, Double salary, String comment){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/toAddCreateRecordPage");
         try {
+            Student student = (Student) request.getSession().getAttribute("student");
             if (related == null || type == null || degree == null || StringUtils.isEmpty(place) || home == null || salary == null){
                 modelAndView.addObject("message", "除备注以外，其他项都不能为空");
                 return modelAndView;
             }
 
             WriteRecord writeRecord = new WriteRecord();
-            writeRecord.setSole(sole);
+            writeRecord.setSole(student.getSole());
             writeRecord.setRelated(related);
             writeRecord.setType(type);
             writeRecord.setDegree(degree);
@@ -70,7 +71,6 @@ public class WriteRecordController {
                 Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
                 pickUtil.addWriteRecordNum(schoolId, Const.ADD_NUM);
 
-                Student student = (Student) request.getSession().getAttribute("student");
                 student.setCredits(student.getCredits() + Const.ADD_CREDITS_WRITE_RECORD);
                 studentService.updateByPrimaryKey(student);
 

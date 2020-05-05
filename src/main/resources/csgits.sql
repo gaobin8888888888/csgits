@@ -16,7 +16,6 @@ CREATE TABLE manager(
                       college varchar,
                       fine boolean default false,
                       description varchar,
-                      confined boolean default false,
                       create_time timestamp default current_timestamp
 )
   WITH(
@@ -34,7 +33,6 @@ COMMENT ON COLUMN manager.school_id IS '学校id';
 COMMENT ON COLUMN manager.college IS '所属学院';
 COMMENT ON COLUMN manager.fine IS '是否为优秀教师';
 COMMENT ON COLUMN manager.description IS '个人描述';
-COMMENT ON COLUMN manager.confined IS '是否被限制';
 COMMENT ON COLUMN manager.create_time IS '创建时间';
 
 CREATE TABLE notice(
@@ -166,3 +164,25 @@ COMMENT ON COLUMN create_record.manager_id IS '管理员id';
 COMMENT ON COLUMN create_record.start_time IS '记录开始时间';
 COMMENT ON COLUMN create_record.end_time IS '记录结束时间';
 COMMENT ON COLUMN create_record.create_time IS '记录添加时间';
+
+CREATE TABLE write_record_data(
+                            id  serial primary key,
+                            create_record_id integer,
+                            date varchar,
+                            current_num integer,
+                            related_data jsonb,
+                            no_related_data jsonb,
+                            create_time timestamp default current_timestamp
+)
+  WITH(
+  OIDS=FALSE
+      );
+ALTER TABLE write_record_data OWNER TO postgres;
+COMMENT ON TABLE write_record_data IS '填写记录统计信息表';
+COMMENT ON COLUMN write_record_data.id IS 'id标识';
+COMMENT ON COLUMN write_record_data.create_record_id IS '创建记录id';
+COMMENT ON COLUMN write_record_data.date IS '记录时间';
+COMMENT ON COLUMN write_record_data.current_num IS '当前记录总数';
+COMMENT ON COLUMN write_record_data.related_data IS '从事与本专业相关的工作或者学习记录数据';
+COMMENT ON COLUMN write_record_data.no_related_data IS '不是从事与本专业相关的工作或者学习记录数据';
+COMMENT ON COLUMN write_record_data.create_time IS '记录添加时间';

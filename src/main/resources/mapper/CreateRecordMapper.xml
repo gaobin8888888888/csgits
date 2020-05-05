@@ -124,10 +124,7 @@
         from create_record
         <where>
             <if test="mapConditions.nowTime != null">
-                and start_time &lt;= ${mapConditions.nowTime}
-            </if>
-            <if test="mapConditions.nowTime != null">
-                and end_time &gt; ${mapConditions.nowTime}
+                to_timestamp(#{mapConditions.nowTime,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss') between to_timestamp(start_time, 'yyyy-mm-dd hh24:mi:ss') and to_timestamp(end_time, 'yyyy-mm-dd hh24:mi:ss')
             </if>
         </where>
         order by create_time desc

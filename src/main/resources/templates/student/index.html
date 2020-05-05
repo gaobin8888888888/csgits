@@ -330,6 +330,20 @@
 		</div>
 	</div>
 
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#addWriteRecord").ajaxForm(function(data){
+                var d = JSON.parse(data);
+                layer.alert(d.message);
+                if (d.status == '0'){
+                    setTimeout(setTimeout(function(){
+                        location.reload();
+                    },1000));
+                }
+            });
+        });
+	</script>
+
 	<div class="modal fade" id="toAddRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" >
 		    <div class="modal-content">
@@ -337,7 +351,7 @@
 		            <h3>请填写记录</h3>
 		        </div>
 		        <div class="card-body1">
-					<form action="#!" method="post" class="row">
+					<form id="addWriteRecord" action="/admin/writeRecord/add" method="post" class="row">
 						<div class="form-group col-md-12">
 							<label for="related">是否从事与大学专业相关的工作或者学习</label>
 							<div class="form-controls">
@@ -436,6 +450,10 @@
 						<div class="form-group col-md-12">
 							<label>学号</label>
 							<input type="text" class="form-control" name="no" disabled="disabled" th:value="${student.no}" />
+						</div>
+						<div class="form-group col-md-12">
+							<label>积分数</label>
+							<input type="text" class="form-control" name="credits" disabled="disabled" th:value="${student.credits}" />
 						</div>
 						<br><br><br><br>
 						<div class="edit-avatar form-group col-md-12">

@@ -23,4 +23,9 @@ public interface WriteRecordService extends BaseService<WriteRecord, Integer> {
      * @return
      */
     public List<WriteRecord> selectAll(Integer writeRecordId);
+
+    /**
+     * 统计填写的个人情况信息
+     */
+    public void countWriteRecordData();
 }

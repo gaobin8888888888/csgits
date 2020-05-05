@@ -79,7 +79,7 @@
         select
         <include refid="BASEFIELD"/>
         from write_record_${createRecordId}
-        where sole = #{sole, jdbcType=INTEGER}
+        where sole = #{sole, jdbcType=VARCHAR}
         limit 1
     </select>
 

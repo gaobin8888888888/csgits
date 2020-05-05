@@ -84,7 +84,7 @@ public class UserController {
 
 
             Condition condition = Condition.newInstance();
-            condition.addCondition("status", 0);
+            condition.addMapCondition("status", 0);
             List<Recruit> recruitList = recruitService.selectByCondition(condition);
             modelAndView.addObject("recruitAllList", recruitList);
             if (recruitList != null && recruitList.size() > 5){
@@ -101,7 +101,7 @@ public class UserController {
             modelAndView.addObject("goodsList", goodsList);
 
             condition = Condition.newInstance();
-            condition.addCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
+            condition.addMapCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
             CreateRecord createRecord = createRecordService.selectByCondition(condition);
             if (createRecord != null){
                 WriteRecord writeRecord = writeRecordService.selectOneWriteRecordBySole(createRecord.getId(), student.getSole());
@@ -114,7 +114,7 @@ public class UserController {
             modelAndView.addObject("student", student);
 
             condition = Condition.newInstance();
-            condition.addCondition("sole", student.getSole());
+            condition.addMapCondition("sole", student.getSole());
             List<Redeem> redeemList = redeemService.selectByCondition(condition);
             modelAndView.addObject("redeemList", redeemList);
         }catch (Exception e){
@@ -201,11 +201,11 @@ public class UserController {
 
     public static void main(String[] args) {
         Condition condition = Condition.newInstance();
-        condition.addCondition("app", "222");
+        condition.addMapCondition("app", "222");
         System.out.println(condition.getConditions());
 
         condition = Condition.newInstance();
-        condition.addCondition("aaaa", "222");
+        condition.addMapCondition("aaaa", "222");
         System.out.println(condition.getConditions());
     }
 }

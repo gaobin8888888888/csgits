@@ -147,8 +147,8 @@ public class RecruitController {
         try {
             Condition condition = Condition.newInstance();
             Integer managerId = (Integer) request.getSession().getAttribute("id");
-            condition.addCondition("managerId", managerId);
-            condition.addCondition("recruitName", recruitName);
+            condition.addMapCondition("managerId", managerId);
+            condition.addMapCondition("recruitName", recruitName);
             recruitList = recruitService.selectByCondition(condition);
             modelAndView.addObject("recruitList", recruitList);
             modelAndView.addObject("recruitName", recruitName);
@@ -169,8 +169,8 @@ public class RecruitController {
         try {
             Condition condition = Condition.newInstance();
             Integer managerId = (Integer) request.getSession().getAttribute("id");
-            condition.addCondition("managerId", managerId);
-            condition.addCondition("recruitName", recruitName);
+            condition.addMapCondition("managerId", managerId);
+            condition.addMapCondition("recruitName", recruitName);
             recruitList = recruitService.selectByCondition(condition);
             modelAndView.addObject("recruitList", recruitList);
         }catch (Exception e){
@@ -189,7 +189,7 @@ public class RecruitController {
         List<Recruit> recruitList = null;
         try {
             Condition condition = Condition.newInstance();
-            condition.addCondition("status", 0);
+            condition.addMapCondition("status", 0);
             recruitList = recruitService.selectByCondition(condition);
             modelAndView.addObject("recruitList", recruitList);
         }catch (Exception e){
