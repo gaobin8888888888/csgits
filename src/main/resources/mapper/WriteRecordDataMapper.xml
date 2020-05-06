@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sts.csgits.dao.WriteRecordDataMapper">
+    <resultMap id="BaseResultMap" type="com.sts.csgits.entity.WriteRecordData">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_record_id" property="createRecordId" jdbcType="INTEGER"/>
+        <result column="date" property="date" jdbcType="VARCHAR"/>
+        <result column="current_num" property="currentNum" jdbcType="INTEGER"/>
+        <result column="related_data" property="relatedData" jdbcType="VARCHAR"/>
+        <result column="no_related_data" property="noRelatedData" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="BASEFIELD">
+        id, create_record_id, date, current_num, related_data, no_related_data, create_time
+    </sql>
+
+    <insert id="insert" parameterType="com.sts.csgits.entity.WriteRecordData" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into write_record_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createRecordId != null">
+                create_record_id,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="currentNum != null">
+                current_num,
+            </if>
+            <if test="relatedData != null">
+                related_data,
+            </if>
+            <if test="noRelatedData != null">
+                no_related_data,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createRecordId != null">
+                #{createRecordId, jdbcType=INTEGER},
+            </if>
+            <if test="date != null">
+                #{date, jdbcType=VARCHAR},
+            </if>
+            <if test="currentNum != null">
+                #{currentNum, jdbcType=VARCHAR},
+            </if>
+            <if test="relatedData != null">
+                #{relatedData}::jsonb,
+            </if>
+            <if test="noRelatedData != null">
+                #{noRelatedData}::jsonb,
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from write_record_data
+        <where>
+            <if test="mapConditions.createRecordId != null">
+                and create_record_id = #{mapConditions.createRecordId}
+            </if>
+            <if test="mapConditions.startTime != null">
+                and date &gt;= #{mapConditions.startTime}
+            </if>
+            <if test="mapConditions.endTime != null">
+                and date &lt;= #{mapConditions.endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from write_record_data
+        order by create_time desc
+    </select>
+</mapper>

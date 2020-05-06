@@ -10,7 +10,7 @@
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, sole, good_id, create_time
+        id, sole, good_id, status, create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.Redeem" useGeneratedKeys="true"

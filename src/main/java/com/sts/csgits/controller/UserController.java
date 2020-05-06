@@ -116,6 +116,12 @@ public class UserController {
             condition = Condition.newInstance();
             condition.addMapCondition("sole", student.getSole());
             List<Redeem> redeemList = redeemService.selectByCondition(condition);
+            if (redeemList != null && redeemList.size() > 0){
+                for (Redeem redeem : redeemList){
+                    Goods goods1 = goodsService.selectByPrimaryKey(redeem.getGoodId());
+                    redeem.setGoods(goods1);
+                }
+            }
             modelAndView.addObject("redeemList", redeemList);
         }catch (Exception e){
             log.error("UserController toStudentIndex error {}", e);

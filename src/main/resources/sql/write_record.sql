@@ -25,3 +25,9 @@ COMMENT ON COLUMN  write_record_template.home IS '是否在家乡';
 COMMENT ON COLUMN  write_record_template.salary IS '工资';
 COMMENT ON COLUMN  write_record_template.comment IS '备注';
 COMMENT ON COLUMN  write_record_template.create_time IS '添加时间';
+
+-- 从事数量、目前的状态数量分布、
+--
+--
+--
+-- 不是从事数量、
