@@ -1,18 +1,15 @@
 package com.sts.csgits.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.sts.csgits.entity.Manager;
-import com.sts.csgits.entity.Student;
-import com.sts.csgits.entity.WriteRecordData;
+import com.sts.csgits.entity.*;
 import com.sts.csgits.inc.Const;
-import com.sts.csgits.service.ManagerService;
-import com.sts.csgits.service.RedisService;
-import com.sts.csgits.service.StudentService;
-import com.sts.csgits.service.WriteRecordDataService;
+import com.sts.csgits.service.*;
 import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +42,9 @@ public class AdminController {
     @Autowired
     private WriteRecordDataService writeRecordDataService;
 
+    @Autowired
+    private CreateRecordService createRecordService;
+
     @RequestMapping("/admin/toAdminIndex")
     public ModelAndView toIndex(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/admin/index");
@@ -54,6 +54,8 @@ public class AdminController {
         int totalWriteRecordNum;
         int newAddWriteRecordNum;
         Condition condition = Condition.newInstance();
+        CreateRecord createRecord = createRecordService.selectByCondition(condition);
+        condition.addMapCondition("createRecordId", createRecord.getId());
         List<WriteRecordData> writeRecordDataList = Lists.newArrayList();
         if (Const.ADMIN_NO.equals(manager.getNo())){
             //管理员显示所有
@@ -79,10 +81,13 @@ public class AdminController {
         }
 
         writeRecordDataList = writeRecordDataService.selectByCondition(condition);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", writeRecordDataList);
         modelAndView.addObject("totalPeopleNum", totalPeopleNum);
         modelAndView.addObject("newAddPeopleNum", newAddPeopleNum);
         modelAndView.addObject("totalWriteRecordNum", totalWriteRecordNum);
         modelAndView.addObject("newAddWriteRecordNum", newAddWriteRecordNum);
+        modelAndView.addObject("writeRecordDataList", jsonObject);
         return modelAndView;
     }
 

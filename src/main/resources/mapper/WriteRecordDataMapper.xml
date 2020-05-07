@@ -10,6 +10,7 @@
         <result column="current_num" property="currentNum" jdbcType="INTEGER"/>
         <result column="engaged_num" property="engagedNum" jdbcType="INTEGER"/>
         <result column="work_num" property="workNum" jdbcType="INTEGER"/>
+        <result column="study_num" property="studyNum" jdbcType="INTEGER"/>
         <result column="college_num" property="collegeNum" jdbcType="INTEGER"/>
         <result column="graduate_num" property="graduateNum" jdbcType="INTEGER"/>
         <result column="doctor_num" property="doctorNum" jdbcType="INTEGER"/>
@@ -23,7 +24,7 @@
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, create_record_id, school_id, college, date, current_num, engaged_num, work_num, college_num, graduate_num, doctor_num, hometown_num, salary0_num, salary1_num, salary2_num, salary3_num, salary4_num, create_time
+        id, create_record_id, school_id, college, date, current_num, engaged_num, work_num, study_num, college_num, graduate_num, doctor_num, hometown_num, salary0_num, salary1_num, salary2_num, salary3_num, salary4_num, create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.WriteRecordData" useGeneratedKeys="true"
@@ -50,6 +51,9 @@
             </if>
             <if test="workNum != null">
                 work_num,
+            </if>
+            <if test="studyNum != null">
+                study_num,
             </if>
             <if test="collegeNum != null">
                 college_num,
@@ -100,6 +104,9 @@
             </if>
             <if test="workNum != null">
                 #{workNum, jdbcType=INTEGER},
+            </if>
+            <if test="studyNum != null">
+                #{studyNum, jdbcType=INTEGER},
             </if>
             <if test="collegeNum != null">
                 #{collegeNum, jdbcType=INTEGER},
