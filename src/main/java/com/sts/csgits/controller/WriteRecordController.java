@@ -37,7 +37,7 @@ public class WriteRecordController {
 
     /**
      * 添加记录
-     * @param sole
+     * @param request
      * @param related
      * @param type
      * @param degree
@@ -48,7 +48,7 @@ public class WriteRecordController {
      * @return
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, Integer related, Integer type, Integer degree, String place, Integer home, Double salary, String comment){
+    public ModelAndView add(HttpServletRequest request, Integer related, Integer type, Integer degree, String place, Integer home, Integer salary, String comment){
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/toAddCreateRecordPage");
         try {
             Student student = (Student) request.getSession().getAttribute("student");

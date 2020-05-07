@@ -128,6 +128,51 @@ public class Const {
 
     public static final String REDIS_CHANNEL_UPDATE_STUDENT = REDIS_CHANNEL + "update-student";
 
+    /*****学生填写个人情况*************************************************************************************************/
 
+    /**
+     * 从事与大学专业相关的工作或者学习
+     */
+    public static final Integer WRITE_RECORD_RELATED_NUM = 0;
 
+    /**
+     * 处于工作的状态
+     */
+    public static final Integer WRITE_RECORD_WORK_NUM = 0;
+    /**
+     * 处于学习的状态
+     */
+    public static final Integer WRITE_RECORD_STUDY_NUM = 1;
+
+    /**
+     * 大学生学历
+     */
+    public static final Integer WRITE_RECORD_DEGREE_COLLEGE_NUM = 0;
+    /**
+     * 研究生学历
+     */
+    public static final Integer WRITE_RECORD_DEGREE_GRADUATE_NUM = 1;
+    /**
+     * 博士学历
+     */
+    public static final Integer WRITE_RECORD_DEGREE_DOCTOR_NUM = 2;
+
+    /**
+     * 在家乡
+     */
+    public static final Integer WRITE_RECORD_HOMETOEN_NUM = 0;
+
+    /**
+     * 月薪范围
+     * <option value="0">5000以下</option>
+     * 									<option value="1">5000~8000</option>
+     * 									<option value="2">8000~12000</option>
+     * 									<option value="3">12000~20000</option>
+     * 									<option value="4">20000以上</option>
+     */
+    public static final Integer WRITE_RECORD_SALARY0_NUM = 0;
+    public static final Integer WRITE_RECORD_SALARY1_NUM = 1;
+    public static final Integer WRITE_RECORD_SALARY2_NUM = 2;
+    public static final Integer WRITE_RECORD_SALARY3_NUM = 3;
+    public static final Integer WRITE_RECORD_SALARY4_NUM = 4;
 }

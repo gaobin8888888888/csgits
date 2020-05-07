@@ -12,6 +12,8 @@ public class WriteRecord {
 
     private Integer id;
 
+    private Integer schoolId;
+
     //学生唯一标识
     private String sole;
 
@@ -30,7 +32,7 @@ public class WriteRecord {
     //是否在家乡
     private Integer home;
 
-    private Double salary;
+    private Integer salary;
 
     //备注
     private String comment;

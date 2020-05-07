@@ -168,10 +168,22 @@ COMMENT ON COLUMN create_record.create_time IS '记录添加时间';
 CREATE TABLE write_record_data(
                             id  serial primary key,
                             create_record_id integer,
+                            school_id integer,
+                            college varchar,
                             date varchar,
                             current_num integer,
-                            related_data jsonb,
-                            no_related_data jsonb,
+                            engaged_num integer,
+                            work_num integer,
+                            study_num integer,
+                            college_num integer,
+                            graduate_num integer,
+                            doctor_num integer,
+                            hometown_num integer,
+                            salary0_num integer,
+                            salary1_num integer,
+                            salary2_num integer,
+                            salary3_num integer,
+                            salary4_num integer,
                             create_time timestamp default current_timestamp
 )
   WITH(
@@ -181,8 +193,20 @@ ALTER TABLE write_record_data OWNER TO postgres;
 COMMENT ON TABLE write_record_data IS '填写记录统计信息表';
 COMMENT ON COLUMN write_record_data.id IS 'id标识';
 COMMENT ON COLUMN write_record_data.create_record_id IS '创建记录id';
+COMMENT ON COLUMN write_record_data.school_id IS '学校id';
+COMMENT ON COLUMN write_record_data.college IS '学院';
 COMMENT ON COLUMN write_record_data.date IS '记录时间';
 COMMENT ON COLUMN write_record_data.current_num IS '当前记录总数';
-COMMENT ON COLUMN write_record_data.related_data IS '从事与本专业相关的工作或者学习记录数据';
-COMMENT ON COLUMN write_record_data.no_related_data IS '不是从事与本专业相关的工作或者学习记录数据';
+COMMENT ON COLUMN write_record_data.engaged_num IS '从事本专业的人数';
+COMMENT ON COLUMN write_record_data.work_num IS '工作的人数';
+COMMENT ON COLUMN write_record_data.study_num IS '学习人数';
+COMMENT ON COLUMN write_record_data.college_num IS '大学生人数';
+COMMENT ON COLUMN write_record_data.graduate_num IS '研究生人数';
+COMMENT ON COLUMN write_record_data.doctor_num IS '博士人数';
+COMMENT ON COLUMN write_record_data.hometown_num IS '在家乡人数';
+COMMENT ON COLUMN write_record_data.salary0_num IS '5000以下';
+COMMENT ON COLUMN write_record_data.salary1_num IS '5000~8000';
+COMMENT ON COLUMN write_record_data.salary2_num IS '8000~12000';
+COMMENT ON COLUMN write_record_data.salary3_num IS '12000~20000';
+COMMENT ON COLUMN write_record_data.salary4_num IS '20000以上';
 COMMENT ON COLUMN write_record_data.create_time IS '记录添加时间';

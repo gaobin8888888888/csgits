@@ -9,7 +9,7 @@
         <result column="degree" property="degree" jdbcType="INTEGER"/>
         <result column="place" property="place" jdbcType="VARCHAR"/>
         <result column="home" property="home" jdbcType="INTEGER"/>
-        <result column="salary" property="salary" jdbcType="DOUBLE"/>
+        <result column="salary" property="salary" jdbcType="INTEGER"/>
         <result column="comment" property="comment" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -67,7 +67,7 @@
                 #{home, jdbcType=INTEGER},
             </if>
             <if test="salary != null">
-                #{salary, jdbcType=DOUBLE},
+                #{salary, jdbcType=INTEGER},
             </if>
             <if test="comment != null">
                 #{comment, jdbcType=VARCHAR},

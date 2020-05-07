@@ -17,4 +17,11 @@ public interface WriteRecordDataMapper extends BaseMapper<WriteRecordData, Integ
      * @return
      */
     public List<WriteRecordData> selectByCondition(Condition condition);
+
+    /**
+     * 根据条件删除
+     * @param condition
+     * @return
+     */
+    public int deleteByCondition(Condition condition);
 }

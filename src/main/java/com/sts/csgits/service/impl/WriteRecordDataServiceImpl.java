@@ -25,4 +25,9 @@ public class WriteRecordDataServiceImpl extends BaseServiceImpl<WriteRecordData,
     public List<WriteRecordData> selectByCondition(Condition condition) {
         return writeRecordDataMapper.selectByCondition(condition);
     }
+
+    @Override
+    public int deleteByCondition(Condition condition){
+        return writeRecordDataMapper.deleteByCondition(condition);
+    }
 }

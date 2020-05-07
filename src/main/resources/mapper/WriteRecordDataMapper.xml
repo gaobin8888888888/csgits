@@ -4,15 +4,26 @@
     <resultMap id="BaseResultMap" type="com.sts.csgits.entity.WriteRecordData">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="create_record_id" property="createRecordId" jdbcType="INTEGER"/>
+        <result column="school_id" property="schoolId" jdbcType="INTEGER"/>
+        <result column="college" property="college" jdbcType="VARCHAR"/>
         <result column="date" property="date" jdbcType="VARCHAR"/>
         <result column="current_num" property="currentNum" jdbcType="INTEGER"/>
-        <result column="related_data" property="relatedData" jdbcType="VARCHAR"/>
-        <result column="no_related_data" property="noRelatedData" jdbcType="VARCHAR"/>
+        <result column="engaged_num" property="engagedNum" jdbcType="INTEGER"/>
+        <result column="work_num" property="workNum" jdbcType="INTEGER"/>
+        <result column="college_num" property="collegeNum" jdbcType="INTEGER"/>
+        <result column="graduate_num" property="graduateNum" jdbcType="INTEGER"/>
+        <result column="doctor_num" property="doctorNum" jdbcType="INTEGER"/>
+        <result column="hometown_num" property="hometownNum" jdbcType="INTEGER"/>
+        <result column="salary0_num" property="salary0Num" jdbcType="INTEGER"/>
+        <result column="salary1_num" property="salary1Num" jdbcType="INTEGER"/>
+        <result column="salary2_num" property="salary2Num" jdbcType="INTEGER"/>
+        <result column="salary3_num" property="salary3Num" jdbcType="INTEGER"/>
+        <result column="salary4_num" property="salary4Num" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, create_record_id, date, current_num, related_data, no_related_data, create_time
+        id, create_record_id, school_id, college, date, current_num, engaged_num, work_num, college_num, graduate_num, doctor_num, hometown_num, salary0_num, salary1_num, salary2_num, salary3_num, salary4_num, create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.WriteRecordData" useGeneratedKeys="true"
@@ -22,22 +33,61 @@
             <if test="createRecordId != null">
                 create_record_id,
             </if>
+            <if test="schoolId != null">
+                school_id,
+            </if>
+            <if test="college != null">
+                college,
+            </if>
             <if test="date != null">
                 date,
             </if>
             <if test="currentNum != null">
                 current_num,
             </if>
-            <if test="relatedData != null">
-                related_data,
+            <if test="engagedNum != null">
+                engaged_num,
             </if>
-            <if test="noRelatedData != null">
-                no_related_data,
+            <if test="workNum != null">
+                work_num,
+            </if>
+            <if test="collegeNum != null">
+                college_num,
+            </if>
+            <if test="graduateNum != null">
+                graduate_num,
+            </if>
+            <if test="doctorNum != null">
+                doctor_num,
+            </if>
+            <if test="hometownNum != null">
+                hometown_num,
+            </if>
+            <if test="salary0Num != null">
+                salary0_num,
+            </if>
+            <if test="salary1Num != null">
+                salary1_num,
+            </if>
+            <if test="salary2Num != null">
+                salary2_num,
+            </if>
+            <if test="salary3Num != null">
+                salary3_num,
+            </if>
+            <if test="salary4Num != null">
+                salary4_num,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createRecordId != null">
                 #{createRecordId, jdbcType=INTEGER},
+            </if>
+            <if test="schoolId != null">
+                #{schoolId, jdbcType=INTEGER},
+            </if>
+            <if test="college != null">
+                #{college, jdbcType=VARCHAR},
             </if>
             <if test="date != null">
                 #{date, jdbcType=VARCHAR},
@@ -45,11 +95,38 @@
             <if test="currentNum != null">
                 #{currentNum, jdbcType=VARCHAR},
             </if>
-            <if test="relatedData != null">
-                #{relatedData}::jsonb,
+            <if test="engagedNum != null">
+                #{engagedNum, jdbcType=INTEGER},
             </if>
-            <if test="noRelatedData != null">
-                #{noRelatedData}::jsonb,
+            <if test="workNum != null">
+                #{workNum, jdbcType=INTEGER},
+            </if>
+            <if test="collegeNum != null">
+                #{collegeNum, jdbcType=INTEGER},
+            </if>
+            <if test="graduateNum != null">
+                #{graduateNum, jdbcType=INTEGER},
+            </if>
+            <if test="doctorNum != null">
+                #{doctorNum, jdbcType=INTEGER},
+            </if>
+            <if test="hometownNum != null">
+                #{hometownNum, jdbcType=INTEGER},
+            </if>
+            <if test="salary0Num != null">
+                #{salary0Num, jdbcType=INTEGER},
+            </if>
+            <if test="salary1Num != null">
+                #{salary1Num, jdbcType=INTEGER},
+            </if>
+            <if test="salary2Num != null">
+                #{salary2Num, jdbcType=INTEGER},
+            </if>
+            <if test="salary3Num != null">
+                #{salary3Num, jdbcType=INTEGER},
+            </if>
+            <if test="salary4Num != null">
+                #{salary4Num, jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -62,13 +139,23 @@
             <if test="mapConditions.createRecordId != null">
                 and create_record_id = #{mapConditions.createRecordId}
             </if>
+            <if test="mapConditions.schoolId != null">
+                and school_id = #{mapConditions.schoolId}
+            </if>
             <if test="mapConditions.startTime != null">
                 and date &gt;= #{mapConditions.startTime}
             </if>
             <if test="mapConditions.endTime != null">
                 and date &lt;= #{mapConditions.endTime}
             </if>
+            <if test="mapConditions.schoolMsg != null">
+                and school_id is not null
+            </if>
+            <if test="mapConditions.allMsg != null">
+                and school_id is null
+            </if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -77,4 +164,16 @@
         from write_record_data
         order by create_time desc
     </select>
+
+    <delete id="deleteByCondition" parameterType="com.sts.csgits.utils.Condition">
+        delete from write_record_data
+        <where>
+            <if test="mapConditions.createRecordId != null">
+                and create_record_id = #{mapConditions.createRecordId}
+            </if>
+            <if test="mapConditions.schoolId != null">
+                and school_id = #{mapConditions.schoolId}
+            </if>
+        </where>
+    </delete>
 </mapper>

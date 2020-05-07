@@ -1,10 +1,15 @@
 package com.sts.csgits.controller;
 
+import com.google.common.collect.Lists;
 import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.Student;
+import com.sts.csgits.entity.WriteRecordData;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
+import com.sts.csgits.service.RedisService;
 import com.sts.csgits.service.StudentService;
+import com.sts.csgits.service.WriteRecordDataService;
+import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +35,54 @@ public class AdminController {
 
     @Autowired
     private ManagerService managerService;
+
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private WriteRecordDataService writeRecordDataService;
+
     @RequestMapping("/admin/toAdminIndex")
-    public ModelAndView toIndex(){
+    public ModelAndView toIndex(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/admin/index");
+        Manager manager = (Manager) request.getSession().getAttribute("manager");
+        int totalPeopleNum;
+        int newAddPeopleNum;
+        int totalWriteRecordNum;
+        int newAddWriteRecordNum;
+        Condition condition = Condition.newInstance();
+        List<WriteRecordData> writeRecordDataList = Lists.newArrayList();
+        if (Const.ADMIN_NO.equals(manager.getNo())){
+            //管理员显示所有
+            totalPeopleNum = redisService.get(Const.PEOPLE_NUM_TOTAL) == null ? 0 : (int) redisService.get(Const.PEOPLE_NUM_TOTAL);
+            newAddPeopleNum = redisService.get(Const.PEOPLE_NUM_NEW_ADD) == null ? 0 : (int) redisService.get(Const.PEOPLE_NUM_NEW_ADD);
+            totalWriteRecordNum = redisService.get(Const.WRITE_RECORD_NUM_TOTAL) == null ? 0 : (int) redisService.get(Const.WRITE_RECORD_NUM_TOTAL);
+            newAddWriteRecordNum = redisService.get(Const.WRITE_RECORD_NUM_NEW_ADD) == null ? 0 : (int) redisService.get(Const.WRITE_RECORD_NUM_NEW_ADD);
+
+            condition.addMapCondition("allMsg", "allMsg");
+        }else{
+            //只显示教师所在学校信息
+            String key = String.format(Const.PEOPLE_SCHOOL_NUM_TOTAL, manager.getSchoolId());
+            totalPeopleNum = redisService.get(key) == null ? 0 : (int) redisService.get(key);
+            key = String.format(Const.PEOPLE_SCHOOL_NUM_NEW_ADD, manager.getSchoolId());
+            newAddPeopleNum = redisService.get(key) == null ? 0 : (int) redisService.get(key);
+            key = String.format(Const.WRITE_RECORD_SCHOOL_NUM_TOTAL, manager.getSchoolId());
+            totalWriteRecordNum = redisService.get(key) == null ? 0 : (int) redisService.get(key);
+            key = String.format(Const.WRITE_RECORD_SCHOOL_NUM_NEW_ADD, manager.getSchoolId());
+            newAddWriteRecordNum = redisService.get(key) == null ? 0 : (int) redisService.get(key);
+
+            condition.addMapCondition("schoolMsg", "schoolMsg");
+            condition.addMapCondition("schoolId", manager.getSchoolId());
+        }
+
+        writeRecordDataList = writeRecordDataService.selectByCondition(condition);
+        modelAndView.addObject("totalPeopleNum", totalPeopleNum);
+        modelAndView.addObject("newAddPeopleNum", newAddPeopleNum);
+        modelAndView.addObject("totalWriteRecordNum", totalWriteRecordNum);
+        modelAndView.addObject("newAddWriteRecordNum", newAddWriteRecordNum);
         return modelAndView;
     }
 
@@ -110,7 +157,7 @@ public class AdminController {
 
     /**
      * 修改密码操作
-     * @param id
+     * @param request
      * @param oldpwd
      * @param newpwd
      * @param confirmpwd
