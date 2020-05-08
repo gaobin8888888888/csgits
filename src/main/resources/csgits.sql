@@ -4,6 +4,29 @@ CREATE DATABASE "CSGITS"
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
+CREATE TABLE school(
+                     id  serial primary key,
+                     name varchar,
+                     description varchar,
+                     image_path varchar,
+                     teacher_num integer,
+                     total_num integer,
+                     school_num integer,
+                     create_time timestamp default current_timestamp
+)
+  WITH(
+  OIDS=FALSE
+      );
+ALTER TABLE school OWNER TO postgres;
+COMMENT ON TABLE school IS '学校信息表';
+COMMENT ON COLUMN school.id IS 'id标识';
+COMMENT ON COLUMN school.name IS '学校名称';
+COMMENT ON COLUMN school.description IS '学校描述';
+COMMENT ON COLUMN school.image_path IS '学校图片路径';
+COMMENT ON COLUMN school.teacher_num IS '学校中教师人数';
+COMMENT ON COLUMN school.total_num IS '该校学生总人数';
+COMMENT ON COLUMN school.school_num IS '该校在校生人数';
+COMMENT ON COLUMN school.create_time IS '记录添加时间';
 
 CREATE TABLE manager(
                       id  serial primary key,
@@ -54,30 +77,6 @@ COMMENT ON COLUMN notice.title IS '通知标题';
 COMMENT ON COLUMN notice.notice_type IS '通知类型';
 COMMENT ON COLUMN notice.content IS '通知内容';
 COMMENT ON COLUMN notice.create_time IS '添加时间';
-
-CREATE TABLE school(
-                     id  serial primary key,
-                     name varchar,
-                     description varchar,
-                     image_path varchar,
-                     teacher_num integer,
-                     total_num integer,
-                     school_num integer,
-                     create_time timestamp default current_timestamp
-)
-  WITH(
-  OIDS=FALSE
-      );
-ALTER TABLE school OWNER TO postgres;
-COMMENT ON TABLE school IS '学校信息表';
-COMMENT ON COLUMN school.id IS 'id标识';
-COMMENT ON COLUMN school.name IS '学校名称';
-COMMENT ON COLUMN school.description IS '学校描述';
-COMMENT ON COLUMN school.image_path IS '学校图片路径';
-COMMENT ON COLUMN school.teacher_num IS '学校中教师人数';
-COMMENT ON COLUMN school.total_num IS '该校学生总人数';
-COMMENT ON COLUMN school.school_num IS '该校在校生人数';
-COMMENT ON COLUMN school.create_time IS '记录添加时间';
 
 
 

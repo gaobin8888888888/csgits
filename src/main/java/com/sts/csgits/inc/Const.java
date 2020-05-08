@@ -1,5 +1,7 @@
 package com.sts.csgits.inc;
 
+import com.sts.csgits.utils.MD5EncoderUtil;
+
 /**
  * 常量
  * @author ：gb
@@ -41,7 +43,7 @@ public class Const {
     /**
      * 默认图片
      */
-    public static final String DEFAULT_IMAGE_PATH = "/static/images/202003150020299393.jpg";
+    public static final String DEFAULT_IMAGE_PATH = "/static/images/student.png";
 
     /**
      * 积分兑换的状态 1:正在处理 2：已完成
@@ -175,4 +177,8 @@ public class Const {
     public static final Integer WRITE_RECORD_SALARY2_NUM = 2;
     public static final Integer WRITE_RECORD_SALARY3_NUM = 3;
     public static final Integer WRITE_RECORD_SALARY4_NUM = 4;
+
+    public static void main(String[] args) {
+        System.out.println(MD5EncoderUtil.encode("123456"));
+    }
 }
