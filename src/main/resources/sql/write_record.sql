@@ -6,7 +6,7 @@ CREATE TABLE write_record_template(
      degree integer,
      place varchar,
      home integer,
-     salary double precision,
+     salary integer,
      comment varchar,
      create_time timestamp default current_timestamp
 )

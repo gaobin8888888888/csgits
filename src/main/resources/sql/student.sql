@@ -1,10 +1,10 @@
 CREATE TABLE student_template(
      id serial primary key,
-
      no varchar,
      real_name varchar,
      password varchar,
      image_path varchar,
+     tel varchar,
      school_id integer references  school(id),
      college varchar,
      class_no varchar,
@@ -14,6 +14,7 @@ CREATE TABLE student_template(
      grade integer,
      achievement jsonb,
      graduate boolean default false,
+     email varchar,
      create_time timestamp default current_timestamp
 )
   WITH(
@@ -27,6 +28,7 @@ COMMENT ON COLUMN  student_template.no IS '学号';
 COMMENT ON COLUMN  student_template.real_name IS '学生真实姓名';
 COMMENT ON COLUMN  student_template.password IS '密码';
 COMMENT ON COLUMN  student_template.image_path IS '学生头像地址';
+COMMENT ON COLUMN  student_template.tel IS '学生联系方式';
 COMMENT ON COLUMN  student_template.school_id IS '所在学校';
 COMMENT ON COLUMN  student_template.college IS '所在学院';
 COMMENT ON COLUMN  student_template.class_no IS '班级';
@@ -36,4 +38,5 @@ COMMENT ON COLUMN  student_template.credits IS '积分数';
 COMMENT ON COLUMN  student_template.grade IS '年级';
 COMMENT ON COLUMN  student_template.achievement IS '大学成绩';
 COMMENT ON COLUMN  student_template.graduate IS '是否毕业';
+COMMENT ON COLUMN  student_template.email IS '邮箱';
 COMMENT ON COLUMN  student_template.create_time IS '添加时间';
