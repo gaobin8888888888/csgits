@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="form-group has-feedback feedback-left">
-          <input type="text" th:value="${message != null} ? ${message}" class="form-control" disabled = "disabled" />
+          <input id="message" type="text" th:value="${message != null} ? ${message}" class="form-control" disabled = "disabled" />
         </div>
         <div class="form-group">
           <button class="btn btn-block btn-primary" type="submit">立即登录</button>
@@ -99,5 +99,6 @@
 </div>
 <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/layui/layui.all.js"></script>
 </body>
 </html>

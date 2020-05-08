@@ -47,7 +47,7 @@ public class TeacherController {
                 modelAndView.addObject("message", "教师真实姓名不能为空");
                 return modelAndView;
             }
-            if (image == null){
+            if (image == null || image.getSize() <= 0 || image.getBytes().length <= 0){
                 modelAndView.addObject("message", "请选择文件");
                 return modelAndView;
             }
@@ -65,7 +65,7 @@ public class TeacherController {
             }
 
             //获取文件后缀
-            String filenameExt = (image.getOriginalFilename().toString()).substring(image.getOriginalFilename().toString().lastIndexOf(".") + 1);
+            String filenameExt = StringUtils.endString(image.getOriginalFilename(), "\\.");
 
             if (!Const.IMAGE_KINDS.contains(filenameExt)){
                 modelAndView.addObject("message", "图片格式有误，请重试");
@@ -168,7 +168,7 @@ public class TeacherController {
     public @ResponseBody String updateConfined(@PathVariable("id") Integer id, Boolean confined){
         try {
             Manager manager = new Manager();
-            manager.setConfined(confined);
+            //manager.setConfined(confined);
             manager.setId(id);
             int update = managerService.updateByPrimaryKey(manager);
             if (update > 0){

@@ -13,6 +13,7 @@
   <link href="/static/admin/css/style.min.css" rel="stylesheet">
   <link href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" rel="stylesheet">
   <script src="/static/jquery/js/jquery-1.9.1.min.js" th:src="@{/static/jquery/js/jquery-1.9.1.min.js}"></script>
+  <script src="/static/jquery/js/jquery-form.js" th:src="@{/static/jquery/js/jquery-form.js}"></script>
 </head>
 
 <script type="text/javascript">
@@ -224,8 +225,8 @@
       </nav>
       
     </header>
+
     <!--End 头部信息-->
-    
     <!--页面主要内容-->
     <main class="lyear-layout-content">
       
@@ -235,7 +236,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <form method="post" action="/admin/updateMsg" class="site-form" id="myfrom">
+                <form method="post" action="/admin/updateMsg" enctype="multipart/form-data" class="site-form" id="from10">
                   <div class="edit-avatar">
                     <img th:src="${#session.getAttribute('imagePath')}" alt="..." class="img-avatar">
                     <div class="avatar-divider"></div>
@@ -275,7 +276,7 @@
                     <label for="description">描述</label>
                     <textarea class="form-control" value="lightyear" id="description" name="description" th:text="${manager.description}" rows="5"/>
                   </div>
-                  <input type="submit" value="保存" class="btn btn-primary" />
+                  <input type="submit" value="保存" class="btn btn-primary ajax-post" target-form="add-form" />
                 </form>
        
               </div>
@@ -290,12 +291,13 @@
     <!--End 页面主要内容-->
   </div>
 </div>
-
 <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/main.min.js"></script>
-
+<script src="/static/layui/layui.all.js"></script>
+<script th:inline="javascript">
+    var $ = layui.jquery;
 </script>
 </body>
 </html>

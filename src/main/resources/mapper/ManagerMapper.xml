@@ -11,7 +11,6 @@
         <result column="college" property="college" jdbcType="VARCHAR" />
         <result column="fine" property="fine" jdbcType="BOOLEAN" />
         <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="confined" property="confined" jdbcType="BOOLEAN" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="school_id" property="schoolId" jdbcType="INTEGER" />
         <association property="school" javaType="com.sts.csgits.entity.School">
@@ -24,11 +23,11 @@
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, no, real_name, password, image_path, tel, college, fine, description, confined, create_time, school_id
+        id, no, real_name, password, image_path, tel, college, fine, description, create_time, school_id
     </sql>
 
     <sql id="TOTALFIELD">
-        manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.confined, manager.create_time, manager.school_id, school.id, school.name, school.description, school.image_path, school.create_time
+        manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.create_time, manager.school_id, school.id, school.name, school.description, school.image_path, school.create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.Manager" useGeneratedKeys="true"
@@ -55,9 +54,6 @@
             </if>
             <if test="fine != null">
                 fine,
-            </if>
-            <if test="confined != null">
-                confined,
             </if>
             <if test="schoolId != null">
                 school_id,
@@ -87,9 +83,6 @@
             </if>
             <if test="fine != null">
                 #{fine, jdbcType=BOOLEAN},
-            </if>
-            <if test="confined != null">
-                #{confined, jdbcType=BOOLEAN},
             </if>
             <if test="schoolId != null">
                 #{schoolId, jdbcType=INTEGER},
@@ -128,9 +121,6 @@
             </if>
             <if test="fine != null">
                 fine = #{fine, jdbcType=BOOLEAN},
-            </if>
-            <if test="confined != null">
-                confined = #{confined, jdbcType=BOOLEAN},
             </if>
             <if test="schoolId != null">
                 school_id = #{schoolId, jdbcType=INTEGER},
@@ -199,9 +189,6 @@
             <if test="fine != null">
                 and fine = #{fine, jdbcType=BOOLEAN}
             </if>
-            <if test="confined != null">
-                and confined = #{confined, jdbcType=BOOLEAN}
-            </if>
             <if test="schoolId != null">
                 and school_id = #{schoolId, jdbcType=INTEGER}
             </if>
@@ -233,9 +220,6 @@
             </if>
             <if test="mapConditions.fine != null">
                 and fine = #{mapConditions.fine, jdbcType=BOOLEAN}
-            </if>
-            <if test="mapConditions.confined != null">
-                and confined = #{mapConditions.confined, jdbcType=BOOLEAN}
             </if>
             <if test="mapConditions.schoolId != null">
                 and school_id = #{mapConditions.schoolId, jdbcType=INTEGER}
@@ -269,9 +253,6 @@
             </if>
             <if test="mapConditions.fine != null">
                 and fine = #{mapConditions.fine, jdbcType=BOOLEAN}
-            </if>
-            <if test="mapConditions.confined != null">
-                and confined = #{mapConditions.confined, jdbcType=BOOLEAN}
             </if>
             <if test="mapConditions.schoolId != null">
                 and school_id = #{mapConditions.schoolId, jdbcType=INTEGER}

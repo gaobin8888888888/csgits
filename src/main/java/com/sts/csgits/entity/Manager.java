@@ -44,9 +44,6 @@ public class Manager {
     //个人描述
     private String description;
 
-    //是否被限制
-    private Boolean confined;
-
     //创建时间
     private String createTime;
 }

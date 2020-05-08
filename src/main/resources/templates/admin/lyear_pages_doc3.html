@@ -289,8 +289,8 @@
                               <input value="确认修改" type="hidden" class="btn btn-xs btn-default" title="保存编辑内容" data-toggle="tooltip" />
                               <input value="设置优秀教师" th:if="${teacher.fine} == false and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${teacher.id}+', true)'" title="设置优秀教师" data-toggle="tooltip" />
                               <input value="取消优秀教师" th:if="${teacher.fine} == true and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateFine('+${teacher.id}+', false)'" title="取消优秀教师" data-toggle="tooltip" />
-                              <input value="禁止管理" th:if="${teacher.confined} == false and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateConfined('+${teacher.id}+', true)'" title="禁止管理" data-toggle="tooltip" />
-                              <input value="同意管理" th:if="${teacher.confined} == true and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateConfined('+${teacher.id}+', false)'" title="同意管理" data-toggle="tooltip" />
+                              <!--<input value="禁止管理" th:if="${teacher.confined} == false and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateConfined('+${teacher.id}+', true)'" title="禁止管理" data-toggle="tooltip" />-->
+                              <!--<input value="同意管理" th:if="${teacher.confined} == true and ${teacher.no} != 'admin'" type="button" class="btn btn-xs btn-default" th:onclick="'javascript:updateConfined('+${teacher.id}+', false)'" title="同意管理" data-toggle="tooltip" />-->
                               <input value="删除" type="button" th:if="${teacher.no} != 'admin'" class="btn btn-xs btn-default" th:onclick="'javascript:deleteTeacherById('+${teacher.id}+')'" title="删除" data-toggle="tooltip" />
                             </div>
                           </td>

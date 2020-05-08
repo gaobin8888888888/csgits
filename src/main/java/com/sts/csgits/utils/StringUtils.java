@@ -44,4 +44,9 @@ public class StringUtils {
         String randomStr = String.valueOf((int)((Math.random()*9+1)*1000));
         return formatDate + randomStr;
     }
+
+    public static String endString(String str, String regex){
+        String[] splits = str.split(regex);
+        return splits[splits.length - 1];
+    }
 }

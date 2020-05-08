@@ -6,6 +6,7 @@ import com.sts.csgits.entity.*;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.*;
 import com.sts.csgits.utils.Condition;
+import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,7 +57,9 @@ public class AdminController {
         int newAddWriteRecordNum;
         Condition condition = Condition.newInstance();
         CreateRecord createRecord = createRecordService.selectByCondition(condition);
-        condition.addMapCondition("createRecordId", createRecord.getId());
+        if (createRecord != null){
+            condition.addMapCondition("createRecordId", createRecord.getId());
+        }
         List<WriteRecordData> writeRecordDataList = Lists.newArrayList();
         if (Const.ADMIN_NO.equals(manager.getNo())){
             //管理员显示所有
@@ -115,21 +119,20 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/selectMsg/" + id);
         try {
             if (StringUtils.isEmpty(realName)){
-                modelAndView.addObject("message", "真实姓名不能为空");
+                return modelAndView.addObject("message", "真实姓名不能为空");
             }
             if (StringUtils.isEmpty(tel)){
-                modelAndView.addObject("message", "联系方式不能为空");
+                return modelAndView.addObject("message","联系方式不能为空");
             }
             Manager manager = (Manager) request.getSession().getAttribute("manager");
             manager.setRealName(realName);
             manager.setTel(tel);
             manager.setDescription(description);
-            if (image != null){
-                String filenameExt = (image.getOriginalFilename().toString()).substring(image.getOriginalFilename().toString().lastIndexOf(".") + 1);
+            if (image != null && image.getSize() > 0 && image.getBytes().length > 0){
+                String filenameExt = StringUtils.endString(image.getOriginalFilename(), "\\.");
 
                 if (!Const.IMAGE_KINDS.contains(filenameExt)){
-                    modelAndView.addObject("message", "图片格式有误，请重试");
-                    return modelAndView;
+                    return modelAndView.addObject("message","图片格式有误，请重试");
                 }
                 String imageName= StringUtils.generateUniqueId() + "." + filenameExt;
                 File file = new File(imageName);
@@ -139,15 +142,14 @@ public class AdminController {
             }
             int update = managerService.updateByPrimaryKey(manager);
             if (update > 0){
-                modelAndView.addObject("message", "修改成功");
+                request.getSession().setAttribute("imagePath", manager.getImagePath());
                 request.getSession().setAttribute("manager", manager);
-                return modelAndView;
+                return modelAndView.addObject("message","修改成功");
             }
         }catch (Exception e){
             log.info("AdminController updateMsg error {}", e);
         }
-        modelAndView.addObject("message", "修改失败，请重试");
-        return modelAndView;
+        return modelAndView.addObject("message","修改失败，请重试");
     }
 
     /**
@@ -267,4 +269,9 @@ public class AdminController {
     }
 
 
+    public static void main(String[] args) {
+        String s = "4a38a5973ea4c0c8!360x360_big.jpg";
+        String[] ss = s.split("\\.");
+        System.out.println(ss[0]+"  "+ss[1]);
+    }
 }

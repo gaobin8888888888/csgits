@@ -159,9 +159,9 @@ public class UserController {
             student.setEmail(email);
             student.setDescription(description);
 
-            if (image != null){
+            if (image != null && image.getSize() > 0 && image.getBytes().length > 0){
                 //获取文件后缀
-                String filenameExt = (image.getOriginalFilename().toString()).substring(image.getOriginalFilename().toString().lastIndexOf(".") + 1);
+                String filenameExt = StringUtils.endString(image.getOriginalFilename(), "\\.");
                 if (!Const.IMAGE_KINDS.contains(filenameExt)){
                     return JSONResult.errorInstance("图片格式有误，请重试");
                 }
@@ -173,6 +173,7 @@ public class UserController {
 
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                request.getSession().setAttribute("imagePath", student.getImagePath());
                 return JSONResult.successInstance("更新成功");
             }
         }catch (Exception e){
