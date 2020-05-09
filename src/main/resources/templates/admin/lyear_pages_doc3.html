@@ -256,7 +256,7 @@
                         <th>所在学院</th>
                         <th>是否优秀教师</th>
                         <th>个人描述</th>
-                        <th>是否被限制</th>
+                        <!--<th>是否被限制</th>-->
                         <th>添加时间</th>
                         <th>操作</th>
                       </tr>
@@ -269,7 +269,7 @@
                           <td><span th:text="${teacher.realName}"></span></td>
                           <td height="120px" width="120px"><img th:src="${teacher.imagePath}" style="width:80%;height: 80%;"></td>
                           <td><span th:text="${teacher.tel}"></span></td>
-                          <td><span th:text="${teacher.schoolId}"></span></td>
+                          <td><span th:if="${teacher.schoolId} != null" th:text="${teacher.school.name}"></span></td>
                           <td><span th:text="${teacher.college}"></span></td>
                           <td>
                             <span th:if="${teacher.fine} == false">否</span>
@@ -279,10 +279,10 @@
                           <td>
                             <span th:text="${teacher.description}"></span>
                           </td>
-                          <td>
-                            <span th:if="${teacher.confined} == false">否</span>
-                            <span th:if="${teacher.confined} == true">是</span>
-                          </td>
+                          <!--<td>-->
+                            <!--<span th:if="${teacher.confined} == false">否</span>-->
+                            <!--<span th:if="${teacher.confined} == true">是</span>-->
+                          <!--</td>-->
                           <td><span th:text="${teacher.createTime}"></span></td>
                           <td>
                             <div class="btn-group">

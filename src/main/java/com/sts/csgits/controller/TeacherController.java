@@ -1,9 +1,11 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.entity.School;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.service.RedisService;
+import com.sts.csgits.service.SchoolService;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.PickUtil;
@@ -34,6 +36,9 @@ public class TeacherController {
 
     @Autowired
     private PickUtil pickUtil;
+
+    @Autowired
+    private SchoolService schoolService;
 
     @RequestMapping("/add")
     public ModelAndView add(String teacherNo, String teacherName, MultipartFile image, String tel, Integer schoolId, String college){
@@ -194,6 +199,12 @@ public class TeacherController {
                 manager.setRealName(teacherName);
             }
             managerList = managerService.selectByManager(manager);
+            if (managerList != null && managerList.size() > 0){
+                for (Manager manager1 : managerList){
+                    School school = schoolService.selectByPrimaryKey(manager1.getSchoolId());
+                    manager1.setSchool(school);
+                }
+            }
             modelAndView.addObject("teacherList", managerList);
             modelAndView.addObject("teacherName", teacherName);
         }catch (Exception e){

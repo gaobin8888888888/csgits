@@ -100,18 +100,21 @@ public class UserController {
             }
             modelAndView.addObject("goodsList", goodsList);
 
-            condition = Condition.newInstance();
-            condition.addMapCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
-            CreateRecord createRecord = createRecordService.selectByCondition(condition);
-            if (createRecord != null){
-                WriteRecord writeRecord = writeRecordService.selectOneWriteRecordBySole(createRecord.getId(), student.getSole());
-                if (writeRecord == null){
-                    modelAndView.addObject("createRecord", createRecord);
-                }
-            }
-
             student = (Student) request.getSession().getAttribute("student");
             modelAndView.addObject("student", student);
+
+            //只有毕业的同学才进行填写个人情况
+            if (student.getGraduate()){
+                condition = Condition.newInstance();
+                condition.addMapCondition("nowTime", DateUtil.format(new Date(), DateUtil.FMT_DATE_YYYY_MM_DD_HH_mm_ss));
+                CreateRecord createRecord = createRecordService.selectByCondition(condition);
+                if (createRecord != null){
+                    WriteRecord writeRecord = writeRecordService.selectOneWriteRecordBySole(createRecord.getId(), student.getSole());
+                    if (writeRecord == null){
+                        modelAndView.addObject("createRecord", createRecord);
+                    }
+                }
+            }
 
             condition = Condition.newInstance();
             condition.addMapCondition("sole", student.getSole());

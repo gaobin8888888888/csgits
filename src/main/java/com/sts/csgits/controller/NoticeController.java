@@ -3,6 +3,7 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.Notice;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.service.NoticeService;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.StringUtils;
@@ -29,6 +30,9 @@ public class NoticeController {
 
     @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    private ManagerService managerService;
 
     @RequestMapping("/add")
     public ModelAndView add(HttpServletRequest request, String noticeName, Integer noticeType, String content){
@@ -127,11 +131,16 @@ public class NoticeController {
             if (manager != null){
                 if (Const.ADMIN_NO.equals(manager.getNo())){
                     noticeList = noticeService.selectByNotice(notice);
+                    for (Notice notice1 : noticeList){
+                        Manager manager1 = managerService.selectByPrimaryKey(notice1.getManagerId());
+                        notice1.setManager(manager1);
+                    }
                 }else {
                     notice.setManagerId(manager.getId());
                     noticeList = noticeService.selectByNotice(notice);
                 }
             }
+
             modelAndView.addObject("noticeList", noticeList);
             modelAndView.addObject("noticeName", noticeName);
         }catch (Exception e){

@@ -273,7 +273,7 @@
                           <td><span th:text="${createRecord.id}"></span></td>
                           <td><input type="hidden" id="id" name="id" th:value="${createRecord.id}"><span th:text="${createRecord.name}"></span></td>
                           <td><input name="description" id="description" class="form-control" th:value="${createRecord.description}"/></td>
-                          <td><input class="form-control js-datepicker m-b-10" id="startTime" name="startTime" th:value="${createRecord.startTime}" data-date-format="yyyy-mm-dd"/></td>
+                          <td><input class="form-control js-datepicker m-b-10" id="startTime" name="startTime" th:value="${createRecord.startTime}" data-date-format="yyyy-mm-dd 00:00:00"/></td>
                           <td><input class="form-control js-datepicker m-b-10" id="endTime" name="endTime" th:value="${createRecord.endTime}" data-date-format="yyyy-mm-dd"/></td>
                           <td><span th:text="${createRecord.createTime}"></span></td>
                           <td>

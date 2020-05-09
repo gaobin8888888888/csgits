@@ -325,7 +325,7 @@
                         <th>姓名</th>
                         <th>学生头像</th>
                         <th>所属年级</th>
-                        <th>所在学校</th>
+                        <!--<th>所在学校</th>-->
                         <th>所在学院</th>
                         <th>所在班级</th>
                         <th>是否优秀校友</th>
@@ -344,7 +344,7 @@
                           <td><span th:text="${student.realName}"></span></td>
                           <td height="80px" width="80px"><img th:src="${student.imagePath}" style="width:80%;height: 80%;"></td>
                           <td><input class="form-control" name="grade" id="grade" th:value="${student.grade}" /></td>
-                          <td><span th:text="${student.schoolId}"></span></td>
+                          <!--<td><span th:text="${student.schoolId}"></span></td>-->
                           <td><span th:text="${student.college}"></span></td>
                           <td><input name="classNo" class="form-control" th:value="${student.classNo}" /></td>
                           <td>

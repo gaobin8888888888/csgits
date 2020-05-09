@@ -1,10 +1,12 @@
 package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.entity.School;
 import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
 import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.ManagerService;
+import com.sts.csgits.service.SchoolService;
 import com.sts.csgits.utils.ImageCodeUtil;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
@@ -28,8 +30,12 @@ public class LoginController {
 
     @Autowired
     private ManagerService managerService;
+
     @Autowired
     private LocalCache localCache;
+
+    @Autowired
+    private SchoolService schoolService;
 
     /**
      * 管理员跳转到登录页面
@@ -90,6 +96,10 @@ public class LoginController {
                 manager.setPassword(MD5EncoderUtil.encode(password));
                 manager = managerService.selectByNoAndPassword(manager);
                 if (manager != null){
+                    if (manager.getSchoolId() != null){
+                        School school = schoolService.selectByPrimaryKey(manager.getSchoolId());
+                        manager.setSchool(school);
+                    }
                     request.getSession().setAttribute("id", manager.getId());
                     request.getSession().setAttribute("no", manager.getNo());
                     request.getSession().setAttribute("imagePath", manager.getImagePath());

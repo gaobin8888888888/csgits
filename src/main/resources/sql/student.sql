@@ -1,5 +1,6 @@
 CREATE TABLE student_template(
      id serial primary key,
+     sole varchar,
      no varchar,
      real_name varchar,
      password varchar,

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
-import com.sts.csgits.service.RedisService;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.StudentService;
 import com.sts.csgits.utils.JSONResult;
 import com.sts.csgits.utils.MD5EncoderUtil;
@@ -35,6 +35,9 @@ public class StudentController {
 
     @Autowired
     private PickUtil pickUtil;
+
+    @Autowired
+    private LocalCache localCache;
 
     @RequestMapping("/admin/student/add")
     public ModelAndView add(String no, String realName, Integer schoolId, String college, String classNo){
@@ -68,8 +71,9 @@ public class StudentController {
             student.setImagePath(Const.DEFAULT_IMAGE_PATH);
             int insert = studentService.insert(student);
             if (insert > 0){
+                List<Student> studentList = studentService.selectByStudent(student);
                 pickUtil.addOrDescPeopleNum(schoolId, Const.ADD_NUM);
-
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_ADD_STUDENT, studentList.get(0));
                 modelAndView = new ModelAndView("redirect:/admin/student/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;

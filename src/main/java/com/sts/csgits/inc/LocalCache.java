@@ -55,6 +55,7 @@ public class LocalCache {
                 schoolConcurrentHashMap.put(school.getId(), school);
             }
             schoolMap = schoolConcurrentHashMap;
+            log.info("init school "+schoolList.size()+"条数据");
         }catch (Exception e){
             log.info("LocalCache initSchool error {}", e);
         }
@@ -92,6 +93,7 @@ public class LocalCache {
                     String studentStr = JSONObject.toJSONString(student);
                     redisService.set(key, studentStr);
                 }
+                log.info("init school "+school.getId()+"  "+school.getName()+" student "+students.size()+"条数据");
             }
         }catch (Exception e){
             log.error("initStudent error {}", e);
@@ -118,17 +120,22 @@ public class LocalCache {
      * @param object
      */
     public void reloadStudentToRedis(String channel, Object object) {
-        Student student = JSON.parseObject(object.toString(), Student.class);
-        String key = MD5EncoderUtil.encode(student.getNo() + student.getRealName());
-        switch (channel){
-            case Const.REDIS_CHANNEL_ADD_STUDENT:
-            case Const.REDIS_CHANNEL_UPDATE_STUDENT:
-                String studentStr = JSONObject.toJSONString(student);
-                redisService.set(key, studentStr);
-                break;
-            case Const.REDIS_CHANNEL_DEL_STUDENT:
-                redisService.del(key);
-                break;
+        log.info("channel:"+channel+",object:"+object);
+        try {
+            Student student = JSON.parseObject(object.toString(), Student.class);
+            String key = MD5EncoderUtil.encode(student.getNo() + student.getRealName());
+            switch (channel){
+                case Const.REDIS_CHANNEL_ADD_STUDENT:
+                case Const.REDIS_CHANNEL_UPDATE_STUDENT:
+                    String studentStr = JSONObject.toJSONString(student);
+                    redisService.set(key, studentStr);
+                    break;
+                case Const.REDIS_CHANNEL_DEL_STUDENT:
+                    redisService.del(key);
+                    break;
+            }
+        }catch (Exception e){
+            log.error("channel:"+channel+",object:"+object+",error {}", e);
         }
     }
 

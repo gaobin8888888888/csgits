@@ -47,6 +47,9 @@ public class AdminController {
     @Autowired
     private CreateRecordService createRecordService;
 
+    @Autowired
+    private SchoolService schoolService;
+
     @RequestMapping("/admin/toAdminIndex")
     public ModelAndView toIndex(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/admin/index");
@@ -211,6 +214,8 @@ public class AdminController {
     @RequestMapping("/admin/toAddTeacherPage")
     public ModelAndView toAddTeacherPage(){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc3");
+        List<School> schoolList = schoolService.selectAll();
+        modelAndView.addObject("schoolList", schoolList);
         return modelAndView;
     }
 

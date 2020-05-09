@@ -271,7 +271,7 @@
                           <form action="/admin/recruit/update">
                             <td><span th:text="${recruit.id}"></span></td>
                             <td><input class="form-control" type="hidden" id="id" name="id" th:value="${recruit.id}"><input class="form-control" name="recruitName" id="recruitName" th:value="${recruit.name}" /></td>
-                            <td><input name="description" id="description" class="form-control" th:value="${recruit.description}"/></td>
+                            <td><textarea name="description" id="description" class="form-control" th:text="${recruit.description}" rows="4"/></td>
                             <td><input name="url" id="url" class="form-control" th:value="${recruit.url}" /></td>
                             <td>
                               <span th:if="${recruit.status} eq '0'">正在招聘</span>

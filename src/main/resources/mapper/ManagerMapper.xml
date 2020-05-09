@@ -23,7 +23,7 @@
     </resultMap>
 
     <sql id="BASEFIELD">
-        id, no, real_name, password, image_path, tel, college, fine, description, create_time, school_id
+        manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.create_time, manager.school_id
     </sql>
 
     <sql id="TOTALFIELD">

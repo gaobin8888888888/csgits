@@ -23,7 +23,7 @@ public class Const {
     /**
      * 上传图片格式
      */
-    public static final String IMAGE_KINDS = "jpg,png";
+    public static final String IMAGE_KINDS = "jpg,png,jpeg";
 
     /**
      * 图片虚拟路径
