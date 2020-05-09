@@ -2,11 +2,14 @@ package com.sts.csgits.inc;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.School;
 import com.sts.csgits.entity.Student;
+import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.service.RedisService;
 import com.sts.csgits.service.SchoolService;
 import com.sts.csgits.service.StudentService;
+import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.MD5EncoderUtil;
 import com.sts.csgits.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -29,17 +32,25 @@ public class LocalCache {
 
     @Autowired
     private SchoolService schoolService;
+
     @Autowired
     private StudentService studentService;
+
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private ManagerService managerService;
+
     public static Map<Integer, School> schoolMap = new ConcurrentHashMap<>();
+
+    public static Map<String, Manager> managerMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
         log.info("LocalCache init start...");
         initSchool();
+        initManager();
         initStudent();
         log.info("LocalCache init over...");
     }
@@ -76,6 +87,46 @@ public class LocalCache {
             }
         }catch (Exception e){
             log.info("LocalCache getSchool error {}", e);
+            return null;
+        }
+    }
+
+    /**
+     * 初始化管理员信息
+     */
+    public void initManager(){
+        try {
+            Map<String, Manager> managerConcurrentHashMap = new ConcurrentHashMap<>();
+            List<Manager> managers = managerService.selectAll();
+            for (Manager manager : managers){
+                managerConcurrentHashMap.put(manager.getNo(), manager);
+            }
+            managerMap = managerConcurrentHashMap;
+            log.info("init manager "+managers.size()+"条数据");
+        }catch (Exception e){
+            log.error("initManager error {}", e);
+        }
+    }
+
+    public Manager getManager(String no){
+        try {
+            Manager manager = managerMap.get(no);
+            if (manager != null){
+                return manager;
+            }else {
+                Condition condition = Condition.newInstance();
+                condition.addMapCondition("no", no);
+                List<Manager> managers = managerService.selectByCondition(condition);
+                if (managers == null || managers.size() <= 0){
+                    manager = new Manager();
+                }else {
+                    manager = managers.get(0);
+                }
+                managerMap.put(no, manager);
+                return manager;
+            }
+        }catch (Exception e){
+            log.info("LocalCache getManager error {}", e);
             return null;
         }
     }

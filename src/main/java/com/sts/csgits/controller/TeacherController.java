@@ -3,6 +3,7 @@ package com.sts.csgits.controller;
 import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.School;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.service.RedisService;
 import com.sts.csgits.service.SchoolService;
@@ -39,6 +40,9 @@ public class TeacherController {
 
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private LocalCache localCache;
 
     @RequestMapping("/add")
     public ModelAndView add(String teacherNo, String teacherName, MultipartFile image, String tel, Integer schoolId, String college){
@@ -91,7 +95,7 @@ public class TeacherController {
             int insert = managerService.insert(manager);
             if (insert > 0){
                 pickUtil.addOrDescPeopleNum(schoolId, Const.ADD_NUM);
-
+                localCache.initManager();
                 modelAndView = new ModelAndView("redirect:/admin/teacher/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;
@@ -117,7 +121,7 @@ public class TeacherController {
                 int delete = managerService.deleteByPrimaryKey(id);
                 if (delete > 0){
                     pickUtil.addOrDescPeopleNum(manager.getSchoolId(), Const.DESC_NUM);
-
+                    localCache.initManager();
                     return JSONResult.successInstance("删除成功");
                 }
             }
@@ -145,6 +149,7 @@ public class TeacherController {
             manager.setId(id);
             int update = managerService.updateByPrimaryKey(manager);
             if (update > 0){
+                localCache.initManager();
                 return modelAndView.addObject("message", "更新成功");
             }
         }catch (Exception e){
@@ -161,6 +166,7 @@ public class TeacherController {
             manager.setId(id);
             int update = managerService.updateByPrimaryKey(manager);
             if (update > 0){
+                localCache.initManager();
                 return JSONResult.successInstance("修改是否优秀教师成功");
             }
         }catch (Exception e){
@@ -233,6 +239,4 @@ public class TeacherController {
         }
         return modelAndView;
     }
-
-
 }

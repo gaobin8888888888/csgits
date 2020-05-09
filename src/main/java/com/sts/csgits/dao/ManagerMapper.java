@@ -30,4 +30,11 @@ public interface ManagerMapper extends BaseMapper<Manager, Integer> {
      * @return
      */
     Integer selectNumByCondition(Condition condition);
+
+    /**
+     * 根据条件查询数据
+     * @param condition
+     * @return
+     */
+    List<Manager> selectByCondition(Condition condition);
 }

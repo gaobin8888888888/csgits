@@ -1,6 +1,7 @@
 package com.sts.csgits.service;
 
 import com.sts.csgits.entity.Manager;
+import com.sts.csgits.utils.Condition;
 
 import java.util.List;
 
@@ -23,4 +24,11 @@ public interface ManagerService extends BaseService<Manager, Integer> {
      * @return
      */
     public List<Manager> selectByManager(Manager manager);
+
+    /**
+     * 根据条件查询数据
+     * @param condition
+     * @return
+     */
+    List<Manager> selectByCondition(Condition condition);
 }

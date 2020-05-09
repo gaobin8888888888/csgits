@@ -6,6 +6,7 @@ import com.sts.csgits.entity.Manager;
 import com.sts.csgits.entity.School;
 import com.sts.csgits.service.ManagerService;
 import com.sts.csgits.service.SchoolService;
+import com.sts.csgits.utils.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,10 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, Integer> implem
     @Override
     public List<Manager> selectByManager(Manager manager){
         return managerMapper.selectByManager(manager);
+    }
+
+    @Override
+    public List<Manager> selectByCondition(Condition condition){
+        return managerMapper.selectByCondition(condition);
     }
 }

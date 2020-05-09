@@ -13,21 +13,10 @@
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="school_id" property="schoolId" jdbcType="INTEGER" />
-        <association property="school" javaType="com.sts.csgits.entity.School">
-            <id column="id" property="id" jdbcType="INTEGER"/>
-            <result column="name" property="name" jdbcType="VARCHAR"/>
-            <result column="description" property="description" jdbcType="VARCHAR"/>
-            <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
-            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        </association>
     </resultMap>
 
     <sql id="BASEFIELD">
         manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.create_time, manager.school_id
-    </sql>
-
-    <sql id="TOTALFIELD">
-        manager.id, manager.no, manager.real_name, manager.password, manager.image_path, manager.tel, manager.college, manager.fine, manager.description, manager.create_time, manager.school_id, school.id, school.name, school.description, school.image_path, school.create_time
     </sql>
 
     <insert id="insert" parameterType="com.sts.csgits.entity.Manager" useGeneratedKeys="true"
@@ -134,17 +123,15 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from manager
-        left join school on manager.school_id = school.id
         where manager.id = #{id, jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from manager
-        left join school on manager.school_id = school.id
         order by manager.create_time desc
     </select>
     
@@ -164,9 +151,8 @@
 
     <select id="selectByManager" parameterType="com.sts.csgits.entity.Manager" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from manager
-        left join school on manager.school_id = school.id
         <where>
             <if test="no != null">
                 and no = #{no, jdbcType=VARCHAR}
@@ -233,7 +219,7 @@
 
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
         select
-        <include refid="TOTALFIELD"/>
+        <include refid="BASEFIELD"/>
         from manager
         <where>
             <if test="mapConditions.no != null">

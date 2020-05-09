@@ -37,6 +37,11 @@ public class LoginController {
     @Autowired
     private SchoolService schoolService;
 
+    @RequestMapping("")
+    public String to(){
+        return "redirect:/user/loginPage";
+    }
+
     /**
      * 管理员跳转到登录页面
      * @return
@@ -93,9 +98,8 @@ public class LoginController {
                 Manager manager = null;
                 manager = new Manager();
                 manager.setNo(username);
-                manager.setPassword(MD5EncoderUtil.encode(password));
-                manager = managerService.selectByNoAndPassword(manager);
-                if (manager != null){
+                manager = localCache.getManager(username);
+                if (manager != null && MD5EncoderUtil.encode(password).equals(manager.getPassword())){
                     if (manager.getSchoolId() != null){
                         School school = schoolService.selectByPrimaryKey(manager.getSchoolId());
                         manager.setSchool(school);

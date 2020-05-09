@@ -2,6 +2,7 @@ package com.sts.csgits.controller;
 
 import com.sts.csgits.entity.School;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.CreateTableService;
 import com.sts.csgits.service.SchoolService;
 import com.sts.csgits.utils.JSONResult;
@@ -33,6 +34,9 @@ public class SchoolController {
 
     @Autowired
     private CreateTableService createTableService;
+
+    @Autowired
+    private LocalCache localCache;
 
     /**
      * 添加学校信息
@@ -78,7 +82,7 @@ public class SchoolController {
                 //添加该学校的学生表
                 school = schoolService.selectOne();
                 createTableService.createStudentTable(school.getId());
-
+                localCache.initSchool();
                 modelAndView = new ModelAndView("redirect:/admin/school/selectAll");
                 modelAndView.addObject("message", "添加成功");
                 return modelAndView;
@@ -101,6 +105,7 @@ public class SchoolController {
         try {
             int delete = schoolService.deleteByPrimaryKey(id);
             if (delete > 0){
+                localCache.initSchool();
                 return JSONResult.successInstance("删除成功");
             }
         }catch (Exception e){
@@ -127,6 +132,7 @@ public class SchoolController {
             school.setId(id);
             int update = schoolService.updateByPrimaryKey(school);
             if (update > 0){
+                localCache.initSchool();
                 return modelAndView.addObject("message", "更新成功");
             }
         }catch (Exception e){

@@ -139,9 +139,9 @@
 			</div>
 		</div>
 
-		<div class="box21" id="recruitShow">
+		<div class="box21" id="recruitShow" style="height: 900px;">
 			<div class="content-box">
-				<div class="title-box">
+				<div class="title-box" style="margin-bottom:-60px;">
 					<div class="title-name">
 						<span>$最新招聘$</span><br>
 					</div>
@@ -152,16 +152,16 @@
 				<div class="modal-body">
 					<table class="table table-striped" border="0">
 						<tr>
-							<th width="20%">公司名称</th>
-							<th width="40%">公司描述</th>
-							<th width="25%">招聘官网</th>
-							<th width="15%">状态</th>
+							<th width="10%">公司名称</th>
+							<th width="70%">公司描述</th>
+							<th width="15%">招聘官网</th>
+							<th width="5%">状态</th>
 						</tr>
 						<div th:each="recruit:${recruitList}">
 							<tr>
 								<td><span th:text="${recruit.name}"></span></td>
 								<td><span th:text="${recruit.description}"></span> </td>
-								<td><span th:text="${recruit.url}"></span> </td>
+								<td style="word-break:break-all"><a th:href="${recruit.url}"><span th:text="${recruit.url}"></span></a> </td>
 								<td>
 									<span th:if="${recruit.status} eq '0'">正在招聘</span>
 									<span th:if="${recruit.status} eq '1'">已结束</span>
@@ -182,8 +182,8 @@
 						<!--<a href="/user/cus/toNewsList">查看更多——></a>-->
 					<!--</div>-->
 				</div>
-				<div class="content">
-					<div class="doc" th:each="goods:${goodsList}">
+				<div class="content" style="width: 100%;">
+					<div class="doc" style="width: 17%;" th:each="goods:${goodsList}">
 						<a href="" data-toggle="modal" data-target="#toRedeemPage" th:onclick="'javascript:setValue('+${goods.id}+')'">
 							<div><img th:src="${goods.imagePath}" alt=""></div>
 							<div class="detail"><b><p th:text="${goods.name}" style="font-size: 16px" /></b>
@@ -297,22 +297,22 @@
 	<div class="modal fade" id="toMoreRecruit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" >
 		    <div class="modal-content">
-		        <div class="modal-header">
+		        <div class="modal-header" style="margin-bottom: -80px;">
 		            <h3>更多招聘信息</h3>
 		        </div>
 		        <div class="modal-body">
 					<table class="table table-striped" border="0">
 						<tr>
-							<th width="20%">公司名称</th>
-							<th width="40%">公司描述</th>
-							<th width="25%">招聘官网</th>
-							<th width="15%">状态</th>
+							<th width="10%">公司名称</th>
+							<th width="70%">公司描述</th>
+							<th width="15%">招聘官网</th>
+							<th width="5%">状态</th>
 						</tr>
 						<div th:each="recruit:${recruitList}">
 							<tr>
 								<td><span th:text="${recruit.name}"></span></td>
 								<td><span th:text="${recruit.description}"></span> </td>
-								<td><span th:text="${recruit.url}"></span> </td>
+								<td style="word-break:break-all"><span th:text="${recruit.url}"></span> </td>
 								<td>
 									<span th:if="${recruit.status} eq '0'">正在招聘</span>
 									<span th:if="${recruit.status} eq '1'">已结束</span>
