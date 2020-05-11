@@ -42,7 +42,12 @@ public interface StudentMapper extends BaseMapper<Student, Integer> {
     /**
      * 根据学校id与sole查询学生信息
      */
-    Student selectOneStudentBySole(@Param("schoolId") Integer schoolId, @Param("sole") String sole);
+    public Student selectOneStudentBySole(@Param("schoolId") Integer schoolId, @Param("sole") String sole);
+
+    /**
+     * 根据学校id与学生id查询学生信息
+     */
+    public Student selectOneStudentById(@Param("schoolId") Integer schoolId, @Param("id") Integer id);
 
     /**
      * 根据学生信息查询

@@ -1,7 +1,11 @@
 package com.sts.csgits.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sts.csgits.entity.*;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.*;
 import com.sts.csgits.utils.*;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +53,9 @@ public class UserController {
     @Autowired
     private WriteRecordService writeRecordService;
 
+    @Autowired
+    private LocalCache localCache;
+
     @RequestMapping("/student/toIndex")
     public ModelAndView toStudentIndex(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/student/index");
@@ -66,20 +73,12 @@ public class UserController {
             manager.setFine(true);
             manager.setSchoolId(schoolId);
             List<Manager> teacherList = managerService.selectByManager(manager);
-            modelAndView.addObject("teacherAllList", teacherList);
-            if (teacherList != null && teacherList.size() > 5){
-                teacherList = teacherList.subList(0, 5);
-            }
             modelAndView.addObject("teacherList", teacherList);
 
             Student student = new Student();
             student.setSchoolId(schoolId);
             student.setFine(true);
             List<Student> studentList = studentService.selectByStudent(student);
-            modelAndView.addObject("studentAllList", studentList);
-            if (studentList != null && studentList.size() > 5){
-                studentList = studentList.subList(0, 5);
-            }
             modelAndView.addObject("studentList", studentList);
 
 
@@ -94,10 +93,10 @@ public class UserController {
 
             Goods goods = new Goods();
             List<Goods> goodsList = goodsService.selectByGoods(goods);
-            modelAndView.addObject("goodsAllList", goodsList);
-            if (goodsList != null && goodsList.size() > 5){
-                goodsList = goodsList.subList(0, 5);
-            }
+//            modelAndView.addObject("goodsAllList", goodsList);
+//            if (goodsList != null && goodsList.size() > 5){
+//                goodsList = goodsList.subList(0, 5);
+//            }
             modelAndView.addObject("goodsList", goodsList);
 
             student = (Student) request.getSession().getAttribute("student");
@@ -176,6 +175,7 @@ public class UserController {
 
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student);
                 request.getSession().setAttribute("imagePath", student.getImagePath());
                 return JSONResult.successInstance("更新成功");
             }
@@ -201,21 +201,12 @@ public class UserController {
             student.setPassword(MD5EncoderUtil.encode(newpwd));
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student);
                 return JSONResult.successInstance("密码更新成功");
             }
         }catch (Exception e){
             log.error("updateStudentPasswordMsg error {}", e);
         }
         return JSONResult.errorInstance("密码更新失败，请重试");
-    }
-
-    public static void main(String[] args) {
-        Condition condition = Condition.newInstance();
-        condition.addMapCondition("app", "222");
-        System.out.println(condition.getConditions());
-
-        condition = Condition.newInstance();
-        condition.addMapCondition("aaaa", "222");
-        System.out.println(condition.getConditions());
     }
 }

@@ -101,14 +101,16 @@
 				</div>
 				<div class="content">
 					<div class="doc" th:each="teacher:${teacherList}">
-						<div><img th:src="${teacher.imagePath}" alt=""></div>
-						<div class="detail"><b><p th:text="${teacher.realName}+'---'+${teacher.college}" style="font-size: 16px" /></b></div>
-						<div class="detail2" th:if="${teacher.description} != null">
-							<p style="font-size: 15px" th:text="'个人描述：'+${teacher.description}"></p>
-						</div>
-						<div class="detail2" th:if="${teacher.description} == null">
-							<p style="font-size: 15px">暂无描述</p>
-						</div>
+						<a href="" data-toggle="modal" data-target="#toShowTeacherPage" th:onclick="'javascript:setTeacherValue('+${teacherStat.index}+')'">
+							<div><img th:src="${teacher.imagePath}" alt=""></div>
+							<div class="detail"><b><p th:text="${teacher.realName}+'---'+${teacher.college}" style="font-size: 16px" /></b></div>
+							<div class="detail2" th:if="${teacher.description} != null">
+								<p style="font-size: 15px" th:text="'个人描述：'+${teacher.description}"></p>
+							</div>
+							<div class="detail2" th:if="${teacher.description} == null">
+								<p style="font-size: 15px">暂无描述</p>
+							</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -126,14 +128,16 @@
 				</div>
 				<div class="content">
 					<div class="doc" th:each="student:${studentList}">
-						<div><img th:src="${student.imagePath}" alt=""></div>
-						<div class="detail"><b><p th:text="${student.realName}+'---'+${student.college}" style="font-size: 16px" /></b></div>
-						<div class="detail2" th:if="${student.description} != null">
-							<p style="font-size: 15px" th:text="'个人描述：'+${student.description}"></p>
-						</div>
-						<div class="detail2" th:if="${student.description} == null">
-							<p style="font-size: 15px">暂无描述</p>
-						</div>
+						<a href="" data-toggle="modal" data-target="#toShowStudentPage" th:onclick="'javascript:setStudentValue('+${studentStat.index}+')'">
+							<div><img th:src="${student.imagePath}" alt=""></div>
+							<div class="detail"><b><p th:text="${student.realName}+'---'+${student.college}" style="font-size: 16px" /></b></div>
+							<div class="detail2" th:if="${student.description} != null">
+								<p style="font-size: 15px" th:text="'个人描述：'+${student.description}"></p>
+							</div>
+							<div class="detail2" th:if="${student.description} == null">
+								<p style="font-size: 15px">暂无描述</p>
+							</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -172,7 +176,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="box2" id="goodShow">
+		<div class="box2" id="goodShow" style="height: 880px;">
 			<div class="content-box">
 				<div class="title-box">
 					<div class="title-name">
@@ -183,7 +187,7 @@
 					<!--</div>-->
 				</div>
 				<div class="content" style="width: 100%;">
-					<div class="doc" style="width: 17%;" th:each="goods:${goodsList}">
+					<div class="doc" style="width: 17%;margin-bottom: 20px;" th:each="goods:${goodsList}">
 						<a href="" data-toggle="modal" data-target="#toRedeemPage" th:onclick="'javascript:setValue('+${goods.id}+')'">
 							<div><img th:src="${goods.imagePath}" alt=""></div>
 							<div class="detail"><b><p th:text="${goods.name}" style="font-size: 16px" /></b>
@@ -586,8 +590,8 @@
             });
         });
 
-        $('#toRedeemPage').modal("hide");
         function setValue(id) {
+            $('#toRedeemPage').modal("hide");
             console.log(id);
 			$("#toRedeemId").val(id);
         }
@@ -608,7 +612,140 @@
 							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 						</div>
 					</form>
+				</div>
+		   </div>
+		</div>
 	</div>
+
+	<script type="text/javascript" th:inline="javascript">
+        function setTeacherValue(index) {
+            $('#toShowTeacherPage').modal("hide");
+            var teacherList = [[${teacherList}]];
+            var teacher;
+            for (var i = 0; i < teacherList.length; i++){
+                if (i == index){
+                    teacher = teacherList[i];
+                    break;
+				}
+			}
+            var name = teacher.realName;
+            $("#teacherName").val(name);
+            $("#teacherNo").val(teacher.no);
+            $("#teacherImagePath").attr('src', teacher.imagePath);
+            $('#teacherCollege').val(teacher.college);
+            $('#teacherTel').val(teacher.tel);
+            $('#teacherDescription').val(teacher.description);
+        }
+	</script>
+
+	<div class="modal fade" id="toShowTeacherPage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog" style="width: 400px;margin: 300px auto">
+		    <div class="modal-content" style="width: 400px;">
+		        <div class="modal-header">
+		            <h3>优秀教师详细信息</h3>
+		        </div>
+				<div class="card-body1">
+
+						<div class="form-group col-md-12">
+							<label>教师姓名</label>
+							<input type="text" class="form-control" id="teacherName" disabled="disabled"/>
+						</div>
+						<div class="form-group col-md-12">
+							<label>教师编号</label>
+							<input type="text" class="form-control" id="teacherNo" disabled="disabled"/>
+						</div>
+						<br><br><br><br>
+						<div class="edit-avatar form-group col-md-12">
+							<img id="teacherImagePath" alt="..." class="img-avatar">
+							<div class="avatar-divider"></div>
+						</div>
+						<br><br><br><br>
+						<div class="form-group col-md-12">
+							<label>所在学院</label>
+							<input type="text" class="form-control" id="teacherCollege" disabled="disabled"/>
+						</div>
+						<div class="form-group col-md-12">
+							<label>联系方式</label>
+							<input type="text" class="form-control" id="teacherTel" disabled="disabled"/>
+						</div>
+						<div class="form-group col-md-12">
+							<label>教师描述</label>
+							<textarea class="form-control" id="teacherDescription" rows="5" placeholder="个人描述" disabled="disabled"></textarea>
+						</div>
+						<div class="form-group col-md-12" style="align-content: center;">
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+						</div>
+
+				</div>
+		   </div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:inline="javascript">
+        function setStudentValue(index) {
+            $('#toShowStudentPage').modal("hide");
+            var studentList = [[${studentList}]];
+            var student;
+            for (var i = 0; i < studentList.length; i++){
+                if (i == index){
+                    student = studentList[i];
+                    break;
+                }
+            }
+            var name = student.realName;
+            $("#studentName").val(name);
+            $("#studentNo").val(student.no);
+            $("#studentImagePath").attr('src', student.imagePath);
+            $('#studentCollege').val(student.college);
+            $('#studentTel').val(student.tel);
+            $('#studentDescription').val(student.description);
+            $('#studentClassNo').val(student.classNo);
+        }
+	</script>
+
+	<div class="modal fade" id="toShowStudentPage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog" style="width: 400px;margin: 300px auto">
+		    <div class="modal-content" style="width: 400px;">
+		        <div class="modal-header">
+		            <h3>优秀学生详细信息</h3>
+		        </div>
+				<div class="card-body1">
+
+					<div class="form-group col-md-12">
+						<label>学生姓名</label>
+						<input type="text" class="form-control" id="studentName" disabled="disabled"/>
+					</div>
+					<div class="form-group col-md-12">
+						<label>学生学号</label>
+						<input type="text" class="form-control" id="studentNo" disabled="disabled"/>
+					</div>
+					<br><br><br><br>
+					<div class="edit-avatar form-group col-md-12">
+						<img id="studentImagePath" alt="..." class="img-avatar">
+						<div class="avatar-divider"></div>
+					</div>
+					<br><br><br><br>
+					<div class="form-group col-md-12">
+						<label>所在学院</label>
+						<input type="text" class="form-control" id="studentCollege" disabled="disabled"/>
+					</div>
+					<div class="form-group col-md-12">
+						<label>所在班级</label>
+						<input type="text" class="form-control" id="studentClassNo" disabled="disabled"/>
+					</div>
+					<div class="form-group col-md-12">
+						<label>联系方式</label>
+						<input type="text" class="form-control" id="studentTel" disabled="disabled"/>
+					</div>
+					<div class="form-group col-md-12">
+						<label>教师描述</label>
+						<textarea class="form-control" id="studentDescription" rows="5" placeholder="个人描述" disabled="disabled"></textarea>
+					</div>
+					<div class="form-group col-md-12" style="align-content: center;">
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+					</div>
+
+				</div>
 		   </div>
 	</div>
 	</div>

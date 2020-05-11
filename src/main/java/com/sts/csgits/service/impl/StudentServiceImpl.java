@@ -35,6 +35,11 @@ public class StudentServiceImpl extends BaseServiceImpl<Student, Integer> implem
     }
 
     @Override
+    public Student selectOneStudentById(Integer schoolId, Integer id){
+        return studentMapper.selectOneStudentById(schoolId, id);
+    }
+
+    @Override
     public List<Student> selectByStudent(Student student) {
         return studentMapper.selectByStudent(student);
     }

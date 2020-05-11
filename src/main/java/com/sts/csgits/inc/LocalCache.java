@@ -168,12 +168,11 @@ public class LocalCache {
     /**
      * 对新增更新删除的学生信息重载
      * @param channel
-     * @param object
+     * @param student
      */
-    public void reloadStudentToRedis(String channel, Object object) {
-        log.info("channel:"+channel+",object:"+object);
+    public void reloadStudentToRedis(String channel, Student student) {
+        log.info("channel:"+channel+",student:"+student);
         try {
-            Student student = JSON.parseObject(object.toString(), Student.class);
             String key = MD5EncoderUtil.encode(student.getNo() + student.getRealName());
             switch (channel){
                 case Const.REDIS_CHANNEL_ADD_STUDENT:
@@ -186,7 +185,7 @@ public class LocalCache {
                     break;
             }
         }catch (Exception e){
-            log.error("channel:"+channel+",object:"+object+",error {}", e);
+            log.error("channel:"+channel+",student:"+student+",error {}", e);
         }
     }
 
@@ -207,7 +206,8 @@ public class LocalCache {
             case Const.REDIS_CHANNEL_ADD_STUDENT:
             case Const.REDIS_CHANNEL_DEL_STUDENT:
             case Const.REDIS_CHANNEL_UPDATE_STUDENT:
-                reloadStudentToRedis(channel, object);
+                Student student = (Student) object;
+                reloadStudentToRedis(channel, student);
                 break;
             default:
                 log.error("channel {}", channel);

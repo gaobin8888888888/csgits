@@ -42,7 +42,7 @@ public class CountDataTask {
     /**
      * 每隔10分钟统计学生填写的信息
      */
-    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     @SchedulerLock(name = "CountDataTask.countWriteRecordData", lockAtLeastFor = 10 * 60 * 1000)
     public void countWriteRecordData(){
         writeRecordService.countWriteRecordData();

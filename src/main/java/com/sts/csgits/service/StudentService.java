@@ -32,6 +32,11 @@ public interface StudentService extends BaseService<Student, Integer> {
     Student selectOneStudentBySole(Integer schoolId, String sole);
 
     /**
+     * 根据学校id与学生id查询学生信息
+     */
+    Student selectOneStudentById(Integer schoolId, Integer id);
+
+    /**
      * 根据学生信息查询
      * @param student
      * @return

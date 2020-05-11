@@ -113,6 +113,8 @@ public class StudentController {
             student.setId(id);
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                Student student1 = studentService.selectOneStudentById(schoolId, id);
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student1);
                 return modelAndView.addObject("message", "更新成功");
             }
         }catch (Exception e){
@@ -132,6 +134,8 @@ public class StudentController {
             student.setFine(fine);
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                Student student1 = studentService.selectOneStudentById(schoolId, id);
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student1);
                 return JSONResult.successInstance("更新学生信息成功");
             }
         }catch (Exception e){
@@ -151,6 +155,8 @@ public class StudentController {
             student.setGraduate(graduate);
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                Student student1 = studentService.selectOneStudentById(schoolId, id);
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student1);
                 return JSONResult.successInstance("更新学生信息成功");
             }
         }catch (Exception e){
@@ -164,10 +170,11 @@ public class StudentController {
     delete(@PathVariable("id") Integer id, HttpServletRequest request){
         try {
             Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
+            Student student1 = studentService.selectOneStudentById(schoolId, id);
             int update = studentService.delete(schoolId, id);
             if (update > 0){
                 pickUtil.addOrDescPeopleNum(schoolId, Const.DESC_NUM);
-
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_DEL_STUDENT, student1);
                 return JSONResult.successInstance("删除学生信息成功");
             }
         }catch (Exception e){
@@ -195,6 +202,8 @@ public class StudentController {
             student.setAchievement(newParam.toJSONString());
             int update = studentService.updateByPrimaryKey(student);
             if (update > 0){
+                Student student1 = studentService.selectOneStudentById(schoolId, id);
+                localCache.reloadStudentToRedis(Const.REDIS_CHANNEL_UPDATE_STUDENT, student1);
                 return JSONResult.successInstance("更新成功");
             }
         }catch (Exception e){

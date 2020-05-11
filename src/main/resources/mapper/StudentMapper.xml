@@ -180,6 +180,13 @@
         where sole = #{sole, jdbcType=VARCHAR}
     </select>
 
+    <select id="selectOneStudentById" resultMap="BaseResultMap">
+        select
+        <include refid="BASEFIELD"/>
+        from student_${schoolId}
+        where id = #{id, jdbcType=INTEGER}
+    </select>
+
     <select id="selectByStudent" parameterType="com.sts.csgits.entity.Student" resultMap="BaseResultMap">
         select
         <include refid="BASEFIELD"/>
