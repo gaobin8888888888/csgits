@@ -214,7 +214,6 @@
                 and college = #{mapConditions.college, jdbcType=VARCHAR}
             </if>
         </where>
-        order by create_time desc
     </select>
 
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
@@ -247,6 +246,6 @@
                 and college = #{mapConditions.college, jdbcType=VARCHAR}
             </if>
         </where>
-        order by create_time desc
+        order by manager.create_time desc
     </select>
 </mapper>

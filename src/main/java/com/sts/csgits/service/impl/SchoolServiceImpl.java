@@ -61,7 +61,7 @@ public class SchoolServiceImpl extends BaseServiceImpl<School, Integer> implemen
             if (schoolList != null && schoolList.size() > 0){
                 for (School school : schoolList){
                     Condition condition = Condition.newInstance();
-                    condition.addCondition("schoolId", school.getId());
+                    condition.addMapCondition("schoolId", school.getId());
                     Integer teacherNum = managerMapper.selectNumByCondition(condition);
                     school.setTeacherNum(teacherNum);
 
@@ -73,6 +73,7 @@ public class SchoolServiceImpl extends BaseServiceImpl<School, Integer> implemen
                     school.setSchoolNum(stuNum);
                     school.setTotalNum(totalNum + teacherNum);
 
+                    schoolMapper.updateByPrimaryKey(school);
                 }
             }
         }catch (Exception e){

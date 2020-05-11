@@ -24,7 +24,7 @@ public class CountDataTask {
     /**
      * 每天01:00:00统计学校中的人数信息
      */
-    @Scheduled(cron = "0 */1 * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     @SchedulerLock(name = "CountDataTask.countSchoolData", lockAtLeastFor = 10 * 60 * 1000)
     public void countSchoolData(){
         schoolService.updateSchoolNumMsg();
@@ -45,6 +45,6 @@ public class CountDataTask {
     @Scheduled(cron = "0 */10 * * * ?")
     @SchedulerLock(name = "CountDataTask.countWriteRecordData", lockAtLeastFor = 10 * 60 * 1000)
     public void countWriteRecordData(){
-        writeRecordService.countWriteRecordData();
+        //writeRecordService.countWriteRecordData();
     }
 }
