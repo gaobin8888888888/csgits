@@ -108,6 +108,10 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_profile");
         try {
             Manager manager = managerService.selectByPrimaryKey(id);
+            if (manager.getSchoolId() != null){
+                School school = schoolService.selectByPrimaryKey(manager.getSchoolId());
+                manager.setSchool(school);
+            }
             modelAndView.addObject("manager", manager);
             return modelAndView;
         }catch (Exception e){

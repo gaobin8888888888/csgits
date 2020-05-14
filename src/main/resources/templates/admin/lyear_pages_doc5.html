@@ -247,8 +247,8 @@
                     <thead align="center">
                       <tr align="center">
                         <th>编号</th>
-                        <th align="center">兑换学生唯一id</th>
-                        <th align="center">物品id</th>
+                        <th align="center">兑换学生信息</th>
+                        <th align="center">物品名称</th>
                         <th align="center">状态</th>
                         <th align="center">创建时间</th>
                         <th>操作</th>
@@ -257,8 +257,8 @@
                     <tbody>
                       <tr th:each="redeem:${redeemList}">
                         <td><span th:text="${redeem.id}"/><input type="hidden" name="id" th:value="${redeem.id}"></td>
-                        <td><span th:text="${redeem.sole}"></span></td>
-                        <td><span th:text="${redeem.goodId}"></span></td>
+                        <td><span th:text="${redeem.student.no} +''+${redeem.student.realName}"></span></td>
+                        <td><span th:text="${redeem.goods.name}"></span></td>
                         <td>
                           <span th:if="${redeem.status} eq '1'">正在处理</span>
                           <span th:if="${redeem.status} eq '2'">兑换完成</span>

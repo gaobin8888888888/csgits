@@ -26,4 +26,6 @@ public class Redeem {
 
     private Goods goods;
 
+    private Student student;
+
 }

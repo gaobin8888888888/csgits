@@ -4,6 +4,7 @@ import com.sts.csgits.entity.Goods;
 import com.sts.csgits.entity.Redeem;
 import com.sts.csgits.entity.Student;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.GoodsService;
 import com.sts.csgits.service.RedeemService;
 import com.sts.csgits.service.StudentService;
@@ -35,6 +36,9 @@ public class RedeemController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private LocalCache localCache;
 
     @RequestMapping("/student/redeem/add")
     public @ResponseBody String add(HttpServletRequest request, Integer toRedeemId){
@@ -89,6 +93,12 @@ public class RedeemController {
         List<Redeem> redeemList = null;
         try {
             redeemList = redeemService.selectAll();
+            for (Redeem redeem : redeemList){
+                Goods goods = goodsService.selectByPrimaryKey(redeem.getGoodId());
+                redeem.setGoods(goods);
+                Student student = localCache.getStudentBySole(redeem.getSole());
+                redeem.setStudent(student);
+            }
             modelAndView.addObject("redeemList", redeemList);
         }catch (Exception e){
             log.info("RedeemController selectAll error {}", e);
