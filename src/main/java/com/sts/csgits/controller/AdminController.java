@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sts.csgits.entity.*;
 import com.sts.csgits.inc.Const;
+import com.sts.csgits.inc.LocalCache;
 import com.sts.csgits.service.*;
 import com.sts.csgits.utils.Condition;
 import com.sts.csgits.utils.JSONResult;
@@ -49,6 +50,9 @@ public class AdminController {
 
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private LocalCache localCache;
 
     @RequestMapping("/admin/toAdminIndex")
     public ModelAndView toIndex(HttpServletRequest request){
@@ -215,10 +219,26 @@ public class AdminController {
         return modelAndView;
     }
 
+    @RequestMapping("/admin/toUpdateSchoolCollegePage")
+    public ModelAndView toUpdateSchoolCollegePage(Integer id){
+        ModelAndView modelAndView = new ModelAndView("/admin/updateCollegePage");
+        School school = localCache.getSchool(id);
+        modelAndView.addObject("updateSchool", school);
+        return modelAndView;
+    }
+
     @RequestMapping("/admin/toAddTeacherPage")
     public ModelAndView toAddTeacherPage(){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc3");
         List<School> schoolList = schoolService.selectAll();
+        for (School school : schoolList){
+            if (StringUtils.isNotEmpty(school.getColleges())){
+                String[] tags = school.getColleges().split(",");
+                school.setTags(tags);
+            }else {
+                school.setTags(new String[1]);
+            }
+        }
         modelAndView.addObject("schoolList", schoolList);
         return modelAndView;
     }
@@ -242,8 +262,15 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/toAddStudentPage")
-    public ModelAndView toAddStudentPage(){
+    public ModelAndView toAddStudentPage(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/admin/lyear_pages_add_doc8");
+        Integer schoolId = (Integer) request.getSession().getAttribute("schoolId");
+        School school = localCache.getSchool(schoolId);
+        String[] tags = new String[1];
+        if (school != null && StringUtils.isNotEmpty(school.getColleges())){
+            tags = school.getColleges().split(",");
+        }
+        modelAndView.addObject("tags", tags);
         return modelAndView;
     }
 

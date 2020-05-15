@@ -257,7 +257,7 @@
                         <th>操作</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="demo">
                       <tr th:each="school:${schoolList}" align="center" valign="center">
                         <form action="/admin/school/update">
                           <td><span th:text="${school.id}"></span></td>
@@ -271,12 +271,17 @@
                             <div class="btn-group">
                               <input class="btn btn-xs btn-default" type="submit" value="确认修改" title="保存编辑内容" data-toggle="tooltip" />
                               <input class="btn btn-xs btn-default" type="submit" value="删除" th:onclick="'javascript:deleteSchoolById('+${school.id}+')'" title="删除" data-toggle="tooltip" />
+                              <input type="button" value="学院修改" class="btn btn-xs btn-default" th:onclick="'javascript:toUpdateSchoolCollegePage('+${school.id}+')'" title="学院修改" data-toggle="tooltip"/>
                             </div>
                           </td>
                         </form>
                       </tr>
                     </tbody>
                   </table>
+                  <span class="prev">上一页</span>
+                  <span class="next">下一页</span>
+                  <span class="total"></span>
+                  <span class="cur_page"></span>
                 </div>
               </div>
             </div>
@@ -292,9 +297,11 @@
 </div>
 
 <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/jquery/js/jquery.page.js"></script>
 <script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/main.min.js"></script>
+<script type="text/javascript" src="/static/layui/layui.all.js"></script>
 <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -317,6 +324,152 @@ function deleteSchoolById(id) {
         }
     });
 }
+</script>
+<script type="text/javascript">
+
+    (function($,window){
+        var Page = function(ele,opt){
+            this.$ele = ele;
+            this.defaults ={
+                curPage: 1,
+                totalPage: 1,
+                totalCount: 0,
+                morePage: opt.morePage,
+                perPageCount: opt.perPageCount
+            }
+            this.options = $.extend({},this.defaults,opt);
+        }
+        Page.prototype = {
+            init: function () {
+                //数据初始化
+                this.dataInit();
+                //显示当前页数、总页数
+                this.pageInit();
+                //分页处理
+                this.pageFun();
+                //销毁之前事件
+                this.offEventFun();
+                //事件处理
+                this.eventFun();
+                return this.$ele;
+            },
+            pageInit: function () {
+                $(this.options.curPageEl).html("当前第" + this.options.curPage + "页");
+                $(this.options.totalEl).html("共" + this.options.totalPage + "页");
+            },
+            pageFun: function () {
+                var $list = this.$ele.children();
+                $list.hide();
+                var start = (this.options.curPage - 1) * this.options.perPageCount;
+                if (this.options.curPage == this.options.totalPage) {
+                    var end = $list.length;
+                    for (var i = start; i < end; i++) {
+                        $($list[i]).show();
+                    }
+                } else {
+                    for (var i = start; i < start + this.options.perPageCount; i++) {
+                        $($list[i]).show();
+                    }
+                }
+                this.pageInit();
+            }
+            ,
+            dataInit: function () {
+                var $list = this.$ele.children();
+                this.options.curPage = 1;
+                this.options.totalCount = $list.length;
+                this.options.totalPage = Math.ceil($list.length / this.options.perPageCount);
+            },
+            eventFun:function(){
+                //下一页
+                var self = this;
+                $(this.options.next).on("click", function () {
+                    if (self.options.curPage + 1 > self.options.totalPage) {
+                        alert("已经是最后一页");
+                        return;
+                    }
+                    self.options.curPage++;
+                    self.pageFun();
+                });
+                //上一页
+                $(this.options.prev).on("click", function () {
+                    if (self.options.curPage - 1 < 1) {
+                        alert("已经是第一页");
+                        return;
+                    }
+                    self.options.curPage--;
+                    self.pageFun();
+                });
+                //下n页
+                $(this.options.nextMore).on("click", function () {
+                    if (self.options.curPage + self.options.morePage > self.options.totalPage){
+                        self.options.curPage = self.options.totalPage;
+                        alert("已经是最后一页")
+                    }else{
+                        self.options.curPage += self.options.morePage;
+                    }
+                    self.pageFun();
+                });
+                //上n页
+                $(this.options.prevMore).on("click", function () {
+                    if (self.options.curPage - self.options.morePage < 1){
+                        self.options.curPage = 1;
+                        alert("已经是第一页")
+                    }else{
+                        self.options.curPage -= self.options.morePage;
+                    }
+                    self.pageFun();
+                });
+            },
+            offEventFun:function(){
+                $(this.options.next).off("click");
+                $(this.options.prev).off("click");
+                $(this.options.nextMore).off("click");
+                $(this.options.prevMore).off("click");
+            }
+        }
+        $.fn.page = function(options){
+            var page = new Page(this,options);
+            return page.init();
+        }
+    })(jQuery,window)
+</script>
+
+<script type="text/javascript">
+    var pageParam = {
+        next: '.next',//下一页按钮jq选择器
+        prev: '.prev',//上一页按钮jq选择器
+        nextMore: '.nextMore',//下n页按钮jq选择器
+        prevMore: '.prevMore',//上n页按钮jq选择器
+        totalEl: '.total',//总页数jq元素  元素内包含 eq:“共n页”
+        curPageEl: '.cur_page',//当前页数jq元素  元素内包含 eq:“当前第n页”
+        perPageCount: 4,//每页显示数量
+        morePage: 5//上、下n页跳转数
+    }
+    //demo为包裹列表的容器
+    $("#demo").page(pageParam);
+</script>
+<script type="text/javascript">
+    function toUpdateSchoolCollegePage(id) {
+        var title = "学院名管理";
+        var url = "/admin/toUpdateSchoolCollegePage?id="+id;
+        var width = 580;
+        var height = 400;
+        showLayer(title, url, width, height);
+    }
+
+    function showLayer(title, url, width, height, res) {
+        var index = layer.open({
+            type : 2,
+            title : title,
+            area : [ width + 'px', height + 'px' ],
+            content : url
+        });
+        if (!width || !height) {
+            layer.full(index);
+        }
+
+    }
 </script>
 </body>
 </html>

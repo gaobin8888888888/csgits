@@ -34,4 +34,9 @@ public class School {
 
     // 记录创建时间
     private String createTime;
+
+    //学院字符串
+    private String colleges;
+
+    private String[] tags;
 }

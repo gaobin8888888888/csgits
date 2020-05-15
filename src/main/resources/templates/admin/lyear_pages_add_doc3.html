@@ -259,7 +259,7 @@
                   <div class="form-group col-md-12">
                     <label for="schoolId">所在学校</label>
                     <div class="form-controls">
-                      <select name="schoolId" class="form-control" id="schoolId">
+                      <select name="schoolId" class="form-control" id="schoolId" onchange="updateCollegeMsg()">
                         <option value="">请选择所在学校</option>
                         <option th:each="school:${schoolList}" th:value="${school.id}" th:text="${school.name}"></option>
                       </select>
@@ -267,7 +267,11 @@
                   </div>
                   <div class="form-group col-md-12">
                     <label for="college">所在学院</label>
-                    <input type="text" class="form-control" id="college" name="college" value="" placeholder="请输入所在学院名称" />
+                    <div class="form-controls">
+                      <select name="college" id="college" class="form-control">
+                        <option value="">请选择所在学院</option>
+                      </select>
+                    </div>
                   </div>
                   <div class="form-group col-md-12">
                     <button type="submit" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
@@ -294,5 +298,30 @@
 <!--标签插件-->
 <script src="/static/admin/js/jquery-tags-input/jquery.tagsinput.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/main.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+  function updateCollegeMsg() {
+      var schoolList = [[${schoolList}]];
+      console.log(schoolList);
+      var schoolId = document.getElementById("schoolId").value;
+      console.log(schoolId);
+      var tags = [];
+      for (var i = 0; i < schoolList.length; i++){
+          if (schoolList[i].id == schoolId){
+              tags = schoolList[i].tags;
+              break;
+          }
+      }
+
+      var str = '<option value="">请选择所在学院</option>';
+      if (tags[0] != null){
+          for (var i = 0; i < tags.length; i++){
+              str += '<option value="'+tags[i]+'">';
+              str += tags[i];
+              str += '</option>';
+          }
+      }
+      $("#college").html(str);
+  }
+</script>
 </body>
 </html>

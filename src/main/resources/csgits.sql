@@ -28,6 +28,9 @@ COMMENT ON COLUMN school.total_num IS '该校学生总人数';
 COMMENT ON COLUMN school.school_num IS '该校在校生人数';
 COMMENT ON COLUMN school.create_time IS '记录添加时间';
 
+alter table school add column colleges varchar;
+COMMENT ON COLUMN school.colleges IS '学校中的学院';
+
 CREATE TABLE manager(
                       id  serial primary key,
                       no varchar,

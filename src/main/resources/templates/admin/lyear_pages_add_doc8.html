@@ -245,7 +245,12 @@
                   <input type="hidden" name="schoolId" th:value="${#session.getAttribute('schoolId')}">
                   <div class="form-group col-md-12">
                     <label for="college">所属学院</label>
-                    <input type="text" class="form-control" id="college" name="college" value="" placeholder="请输入学生所属学院" />
+                    <div class="form-controls">
+                      <select name="college" class="form-control" id="college" onchange="updateCollegeMsg()">
+                        <option value="">请选择所属学院</option>
+                        <option th:each="tag:${tags}" th:value="${tag}" th:text="${tag}"></option>
+                      </select>
+                    </div>
                   </div>
                   <div class="form-group col-md-12">
                     <label for="classNo">所在班级</label>

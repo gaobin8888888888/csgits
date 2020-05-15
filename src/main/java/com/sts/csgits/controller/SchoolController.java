@@ -182,4 +182,29 @@ public class SchoolController {
         return modelAndView;
     }
 
+    /**
+     * 更新学院信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("/updateColleges")
+    public @ResponseBody String updateColleges(Integer id, String tags){
+        try {
+            if (StringUtils.isEmpty(tags)){
+                return JSONResult.errorInstance("学校描述不可为空");
+            }
+            School school = new School();
+            school.setColleges(tags);
+            school.setId(id);
+            int update = schoolService.updateByPrimaryKey(school);
+            if (update > 0){
+                localCache.initSchool();
+                return JSONResult.successInstance("更新成功");
+            }
+        }catch (Exception e){
+            log.info("SchoolController updateColleges error {}", e);
+        }
+        return JSONResult.errorInstance("更新失败，请稍后再试");
+    }
+
 }
