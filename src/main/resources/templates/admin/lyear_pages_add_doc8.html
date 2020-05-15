@@ -246,7 +246,7 @@
                   <div class="form-group col-md-12">
                     <label for="college">所属学院</label>
                     <div class="form-controls">
-                      <select name="college" class="form-control" id="college" onchange="updateCollegeMsg()">
+                      <select name="college" class="form-control" id="college">
                         <option value="">请选择所属学院</option>
                         <option th:each="tag:${tags}" th:value="${tag}" th:text="${tag}"></option>
                       </select>
