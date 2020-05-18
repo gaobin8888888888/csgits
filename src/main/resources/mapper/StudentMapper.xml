@@ -202,6 +202,7 @@
                 and fine = #{fine, jdbcType=BOOLEAN}
             </if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="countNum" parameterType="com.sts.csgits.entity.Student" resultType="java.lang.Integer">

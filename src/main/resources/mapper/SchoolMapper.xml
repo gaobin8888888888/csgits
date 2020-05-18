@@ -114,5 +114,6 @@
         <include refid="BASEFIELD"/>
         from school
         where name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+        order by create_time desc
     </select>
 </mapper>

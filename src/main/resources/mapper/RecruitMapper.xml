@@ -96,6 +96,7 @@
         <include refid="BASEFIELD"/>
         from recruit
         where name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+        order by create_time desc
     </select>
 
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
@@ -113,5 +114,6 @@
                 and name like concat('%', #{mapConditions.recruitName, jdbcType=VARCHAR}, '%')
             </if>
         </where>
+        order by create_time desc
     </select>
 </mapper>

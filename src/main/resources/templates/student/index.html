@@ -99,8 +99,8 @@
 						<!--<a data-toggle="modal" data-target="#toMoreTeacher">查看更多——></a>-->
 					<!--</div>-->
 				</div>
-				<div class="content">
-					<div class="doc" th:each="teacher:${teacherList}">
+				<div class="content" style="width: 100%;">
+					<div class="doc" style="width: 17%;margin-bottom: 20px;" th:each="teacher:${teacherList}">
 						<a href="" data-toggle="modal" data-target="#toShowTeacherPage" th:onclick="'javascript:setTeacherValue('+${teacherStat.index}+')'">
 							<div><img th:src="${teacher.imagePath}" alt=""></div>
 							<div class="detail"><b><p th:text="${teacher.realName}+'---'+${teacher.college}" style="font-size: 16px" /></b></div>
@@ -126,8 +126,8 @@
 						<!--<a href="/user/cus/toNewsList">查看更多——></a>-->
 					<!--</div>-->
 				</div>
-				<div class="content">
-					<div class="doc" th:each="student:${studentList}">
+				<div class="content" style="width: 100%;">
+					<div class="doc" style="width: 17%;margin-bottom: 20px;" th:each="student:${studentList}">
 						<a href="" data-toggle="modal" data-target="#toShowStudentPage" th:onclick="'javascript:setStudentValue('+${studentStat.index}+')'">
 							<div><img th:src="${student.imagePath}" alt=""></div>
 							<div class="detail"><b><p th:text="${student.realName}+'---'+${student.college}" style="font-size: 16px" /></b></div>

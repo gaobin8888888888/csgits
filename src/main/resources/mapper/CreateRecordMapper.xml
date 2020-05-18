@@ -116,6 +116,7 @@
                 and end_time = #{endTime, jdbcType=VARCHAR}
             </if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="selectByCondition" parameterType="com.sts.csgits.utils.Condition" resultMap="BaseResultMap">
