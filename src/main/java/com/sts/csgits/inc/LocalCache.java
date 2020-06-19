@@ -195,6 +195,7 @@ public class LocalCache {
      * @param object
      */
     public void localLoad(String channel, Object object) {
+        log.info("channel:"+channel+",object:"+object);
         if (StringUtils.isEmpty(channel)) {
             return;
         }
